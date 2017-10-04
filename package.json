@@ -32,7 +32,8 @@
             },
             "electronPackagerConfig": {
                 "packageManager": "npm",
-                "asar": true
+                "asar": true,
+                "icon": "/src/img/icon.jpg"
             },
             "electronWinstallerConfig": {
                 "name": "chibimmon"
@@ -53,7 +54,8 @@
         "electron-compile": "^6.4.2",
         "nedb": "^1.8.0",
         "phaser-ce": "^2.8.8",
-        "purecss": "^1.0.0"
+        "purecss": "^1.0.0",
+        "vue": "^2.4.4"
     },
     "devDependencies": {
         "babel-plugin-transform-async-to-generator": "^6.24.1",

@@ -3,12 +3,19 @@ import { app, BrowserWindow } from 'electron';
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-
+/**
+ * package - create output files
+ * make - package + deb etc
+ * publish - make + github
+ */
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    /*resizable:false */
+    icon: __dirname + '/img/favicon.ico'
+    /* .ico */
   });
 
   // and load the index.html of the app.
