@@ -39,9 +39,15 @@ const indexApp = new Vue({
             
             const action = this.loginVisible? "LogIn":"SignUp"
 
-            fetch('http://127.0.0.1/'+action,{
+            //headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
+            //body: JSON.stringify({form: this.form})
+ 
+            fetch('http://127.0.0.1:3000/'+action,
+            {
                 method: "POST",
-                body: this.form
+                headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
+                mode : 'no-cors',
+                body: JSON.stringify(this.form)
             }).then(res=>res.json())
             .then((res) => {
                 console.log(res)
@@ -52,11 +58,9 @@ const indexApp = new Vue({
                 //if bad use?
                 console.log('Request failed', error);
                 
-            })
-            //do fetch
-
+            })      
             
-
+            
             console.log("done submit")
         },
         updateContent : function(){
