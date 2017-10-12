@@ -14,7 +14,8 @@ let mainWindow = null;
 // Some APIs can only be used after this event occurs.
 
 //main window options
-const mainWindowOptions=null;
+let mainWindowOptions=null;
+
 if (isDev) {
   mainWindowOptions= {
     width: 1200,
@@ -34,7 +35,7 @@ if (isDev) {
 }
 
 function loadMainWindow(){
-  mainWindow.loadURL(`file://${__dirname}/newCharacter.html`);
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 }
 
 function loadEditorWindow(){
@@ -46,21 +47,38 @@ function loadGameWindow(){
 }
 
 app.on('ready', function(){
+  console.log('mainWindowOptions')
+  console.log(mainWindowOptions)
   mainWindow = new BrowserWindow(mainWindowOptions);
-  
+
   // and load the index.html of the app.
   loadMainWindow()
-  
+
   // Open the DevTools.
-  if (isDev) 
-  mainWindow.webContents.openDevTools();
-  else
-  mainWindow.setMenu(null);
+  isDev? mainWindow.webContents.openDevTools(): mainWindow.setMenu(null);
+
   //TODO check that language and log status query is done only once
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+  
+  /*
+  mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+    if (frameName === 'modal') {
+      // open window as modal
+      event.preventDefault()
+      Object.assign(options, {
+        modal: true,
+        parent: mainWindow,
+        width: 100,
+        height: 100
+      })
+      event.newGuest = new BrowserWindow(options)
+    }
+  })
+  */
+  
 });
 
 // Quit when all windows are closed.
@@ -80,26 +98,14 @@ app.on('activate', () => {
   }
 });
 
-//other configuration
-
-mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-  if (frameName === 'modal') {
-    // open window as modal
-    event.preventDefault()
-    Object.assign(options, {
-      modal: true,
-      parent: mainWindow,
-      width: 100,
-      height: 100
-    })
-    event.newGuest = new BrowserWindow(options)
-  }
-})
-
-
-
-
 //comunication
+
+ipcMain.on("LogChanged", (event, content) => {
+  console.log("ipcMain on LogCHanged");
+  console.log(content);
+  mainWindow.reload()
+  
+});
 
 ipcMain.on("launchEditor", (event, content) => {
   console.log("ipcMain on create character");
@@ -123,3 +129,4 @@ ipcMain.on("LaunchGame", (event, content) => {
   loadGameWindow()
 });
 
+console.log('render proccess completed')

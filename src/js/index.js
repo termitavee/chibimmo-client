@@ -5,7 +5,7 @@
 */
 const svgCaptcha = require('svg-captcha');
 const {ipcRenderer} = require("electron");
-
+/*
 const dummyCharacters = [
     {
         name: "JustAName",
@@ -26,9 +26,9 @@ const dummyCharacters = [
                 mind:5,
                 dexterity:5,
                 charisma:5,
-            }
+            },
         },
-
+        
         equipment: {
             cloth: {name: "nombre-traje", level:1},
             weapon: {name: "nombre-arma", level:1},
@@ -59,7 +59,7 @@ const dummyCharacters = [
                 charisma:5,
             }
         },
-
+        
         equipment: {
             cloth: {name: "nombre-traje", level:1},
             weapon: {name: "nombre-arma2", level:1},
@@ -82,7 +82,7 @@ const dummyUser = {
     login : new Date(),
     friendList : dummyFriendList
 }
-
+*/
 //create components for content, form (each label?), character list,  
 //put them in a file on component folder, also template can require to external html
 
@@ -139,6 +139,9 @@ const indexApp = new Vue({
             if(user.length <4){
                 validUser = false
                 messageUser = "name too hort"
+            }else{
+                
+                validUser = true
             }
             
             //check pass
@@ -155,18 +158,20 @@ const indexApp = new Vue({
                 messagePass = messagePass.length!=0? messagePass+" and symbols": "May use symbols"
                 
             }
-            
-            if(emailPatt.test(email)){
-                validEmail = true
+            if(!this.loginVisible){
+                if(emailPatt.test(email)){
+                    validEmail = true
+                }else{
+                    validEmail = false
+                    messageEmail = "There is something strange here"
+                }
+
+                if(captcha== this.captcha.text)
+                validCaptcha = true
             }else{
-                validEmail = false
-                messageEmail = "There is something strange here"
+                validEmail = true
+                validCaptcha = true
             }
-            //captcha - print captcha.data, check captcha.text
-            /*let validCaptcha = false
-            let messageCaptcha = ""*/
-            if(captcha== this.captcha.text)
-            validCaptcha = true
             
             //some testing
             console.log("validUser="+validUser)
@@ -177,8 +182,8 @@ const indexApp = new Vue({
             console.log("messagePass="+messagePass)
             console.log("messageEmail="+messageEmail)
             
-            /*
-            if(validUser && validPass && validEmail && validCaptcha){
+            
+            if(validUser && validPass /*&& validEmail && validCaptcha*/){
                 //TODO some kind of loading
                 
                 const action = this.loginVisible? "LogIn":"SignUp"
@@ -186,15 +191,14 @@ const indexApp = new Vue({
                 fetch('http://127.0.0.1:3000/'+action,
                 {
                     method: "POST",
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
-                    mode : 'no-cors',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body: JSON.stringify(this.form)
                 }).then(res=>res.json())
                 .then((res) => {
                     console.log(res)
-                    //if signed up correctly, take user info, save intouserName
+                    //TODO if signed up correctly, take user info, save intouserName
                     //this.launchLoggedContent()
-                    //if loged in correctli change to info screen
+                    //TODO if loged in correctli change to info screen
                 })
                 .catch((error)=>{
                     //if bad use?
@@ -205,10 +209,9 @@ const indexApp = new Vue({
             }else{
                 this.captcha = svgCaptcha.create()
                 //TODO mark wrong parts
-            }*/
-            //TODO para pruebas
-            this.userData = dummyUser
-            this.launchLoggedContent()
+            }
+
+            //this.launchLoggedContent()
             
             console.log("\"done\" submit")
         },
@@ -220,25 +223,31 @@ const indexApp = new Vue({
         launchLoggedContent : function(){
             /*get data from this. userData */
             /*Update the information shown */
-            isNotLogged=false
+            this.isNotLogged=false
 
         },
         
         createNewCharacter: function(){
             /*toggle new window to create character */
-            ipcRenderer
-
-
+            ipcRenderer.send("launchEditor")
+            
             /**
-             * mainWindow.on('close', event=>{
-    event.preventDefault(); //this prevents it from closing. The `closed` event will not fire now
-    mainWindow.hide();
-})
-             */
+            * mainWindow.on('close', event=>{
+                event.preventDefault(); //this prevents it from closing. The `closed` event will not fire now
+                mainWindow.hide();
+            })
+            */
+        },
+        
+        saveNewCharacter: function(){
+            /*toggle new window to create character */
+            ipcRenderer.send("hideEditor")
+            
         },
         
         launchGame: function(){
             /*toggle new windo to play game, hide this */
+            ipcRenderer.send("LaunchGame")
             
         }
     },

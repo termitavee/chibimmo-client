@@ -49,3 +49,30 @@ db._.mixin({
 db.getState()
 //change db, this case clean everything
 db.setState({})
+
+
+
+
+class Monster{
+    constructor(_id, name, statistics, sprite, drop) {
+        this._id =_id; //string
+        this.name = name;//string
+        this.statistics = statistics;
+        /*{
+            variable
+            life
+            magic
+            hab
+            money
+            fixed
+            fuerza
+            resistencia
+            inteligencia
+            mente
+            destreza
+            carisma
+        }*/
+        this.sprite = sprite;
+        this.drop = drop//[] items that the user gets
+    }
+}
