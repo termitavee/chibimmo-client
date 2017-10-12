@@ -1,6 +1,7 @@
 /*
 //main js file of menu
 //TODO tomar idioma de la base de datos, si hay, si no, por defecto inglés
+//TODO tomar toke si hay
 */
 const svgCaptcha = require('svg-captcha');
 const {ipcRenderer} = require("electron");
@@ -74,7 +75,8 @@ const dummyFriendList = ["my-friend", "another-one"]
 const dummyUser = {
     nick: "Player-Name",
     pass : "password",
-    token : "",
+    deskToken : "",
+    mobToken : "",
     email : "Player-Name@chibimmo.com",
     characters : dummyCharacters,
     login : new Date(),
@@ -216,23 +218,38 @@ const indexApp = new Vue({
         },
         
         launchLoggedContent : function(){
-            /*Update the information shown */
             /*get data from this. userData */
+            /*Update the information shown */
+            isNotLogged=false
 
         },
         
         createNewCharacter: function(){
             /*toggle new window to create character */
-            window.open('../newCharacter.html','Character creation')
+            ipcRenderer
+
+
+            /**
+             * mainWindow.on('close', event=>{
+    event.preventDefault(); //this prevents it from closing. The `closed` event will not fire now
+    mainWindow.hide();
+})
+             */
         },
         
         launchGame: function(){
             /*toggle new windo to play game, hide this */
-            window.open('../game.html','Project Chibimmo')
+            
         }
+    },
+    components:{
+        
     }
 })
 
-
+/*
+let modal = window.open('', 'modal')
+modal.document.write('<h1>Hello</h1>') 
+*/
 
 console.log("js cargado")
