@@ -1,0 +1,44 @@
+<div id="formContent">
+    <a v-text="loginButton" @click="toggleLogin" class="pure-button" >Log in</a>
+    
+    <div v-show="!loginVisible">
+        <p>
+            <span>User name</span>
+            <input type="text" v-model="form.user">
+        </p>
+        <p>
+            <span>Pasword</span>
+            <input type="password" v-model="form.pass">
+        </p>
+        <p>
+            <span>Email</span>
+            <input type="email" v-model="form.email">
+        </p>
+        <p>
+            <span>Refere as...</span></br>
+            <input type="radio" name="gender" value="male" > he<br>
+            <input type="radio" name="gender" value="female"> she<br>
+            <input type="radio" name="gender" value="unknow" checked> you (or I, whatever) don't care
+        </p>
+        <p>
+            <span>Introduce captcha below</span>
+            <div v-html="captcha.data"></div>
+            
+            <input type="text" v-model="form.catcha">
+        </p>
+    </div>
+    
+    <div v-show="loginVisible">
+        <p>
+            <span>User name</span>
+            <input type="text" v-model="form.user">
+        </p>
+        <p>
+            <span>Pasword</span>
+            <input type="password" v-model="form.pass">
+        </p>
+        
+    </div>
+    <a v-text="submitButton" @click="submit" class="pure-button" >Submit</a>
+    
+</div><!--end login block-->

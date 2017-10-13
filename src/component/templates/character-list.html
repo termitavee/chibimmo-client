@@ -1,0 +1,12 @@
+<ul>
+    
+    <li vfor="character in characters">
+      <span v-text="character">
+        <!--hidden stats, show on click-->
+      </span>
+    </li>
+    <li>
+      <a @click="createNewCharacter" v-text="newCharacter"></a>
+    </li>
+    
+  </ul>

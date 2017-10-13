@@ -1,10 +1,13 @@
 /*
 //main js file of menu
 //TODO tomar idioma de la base de datos, si hay, si no, por defecto inglés
-//TODO tomar toke si hay
+//TODO tomar token si hay
 */
 const svgCaptcha = require('svg-captcha');
 const {ipcRenderer} = require("electron");
+
+import logInForm from '../component/log-in-form'
+import characterList from '../component/character-list'
 /*
 const dummyCharacters = [
     {
@@ -88,6 +91,10 @@ const dummyUser = {
 
 const indexApp = new Vue({
     el: '#index',
+    components:{
+        'log-in-form': LogInForm,
+        'character-list': characterList
+    },
     data: {
         title: "Project Chibimmo",
         content: "<p>Content</p>",
@@ -165,7 +172,7 @@ const indexApp = new Vue({
                     validEmail = false
                     messageEmail = "There is something strange here"
                 }
-
+                
                 if(captcha== this.captcha.text)
                 validCaptcha = true
             }else{
@@ -210,7 +217,7 @@ const indexApp = new Vue({
                 this.captcha = svgCaptcha.create()
                 //TODO mark wrong parts
             }
-
+            
             //this.launchLoggedContent()
             
             console.log("\"done\" submit")
@@ -224,7 +231,7 @@ const indexApp = new Vue({
             /*get data from this. userData */
             /*Update the information shown */
             this.isNotLogged=false
-
+            
         },
         
         createNewCharacter: function(){
@@ -254,6 +261,19 @@ const indexApp = new Vue({
     components:{
         
     }
+})
+
+indexApp.$on('submit', function(params) {
+    
+    console.log('vue on submit', params);
+    this.submit()
+})
+
+
+indexApp.$on('createNewCharacter', function(params) {
+    
+    console.log('vue on createNewCharacter', params);
+    this.createNewCharacter()
 })
 
 /*
