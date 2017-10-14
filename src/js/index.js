@@ -6,9 +6,11 @@
 const svgCaptcha = require('svg-captcha');
 const {ipcRenderer} = require("electron");
 
-import logInForm from '../component/log-in-form'
-import characterList from '../component/character-list.vue'
-import character from '../component/character.vue'
+const logInForm = require('../component/log-in-form')
+//import logInForm from '../component/log-in-form'
+const characterList = require( '../component/character-list')
+const character = require( '../component/character')
+
 /*
 const dummyCharacters = [
     {

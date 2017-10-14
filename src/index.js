@@ -8,6 +8,7 @@ let mainWindow = null;
 * package - create output files
 * make - package + deb etc
 * publish - make + github
+https://www.gitbook.com/
 */
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -15,7 +16,8 @@ let mainWindow = null;
 
 //main window options
 let mainWindowOptions=null;
-
+//process.env.NODE_ENV
+console.log('isDev='+process.env.NODE_ENV)
 if (isDev) {
   mainWindowOptions= {
     width: 1200,
