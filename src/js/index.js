@@ -6,10 +6,10 @@
 const svgCaptcha = require('svg-captcha');
 const {ipcRenderer} = require("electron");
 
-const logInForm = require('../component/log-in-form')
-//import logInForm from '../component/log-in-form'
-const characterList = require( '../component/character-list')
-const character = require( '../component/character')
+//const logInForm = require('../component/log-in-form')
+import logInForm from './component/log-in-form'
+const characterList = require( './component/character-list')
+const character = require( './component/character')
 
 /*
 const dummyCharacters = [
@@ -95,7 +95,7 @@ const dummyUser = {
 const indexApp = new Vue({
     el: '#index',
     components:{
-        'log-in-form': LogInForm,
+        'log-in-form': logInForm,
         'character-list': characterList,
         'character': character
     },

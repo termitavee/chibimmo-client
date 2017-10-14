@@ -1,3 +1,4 @@
+<template>
 <div id="formContent">
     <a v-text="loginButton" @click="toggleLogin" class="pure-button" >Log in</a>
     
@@ -42,3 +43,29 @@
     <a v-text="submitButton" @click="submit" class="pure-button" >Submit</a>
     
 </div><!--end login block-->
+
+</template>
+
+<script>
+export default {
+    props:[],
+    data: function () {
+      return {
+        characters : [],
+
+      }
+    },
+    methods: {
+      createNewCharacter : function(){
+        this.$emit('increment')
+      },
+      showDetails : function(){
+        this.$emit('increment')
+      }
+    }
+}
+</script>
+
+<style scoped>
+
+</style>
