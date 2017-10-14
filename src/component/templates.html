@@ -1,0 +1,35 @@
+<script type="text/x-template" id="character-list">
+    <ul>
+        
+        <li vfor="character in characters">
+          <span v-text="character">
+            <!--hidden stats, show on click-->
+          </span>
+        </li>
+        <li>
+          <a @click="createNewCharacter" v-text="newCharacter"></a>
+        </li>
+        
+      </ul>
+</script>
+
+<script type="text/x-template" id="checkbox-template">
+    <div class="checkbox-wrapper" @click="check">
+        <div :class="{ checkbox: true, checked: checked }"></div>
+        <div class="title"></div>
+    </div>
+</script>
+
+<script type="text/x-template" id="checkbox-template">
+    <div class="checkbox-wrapper" @click="check">
+        <div :class="{ checkbox: true, checked: checked }"></div>
+        <div class="title"></div>
+    </div>
+</script>
+
+<script type="text/x-template" id="checkbox-template">
+    <div class="checkbox-wrapper" @click="check">
+        <div :class="{ checkbox: true, checked: checked }"></div>
+        <div class="title"></div>
+    </div>
+</script>

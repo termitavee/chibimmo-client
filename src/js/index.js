@@ -7,7 +7,8 @@ const svgCaptcha = require('svg-captcha');
 const {ipcRenderer} = require("electron");
 
 import logInForm from '../component/log-in-form'
-import characterList from '../component/character-list'
+import characterList from '../component/character-list.vue'
+import character from '../component/character.vue'
 /*
 const dummyCharacters = [
     {
@@ -93,7 +94,8 @@ const indexApp = new Vue({
     el: '#index',
     components:{
         'log-in-form': LogInForm,
-        'character-list': characterList
+        'character-list': characterList,
+        'character': character
     },
     data: {
         title: "Project Chibimmo",
