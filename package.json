@@ -34,7 +34,7 @@
                 ]
             },
             "electronPackagerConfig": {
-                "dir":"./src",
+                "dir": "./src",
                 "packageManager": "npm",
                 "asar": true,
                 "icon": "./src/img/icon.jpg"
