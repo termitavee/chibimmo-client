@@ -47,21 +47,149 @@
 </template>
 
 <script>
-export default {
+const svgCaptcha = require('svg-captcha');
+module.exports = {
+    name:"formContent",
     props:[],
     data: function () {
       return {
-        characters : [],
-
+        loginButton: "Change to Sign Up",
+        loginVisible: true,
+        form: {
+            user:"",
+            pass:"",
+            email:"",
+            captcha: "",
+        },
+        captcha: svgCaptcha.create(),
+        submitButton:"Submit",
       }
     },
     methods: {
-      createNewCharacter : function(){
-        this.$emit('increment')
-      },
-      showDetails : function(){
-        this.$emit('increment')
-      }
+        toggleLogin : function() {
+            
+            this.loginButton = this.loginVisible ? "Change to LogIn" : "Change to Sign Up"
+            
+            this.loginVisible = !this.loginVisible
+            
+        },
+        submit : function(){
+                        const {user, pass, email, captcha} = this.form
+            let validUser = false
+            let messageUser = ""
+            
+            let validPass = false
+            let messagePass = ""
+            
+            let validEmail = false
+            let messageEmail = ""
+            
+            let validCaptcha = false
+            
+            const symbPatt = /\W/g;
+            const digitPatt = /\d/g;
+            const emailPatt = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/i;
+            
+            //check user
+            if(user.length <4){
+                validUser = false
+                messageUser = "name too hort"
+            }else{
+                
+                validUser = true
+            }
+            
+            //check pass
+            if(pass.length <6){
+                validPass = false
+                messagePass = "password too hort"
+            }else{
+                validPass = true
+                
+                if(!digitPatt.test(pass))
+                messagePass = "May use numbers"
+                
+                if(!symbPatt.test(pass))
+                messagePass = messagePass.length!=0? messagePass+" and symbols": "May use symbols"
+                
+            }
+            if(!this.loginVisible){
+                if(emailPatt.test(email)){
+                    validEmail = true
+                }else{
+                    validEmail = false
+                    messageEmail = "There is something strange here"
+                }
+                
+                if(captcha== this.captcha.text)
+                validCaptcha = true
+            }else{
+                validEmail = true
+                validCaptcha = true
+            }
+            
+            //some testing
+            console.log("validUser="+validUser)
+            console.log("validPass="+validPass)
+            console.log("validEmail="+validEmail)
+            console.log("validCaptcha="+validCaptcha)
+            console.log("messageUser="+messageUser)
+            console.log("messagePass="+messagePass)
+            console.log("messageEmail="+messageEmail)
+            validUser=true
+            validPass=true
+            validEmail=true
+            validCaptcha=true
+            if(validUser && validPass && validEmail && validCaptcha){
+                //TODO some kind of loading
+                const action = this.loginVisible? "LogIn":"SignUp"
+                
+                fetch('http://127.0.0.1:3000/'+action,
+                {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: JSON.stringify(this.form)
+                }).then(res=>res.json())
+                .then((res) => {
+                    console.log(res)
+                    if(res.status == 202){
+                        if(res.action = "login"){
+                            this.$emit('logIn', res.user)
+                        }else{
+                            this.pass = ""
+                            email = ""
+                            captcha = ""
+                        }         
+                    }else{
+                        switch(res.error){
+                            case 'user':
+                                //TODO show there is a problem with de user
+                            break
+                            
+                            case 'password':
+                                //TODO show there is a problem with de password
+
+                        }
+                    }
+                    //TODO if signed up correctly, take user info, save into userName
+                    //this.loginVisible = true
+                    //TODO if loged in correctli change to info screen
+                    //this.$emit('logIn', res)
+                })
+                .catch((error)=>{
+                    //if bad use?
+                    console.log('Request failed', error);
+                    this.captcha = svgCaptcha.create()
+                    
+                })      
+            }else{
+                this.captcha = svgCaptcha.create()
+                //TODO mark wrong parts
+            }
+        },
+        showDetails : function(){
+            this.$emit('showDetails')
+        }
     }
 }
 </script>

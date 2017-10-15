@@ -3,22 +3,20 @@
 //TODO tomar idioma de la base de datos, si hay, si no, por defecto inglés
 //TODO tomar token si hay
 */
-//const svgCaptcha = require('svg-captcha');
-//const {ipcRenderer} = require("electron");
-import svgCaptcha  from'./component/log-in-form'
-import {ipcRenderer} from './component/log-in-form'
+const svgCaptcha = require('svg-captcha');
+const {ipcRenderer} = require("electron");
+//import svgCaptcha  from'./component/log-in-form'
+//import {ipcRenderer} from './component/log-in-form'
 
-//const logInForm = require('../component/log-in-form')
-//const characterList = require( './component/character-list')
-//const character = require( './component/character')
-import logInForm from './component/log-in-form'
-import characterList from './component/character-list'
-import character from './component/character'
+const logInForm = require('./component/log-in-form')
+const characterList = require( './component/character-list')
+const character = require( './component/character')
+//import logInForm from './component/log-in-form'
+//import characterList from './component/character-list'
+//import character from './component/character'
 
-
-//create components for content, form (each label?), character list,  
-//put them in a file on component folder, also template can require to external html
-
+console.log('logInForm')
+console.log(logInForm)
 const indexApp = new Vue({
     el: '#index',
     components:{
@@ -28,132 +26,14 @@ const indexApp = new Vue({
     },
     data: {
         title: "Project Chibimmo",
-        content: "<p>Content</p>",
-        loginButton: "Change to Sign Up",
-        loginVisible: true,
-        form: {
-            user:"",
-            pass:"",
-            email:"",
-            captcha: "",
-        },
-        captcha: svgCaptcha.create(),
-        submitButton:"Submit",
+        content: "<p>Content</p>",    
         isNotLogged: true,
         userName:"Player",
         userData:{},
-        newCharacter:"Create new",
         language:"en",
         
     },
-    methods: {
-        /*Change LogIn form and Sign up form*/
-        toggleLogin : function() {
-            
-            this.loginButton = this.loginVisible ? "Change to LogIn" : "Change to Sign Up"
-            
-            this.loginVisible = !this.loginVisible
-            
-        },
-        /*Send to the main process the form data*/
-        submit : function(){
-            const {user, pass, email, captcha} = this.form
-            let validUser = false
-            let messageUser = ""
-            
-            let validPass = false
-            let messagePass = ""
-            
-            let validEmail = false
-            let messageEmail = ""
-            
-            let validCaptcha = false
-            
-            const symbPatt = /\W/g;
-            const digitPatt = /\d/g;
-            const emailPatt = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/i;
-            
-            //check user
-            if(user.length <4){
-                validUser = false
-                messageUser = "name too hort"
-            }else{
-                
-                validUser = true
-            }
-            
-            //check pass
-            if(pass.length <6){
-                validPass = false
-                messagePass = "password too hort"
-            }else{
-                validPass = true
-                
-                if(!digitPatt.test(pass))
-                messagePass = "May use numbers"
-                
-                if(!symbPatt.test(pass))
-                messagePass = messagePass.length!=0? messagePass+" and symbols": "May use symbols"
-                
-            }
-            if(!this.loginVisible){
-                if(emailPatt.test(email)){
-                    validEmail = true
-                }else{
-                    validEmail = false
-                    messageEmail = "There is something strange here"
-                }
-                
-                if(captcha== this.captcha.text)
-                validCaptcha = true
-            }else{
-                validEmail = true
-                validCaptcha = true
-            }
-            
-            //some testing
-            console.log("validUser="+validUser)
-            console.log("validPass="+validPass)
-            console.log("validEmail="+validEmail)
-            console.log("validCaptcha="+validCaptcha)
-            console.log("messageUser="+messageUser)
-            console.log("messagePass="+messagePass)
-            console.log("messageEmail="+messageEmail)
-            
-            
-            if(validUser && validPass /*&& validEmail && validCaptcha*/){
-                //TODO some kind of loading
-                
-                const action = this.loginVisible? "LogIn":"SignUp"
-                
-                fetch('http://127.0.0.1:3000/'+action,
-                {
-                    method: "POST",
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: JSON.stringify(this.form)
-                }).then(res=>res.json())
-                .then((res) => {
-                    console.log(res)
-                    //TODO if signed up correctly, take user info, save intouserName
-                    //this.launchLoggedContent()
-                    //TODO if loged in correctli change to info screen
-                })
-                .catch((error)=>{
-                    //if bad use?
-                    console.log('Request failed', error);
-                    this.captcha = svgCaptcha.create()
-                    
-                })      
-            }else{
-                this.captcha = svgCaptcha.create()
-                //TODO mark wrong parts
-            }
-            
-            //this.launchLoggedContent()
-            
-            console.log("\"done\" submit")
-        },
-        
+    methods: {       
         updateContent : function(){
             /*Update the information shown */
         },
@@ -168,13 +48,6 @@ const indexApp = new Vue({
         createNewCharacter: function(){
             /*toggle new window to create character */
             ipcRenderer.send("launchEditor")
-            
-            /**
-            * mainWindow.on('close', event=>{
-                event.preventDefault(); //this prevents it from closing. The `closed` event will not fire now
-                mainWindow.hide();
-            })
-            */
         },
         
         saveNewCharacter: function(){
@@ -188,16 +61,15 @@ const indexApp = new Vue({
             ipcRenderer.send("LaunchGame")
             
         }
-    },
-    components:{
-        
     }
 })
 
-indexApp.$on('submit', function(params) {
+indexApp.$on('logIn', function(params) {
     
-    console.log('vue on submit', params);
-    this.submit()
+    console.log('vue on logIn', params);
+    //TODO reload window?
+    ipcRenderer.send("LogIn")
+
 })
 
 
@@ -212,4 +84,4 @@ let modal = window.open('', 'modal')
 modal.document.write('<h1>Hello</h1>') 
 */
 
-console.log("js cargado")
+console.log("index.js cargado")

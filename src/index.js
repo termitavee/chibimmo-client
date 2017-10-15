@@ -1,5 +1,8 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+import { enableLiveReload } from 'electron-compile';
 import isDev  from 'electron-is-dev';
+
 //ONLY THIS IS THE MAIN PROCESS
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -19,6 +22,7 @@ console.log(  process.cwd())
 let mainWindowOptions=null;
 //process.env.NODE_ENV
 if (isDev) {
+  enableLiveReload()
   mainWindowOptions= {
     width: 1200,
     height: 600,
@@ -52,13 +56,17 @@ app.on('ready', function(){
   console.log('mainWindowOptions')
   console.log(mainWindowOptions)
   mainWindow = new BrowserWindow(mainWindowOptions);
-
+  
   // and load the index.html of the app.
   loadMainWindow()
-
+  
   // Open the DevTools.
-  isDev? mainWindow.webContents.openDevTools(): mainWindow.setMenu(null);
-
+  if(isDev){
+    
+    installExtension(VUEJS_DEVTOOLS);
+    mainWindow.webContents.openDevTools();
+  }else mainWindow.setMenu(null);
+  
   //TODO check that language and log status query is done only once
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
