@@ -8,7 +8,7 @@
   <script>require('electron')</script>
   <script src="../node_modules/vue/dist/vue.min.js"></script>
   <!--TODOs
-    -scoll in content block
+    -scroll in content block
     -scroll in characters list
   -->
 </head>
@@ -32,7 +32,7 @@
         <h2 v-text="userName">Player</h2>
         
         <!--TODO logout-->
-        <character-list>
+        <character-list v-bind:characters="userData.characters">
         
       </div><!--end logged block-->
       

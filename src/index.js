@@ -18,7 +18,6 @@ https://www.gitbook.com/
 // Some APIs can only be used after this event occurs.
 
 //main window options
-console.log(  process.cwd())
 let mainWindowOptions=null;
 //process.env.NODE_ENV
 if (isDev) {
