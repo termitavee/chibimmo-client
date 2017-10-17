@@ -48,6 +48,7 @@
 
 <script>
 const svgCaptcha = require('svg-captcha');
+const {setUser} = require('../js/data/db')
 module.exports = {
     name:"formContent",
     props:[],
@@ -128,7 +129,7 @@ module.exports = {
                 validCaptcha = true
             }
             
-            //some testing
+            //TODO some testing
             console.log("validUser="+validUser)
             console.log("validPass="+validPass)
             console.log("validEmail="+validEmail)
@@ -154,7 +155,8 @@ module.exports = {
                     console.log(res)
                     if(res.status == 202){
                         if(res.action = "login"){
-                            this.$emit('logIn', res.user)
+                            this.$root.$emit('logIn', res.user)
+                            this.saveUser(res.user)
                         }else{
                             this.pass = ""
                             email = ""
@@ -163,18 +165,14 @@ module.exports = {
                     }else{
                         switch(res.error){
                             case 'user':
-                                //TODO show there is a problem with de user
+                                //TODO show there is a problem with the user
                             break
                             
                             case 'password':
-                                //TODO show there is a problem with de password
+                                //TODO show there is a problem with the password
 
                         }
                     }
-                    //TODO if signed up correctly, take user info, save into userName
-                    //this.loginVisible = true
-                    //TODO if loged in correctli change to info screen
-                    //this.$emit('logIn', res)
                 })
                 .catch((error)=>{
                     //if bad use?
@@ -187,8 +185,9 @@ module.exports = {
                 //TODO mark wrong parts
             }
         },
-        showDetails : function(){
-            this.$emit('showDetails')
+        saveUser : function(user){
+            console.log('setUser(user)')
+            console.log(setUser(user))
         }
     }
 }

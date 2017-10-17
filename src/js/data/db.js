@@ -1,13 +1,25 @@
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 //use shortid ? to generate id shortid.generate()
-const adapter = new FileSync('db.json',{
+
+const encrypt = (text)=>{
+    return text
+}
+
+const decrypt = (text)=>{
+    return text
+}
+
+const adapter = new FileSync('db.json')
+/*const adapter = new FileSync('db.json',{
     serialize: (data) => encrypt(JSON.stringify(data)),
     deserialize: (data) => JSON.parse(decrypt(data))
-})
-const db = low(adapter)
+})*/
 
-bd.defaults({default: {content: "data", value:"value"}}).write()
+/*
+//const db = low(adapter)
+
+//bd.defaults({default: {content: "data", value:"value"}}).write()
 
 //get and write
 db.get('default')
@@ -19,9 +31,8 @@ db.set('default.content', 'another new value')
 .write()
 
 //query, value find, write save
-db.get('default')
-.find({ content: "new data" })
-/*
+db.get('default').find({ content: "new data" })
+
 .filter({published: true})
 .sortBy('views')
 .take(5)
@@ -30,8 +41,6 @@ db.get('default')
 .remove({ title: 'low!' })//delete item (after get)
 unset('user.name') //remove property (standalone)
 
-
-*/
 .value()
 
 //name can be called before write or value
@@ -45,12 +54,49 @@ db._.mixin({
 })
 
 //get all
-
 db.getState()
 //change db, this case clean everything
 db.setState({})
+*/
+const setUser = (user)=>{
+    const db = low(adapter)
+    db.set('user', user).write()
+    return db.get('user').value()
+}
 
+const getUser = ()=>{
+    const db = low(adapter)
+    let found =  db.get('user').value()
+    console.log('user found')
+    console.log(found)
+    return found
+}
 
+const setLang = (lang)=>{
+    const db = low(adapter)
+    db.set({lang}).write()
+}
+
+const getLang = ()=>{
+    const db = low(adapter)
+    return db.get('lang').value()
+}
+
+const setRemember = (user, token)=>{
+    const db = low(adapter)
+    db.set({remember:{user,token}}).write()
+}
+
+const getRemember = (user)=>{
+    const db = low(adapter)
+    return db.get('remember').value()
+}
+
+module.exports = {
+    setUser, getUser,
+    setLang, getLang,
+    setRemember, getRemember,
+}
 
 
 class Monster{

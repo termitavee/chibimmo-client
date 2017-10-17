@@ -1,5 +1,7 @@
 <template>
-  <ul>
+<div>
+<ul>
+  <h3>List of characters created</h3>
     <li vfor="item in characters">
       <span v-text="character">
         <!--hidden stats, show on click-->
@@ -9,13 +11,15 @@
       <a @click="createNewCharacter" v-text="newCharacter"></a>
     </li>
   </ul>
+</div>
+  
 </template>
 
 <script>
 
-const character = require('./component/character')
+const character = require('../component/character')
 module.exports = {
-    props:[characters],
+    props:['characters'],
     components:{
       'character': character,
     },

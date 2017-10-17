@@ -6,9 +6,8 @@
     "main": "src/index.js",
     "scripts": {
         "start": "electron-forge start",
-        "package": "electron-forge package",
-        "make": "electron-forge make",
-        "publish": "electron-forge publish",
+        "pack": "electron-forge package",
+        "build": "electron-forge make",
         "server": "nodemon ../chibimmo-server/index.js",
         "lint": "eslint src"
     },

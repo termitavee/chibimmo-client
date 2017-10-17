@@ -21,7 +21,7 @@ https://www.gitbook.com/
 let mainWindowOptions=null;
 //process.env.NODE_ENV
 if (isDev) {
-  enableLiveReload()
+  //enableLiveReload()
   mainWindowOptions= {
     width: 1200,
     height: 600,
@@ -39,8 +39,12 @@ if (isDev) {
   }
 }
 
-function loadMainWindow(){
+function loadLogInWindow(){
   mainWindow.loadURL(`file://${__dirname}/index.html`);
+}
+
+function loadMainWindow(){
+  mainWindow.loadURL(`file://${__dirname}/logged.html`);
 }
 
 function loadEditorWindow(){
@@ -51,18 +55,16 @@ function loadGameWindow(){
   mainWindow.loadURL(`file://${__dirname}/game.html`);
 }
 
-app.on('ready', function(){
-  console.log('mainWindowOptions')
-  console.log(mainWindowOptions)
+function createMainWindow(){
   mainWindow = new BrowserWindow(mainWindowOptions);
   
   // and load the index.html of the app.
-  loadMainWindow()
+  loadLogInWindow()
   
   // Open the DevTools.
   if(isDev){
     
-    installExtension(VUEJS_DEVTOOLS);
+    //installExtension(VUEJS_DEVTOOLS);
     mainWindow.webContents.openDevTools();
   }else mainWindow.setMenu(null);
   
@@ -71,20 +73,19 @@ app.on('ready', function(){
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+}
+app.on('ready', function(){
+  
+  createMainWindow()
   
   /*
-  mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-    if (frameName === 'modal') {
-      // open window as modal
-      event.preventDefault()
-      Object.assign(options, {
-        modal: true,
-        parent: mainWindow,
-        width: 100,
-        height: 100
-      })
-      event.newGuest = new BrowserWindow(options)
-    }
+  import { shell } from 'electron'
+  
+  mainWindow.webContents.on('new-window', (event, url) => {
+    // stop Electron from opening another BrowserWindow
+    event.preventDefault()
+    // open the url in the default system browser
+    shell.openExternal(url)
   })
   */
   
@@ -109,10 +110,15 @@ app.on('activate', () => {
 
 //comunication
 
-ipcMain.on("LogChanged", (event, content) => {
-  console.log("ipcMain on LogCHanged");
-  console.log(content);
-  mainWindow.reload()
+ipcMain.on("logIn", (event, logged) => {
+  console.log("Main process on LogChanged");
+  console.log('content='+logged);
+  if(logged){
+    loadMainWindow()
+  }else{
+    loadLogInWindow()
+  }
+  //mainWindow.reload()
   
 });
 

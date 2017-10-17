@@ -9,8 +9,8 @@ const {ipcRenderer} = require("electron");
 //import {ipcRenderer} from './component/log-in-form'
 
 const logInForm = require('./component/log-in-form')
-const characterList = require( './component/character-list')
-const character = require( './component/character')
+const feed = require( './component/feed')
+
 //import logInForm from './component/log-in-form'
 //import characterList from './component/character-list'
 //import character from './component/character'
@@ -21,17 +21,21 @@ const indexApp = new Vue({
     el: '#index',
     components:{
         'log-in-form': logInForm,
-        'character-list': characterList,
-        'character': character
+        'feed': feed,
     },
     data: {
-        title: "Project Chibimmo",
-        content: "<p>Content</p>",    
+        isLoading:true,
         isNotLogged: true,
         userName:"Player",
         userData:{},
         language:"en",
         
+    },
+    created : function(){
+        //TODO check language in database in case user has changed it and save in data
+        //TODO check if exist token for this device and send to the server 
+        
+        this.isLoading = false
     },
     methods: {       
         updateContent : function(){
@@ -61,23 +65,27 @@ const indexApp = new Vue({
             ipcRenderer.send("LaunchGame")
             
         }
+    },
+    created() {
+        //$root
+        
+        this.$root.$on('logIn', function(params) {
+            
+            console.log('vue on logIn', params);
+            //TODO reload window?
+            ipcRenderer.send("logIn", true)
+            
+        })
+        
+        
+        this.$root.$on('createNewCharacter', function(params) {
+            
+            console.log('index on createNewCharacter', params);
+            this.createNewCharacter()
+        })
     }
 })
 
-indexApp.$on('logIn', function(params) {
-    
-    console.log('vue on logIn', params);
-    //TODO reload window?
-    ipcRenderer.send("LogIn")
-
-})
-
-
-indexApp.$on('createNewCharacter', function(params) {
-    
-    console.log('vue on createNewCharacter', params);
-    this.createNewCharacter()
-})
 
 /*
 let modal = window.open('', 'modal')
