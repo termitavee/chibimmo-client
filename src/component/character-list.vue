@@ -2,13 +2,13 @@
 <div>
 <ul>
   <h3>List of characters created</h3>
-    <li vfor="item in characters">
-      <span v-text="character">
+    <li vfor="(item, key) in characters">
+      <span v-text="item">
         <!--hidden stats, show on click-->
       </span>
     </li>
     <li>
-      <a @click="createNewCharacter" v-text="newCharacter"></a>
+      <a @click="createNewCharacter" v-text="newCharacter" class="pure-button">Create new</a>
     </li>
   </ul>
 </div>
@@ -24,19 +24,21 @@ module.exports = {
       'character': character,
     },
     data: function () {
-      return {}
+      return {newCharacter: "Create new"}
     },
     methods: {
       createNewCharacter : function(){
-        this.$emit('increment')
+        this.$root.$emit('openCharacterEditor')
       },
       showDetails : function(){
-        this.$emit('increment')
+        this.$root.$emit('increment')
       }
     }
 }
 </script>
 
 <style scoped>
-
+ul{ 
+  list-style-type: none;
+}
 </style>

@@ -31,12 +31,6 @@ const indexApp = new Vue({
         language:"en",
         
     },
-    created : function(){
-        //TODO check language in database in case user has changed it and save in data
-        //TODO check if exist token for this device and send to the server 
-        
-        this.isLoading = false
-    },
     methods: {       
         updateContent : function(){
             /*Update the information shown */
@@ -68,7 +62,10 @@ const indexApp = new Vue({
     },
     created() {
         //$root
+        //TODO check language in database in case user has changed it and save in data
+        //TODO check if exist token for this device and send to the server 
         
+        this.isLoading = false
         this.$root.$on('logIn', function(params) {
             
             console.log('vue on logIn', params);
@@ -76,7 +73,6 @@ const indexApp = new Vue({
             ipcRenderer.send("logIn", true)
             
         })
-        
         
         this.$root.$on('createNewCharacter', function(params) {
             

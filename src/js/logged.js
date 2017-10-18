@@ -19,7 +19,6 @@ const indexApp = new Vue({
         'character': character,
     },
     data: {
-        userName: "Player",
         user: getUser(),
         language: "en",
         
@@ -52,6 +51,22 @@ const indexApp = new Vue({
             ipcRenderer.send("LaunchGame")
             
         }
+    },
+    created() {
+        //$root
+        //TODO check language in database in case user has changed it and save in data
+        //TODO check if exist token for this device and send to the server 
+        
+        this.$root.$on('openCharacterEditor', function(param) {
+            console.log('logged.js on openCharacterEditor', param);
+            if(param!=null){
+                //TODO save character in db
+            }
+            
+            ipcRenderer.send("launchEditor")
+            //En mi juego no se discrimina nada, elije un color de piel y pelo dentro de esa gama homosexual de colores
+        })
+
     }
 })
 

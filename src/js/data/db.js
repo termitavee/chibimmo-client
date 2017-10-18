@@ -60,8 +60,9 @@ db.setState({})
 */
 const setUser = (user)=>{
     const db = low(adapter)
-    db.set('user', user).write()
-    return db.get('user').value()
+    console.log('user to insert')
+    console.log(user)
+    return db.set('user', user).write()
 }
 
 const getUser = ()=>{
@@ -98,13 +99,8 @@ module.exports = {
     setRemember, getRemember,
 }
 
-
-class Monster{
-    constructor(_id, name, statistics, sprite, drop) {
-        this._id =_id; //string
-        this.name = name;//string
-        this.statistics = statistics;
-        /*{
+const createMonster= (name, statistics, sprite, drop)=>{
+    /*{
             variable
             life
             magic
@@ -118,7 +114,5 @@ class Monster{
             destreza
             carisma
         }*/
-        this.sprite = sprite;
-        this.drop = drop//[] items that the user gets
-    }
+    return {name, statistics, sprite, drop}
 }
