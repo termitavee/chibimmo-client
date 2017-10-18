@@ -21,29 +21,26 @@
             <form>
                 <div>
                     <span>Name</span> <br>
-                    <input type="text" name="text" value="" >
+                    <input type="text" v-model="form.name" name="text" value="" >
                 </div>
                 <div>
                     <span>Class</span> <br>
-                    <input type="radio" name="class" value="male" checked> Soldier<br>
-                    <input type="radio" name="class" value="female"> Mage<br>
-                    <input type="radio" name="class" value="other"> Rogue
+                    <input type="radio" name="class" v-model="form.className" value="male" checked> Soldier<br>
+                    <input type="radio" name="class" v-model="form.className" value="female"> Mage<br>
+                    <input type="radio" name="class" v-model="form.className" value="other"> Rogue
                 </div>
                 <div>
                     <span>Orientation</span> <br>
-                    <input type="radio" name="orientation" value="male" checked> Ofensive<br>
-                    <input type="radio" name="orientation" value="female"> Defensive<br>
-                    <input type="radio" name="orientation" value="other"> Neutral
+                    <input type="radio" name="orientation" v-model="form.orientation" value="male" checked> Ofensive<br>
+                    <input type="radio" name="orientation" v-model="form.orientation" value="female"> Defensive<br>
+                    <input type="radio" name="orientation" v-model="form.orientation" value="other"> Neutral
                 </div>
                 <div>
                     <span>Body color</span><br>
-                    <!--<input type="color" id="color-picker" :value="color.body" v-on:change="(item)=> console.log(this)" name="body-color" >
-
-
-                    -->
                     
-                    <color-picker v-model="colors" />
-                    <!-- TODO vue-color document.getElementById('color-picker').value-->
+                    <input type="color" v-model="form.color.body" v-on:change="this.changeColorBody" name="body-color" >
+                    
+                    <!-- TODO vue-color vue-colorpicker-->
                 </div>
                 <div>
                     <span>Hair</span>
@@ -51,7 +48,12 @@
                 </div>
                 <div>
                     <span>Hair color</span><br>
-                    <input type="color" v-model="color.head"  v-on:change="(event)=> console.log(event)" name="head-color" >
+                    <input type="color" v-model="form.color.hair"  v-on:change="this.changeColorHair" name="head-color" >
+                </div>
+                <div>
+                        <a v-text="save" @click="this.saveCharacter" class="pure-button" >Save</a>
+                        <a v-text="exit" @click="this.backToList" class="pure-button" >Exit</a>
+                        
                 </div>
             </form> 
             
