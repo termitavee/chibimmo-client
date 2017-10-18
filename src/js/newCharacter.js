@@ -7,15 +7,36 @@ const {ipcRenderer} = require("electron");
 const {getUser} = require('./js/data/db')
 console.log('getUser')
 console.log(getUser)
-
-
-
+import colorPicker from './component/color-picker'
+var defaultProps = {
+    hex: '#194d33',
+    hsl: {
+      h: 150,
+      s: 0.5,
+      l: 0.2,
+      a: 1
+    },
+    hsv: {
+      h: 150,
+      s: 0.66,
+      v: 0.30,
+      a: 1
+    },
+    rgba: {
+      r: 25,
+      g: 77,
+      b: 51,
+      a: 1
+    },
+    a: 1
+  }
 
 
 const indexApp = new Vue({
     el: '#index',
     components:{
-        
+
+        'color-picker': colorPicker
     },
     data: {
         user: getUser(),
@@ -23,9 +44,10 @@ const indexApp = new Vue({
         class:"",
         orientation:"",
         hair:"",
-        color:{hair:"", body:""},
+        color:{hair:"#dfa039", body:"#000000"},
         preview: null,
         character:null,
+        colors: defaultProps
         
     },
     methods: {       
@@ -58,7 +80,15 @@ const indexApp = new Vue({
             character.load('logo')
             character.addToWorld(preview.world.centerX, preview.world.centerY, 0.5, 0.5,0.5,0.5);
             
-            //character.resize(400, 400)
+            /*
+            
+player.animations.add('left', [0, 1, 2, 3], 10, true);
+    player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+     var sprite = game.add.sprite(0, 0, 'yourGraphic');
+
+sprite.tint = 0xff00ff;
+            */
             
         },
         update: function(phaser) {
@@ -96,5 +126,27 @@ const indexApp = new Vue({
         this.preview.destroy()
     },
 })
+/*
+var frame0 = [
+	'................',
+	'....BBBBBBBB....',
+	'....BBB..BBB....',
+	'....B.BBBBBBB...',
+	'....BBBBBBBBB.BB',
+	'....BBBBBBBBB..B',
+	'....BBBBBBBBB...',
+	'.....B.BBBB.....',
+	'.....BB........B',
+	'......BBB.....BB',
+	'........BBBBBBB.',
+	'................',
+	'................',
+	'................',
+	'................',
+	'................'
+];
+game.create.texture('yourKey', frame0, 6, 6, 0);
 
+
+*/
 console.log("newCharacter.js cargado")

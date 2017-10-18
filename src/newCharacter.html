@@ -11,7 +11,7 @@
 <body>
     <div class="pure-g" id="index">
         
-        <div class="pure-u-2-3" id="leftContent">
+        <div id="leftContent">
             
         </div>
         
@@ -37,8 +37,13 @@
                 </div>
                 <div>
                     <span>Body color</span><br>
-                    <input type="color">
+                    <!--<input type="color" id="color-picker" :value="color.body" v-on:change="(item)=> console.log(this)" name="body-color" >
+
+
+                    -->
                     
+                    <color-picker v-model="colors" />
+                    <!-- TODO vue-color document.getElementById('color-picker').value-->
                 </div>
                 <div>
                     <span>Hair</span>
@@ -46,7 +51,7 @@
                 </div>
                 <div>
                     <span>Hair color</span><br>
-                    <input type="color">
+                    <input type="color" v-model="color.head"  v-on:change="(event)=> console.log(event)" name="head-color" >
                 </div>
             </form> 
             
