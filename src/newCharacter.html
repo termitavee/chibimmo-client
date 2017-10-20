@@ -16,7 +16,6 @@
         </div>
         
         <div class="pure-u-1-3" id="character-options">
-            <!--TODO hair, colors and class options total 5-->
             <h2>Customize Character</h2>
             <form>
                 <div>
@@ -25,15 +24,15 @@
                 </div>
                 <div>
                     <span>Class</span> <br>
-                    <input type="radio" name="class" v-model="form.className" value="male" checked> Soldier<br>
-                    <input type="radio" name="class" v-model="form.className" value="female"> Mage<br>
-                    <input type="radio" name="class" v-model="form.className" value="other"> Rogue
+                    <input type="radio" name="class" v-model="form.className" value="Sol" checked> Soldier<br>
+                    <input type="radio" name="class" v-model="form.className" value="Mag"> Mage<br>
+                    <input type="radio" name="class" v-model="form.className" value="Rog"> Rogue
                 </div>
                 <div>
                     <span>Orientation</span> <br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="male" checked> Ofensive<br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="female"> Defensive<br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="other"> Neutral
+                    <input type="radio" name="orientation" v-model="form.orientation" value="off" checked> Ofensive<br>
+                    <input type="radio" name="orientation" v-model="form.orientation" value="def"> Defensive<br>
+                    <input type="radio" name="orientation" v-model="form.orientation" value="n"> Neutral
                 </div>
                 <div>
                     <span>Body color</span><br>

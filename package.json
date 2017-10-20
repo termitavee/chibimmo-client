@@ -8,6 +8,7 @@
         "start": "electron-forge start",
         "pack": "electron-forge package",
         "build": "electron-forge make",
+        "db": "sudo service mongod start",
         "server": "nodemon ../chibimmo-server/index.js",
         "lint": "eslint src"
     },

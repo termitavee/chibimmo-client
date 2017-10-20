@@ -25,7 +25,7 @@
             <span>Introduce captcha below</span>
             <div v-html="captcha.data"></div>
             
-            <input type="text" v-model="form.catcha">
+            <input type="text" v-model="form.catcha" @keyup.enter="submit">
         </p>
     </div>
     
@@ -36,7 +36,7 @@
         </p>
         <p>
             <span>Pasword</span>
-            <input type="password" v-model="form.pass">
+            <input type="password" v-model="form.pass" @keyup.enter="submit">
         </p>
         
     </div>

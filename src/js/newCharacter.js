@@ -46,8 +46,8 @@ const indexApp = new Vue({
         exit:"Exit",
         form:{
             name:"",
-            className:"",
-            orientation:"",
+            className:"Sol",
+            orientation:"n",
             hair:"",
             color:{hair:"#000000", body:"#dfa039"},
         },
@@ -73,33 +73,43 @@ const indexApp = new Vue({
             game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
             
             */
-            this.preview.load.image('logo', './img/icon.jpg');
-            //preview.load.BitmapData('logo2', './img/icon.jpg');
+            //this.preview.load.image('logo', './img/icon.jpg');
+            this.preview.load.image('logo', './img/transparent.png');
+            this.preview.load.atlasJSONHash('sprite','./img/sprites/base/base.png','./img/sprites/base/base.json')
+            
+
             
         },
         
         create: function (phaser) {
-            let {preview, character} = this
-            //character = preview.add.sprite(preview.world.centerX, preview.world.centerY, 'logo');
-            //character.anchor.setTo(0.5, 0.5);
             
-            this.character = preview.make.bitmapData()
-            this.character.load('logo')
-            this.character.addToWorld(preview.world.centerX, preview.world.centerY, 0.5, 0.5,0.5,0.5);
-            
+            //this.character = preview.make.bitmapData()
+            //this.character.load('logo')
+            //this.character.addToWorld(preview.world.centerX, preview.world.centerY, 0.5, 0.5,0.5,0.5);
+            console.log(this.preview.world)
+            this.character = this.preview.add.sprite(this.preview.world.centerX, this.preview.world.centerY, 'sprite')
+            this.character.scale.set(5);
+            console.log(this.character.animations.add('down', Phaser.Animation.generateFrameNames('',1,11,''),18,true,true))
+            //console.log(this.character.animations.add('left', Phaser.Animation.generateFrameNames('',12,23,1)))
+            //console.log(this.character.animations.add('right', Phaser.Animation.generateFrameNames('',12,23,1)))
+            //console.log(this.character.animations.add('up', Phaser.Animation.generateFrameNames('',24,34,1)))
+            //play('down') stop()
             /*
-            
-            player.animations.add('left', [0, 1, 2, 3], 10, true);
-            player.animations.add('right', [5, 6, 7, 8], 10, true);
             
             var sprite = game.add.sprite(0, 0, 'yourGraphic');
             
             sprite.tint = 0xff00ff;
             */
-            
+            this.character.animations.play('down')
+
+            //this.character.tint = 0xff00ff
+
         },
         update: function(phaser) {
             
+        },
+        changeDirection: function() {
+            //button to rotate character, up, left, right, down
         },
         changeColorBody: function() {
             //TODO change new color to know what to change 
