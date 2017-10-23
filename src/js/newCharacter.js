@@ -46,7 +46,7 @@ const indexApp = new Vue({
         exit:"Exit",
         form:{
             name:"",
-            className:"Sol",
+            className:"sol",
             orientation:"n",
             hair:"",
             color:{hair:"#000000", body:"#dfa039"},
@@ -59,7 +59,42 @@ const indexApp = new Vue({
         saveCharacter: function(){
             /*toggle new window to create character */
             //TODO check server, save and go back to logged screen
+            
             console.log('lol save')
+            this.form.user = this.user.nick
+            console.log(this.form)
+            const {name} = this.form
+            if(name.length<4){
+                //TODO error too short
+                console.log('name short')
+            }else{
+                fetch('http://127.0.0.1:3000/create',
+                {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: JSON.stringify(this.form)
+                }).then(res=>res.json())
+                .then((res) => {
+                    console.log(res)
+                    if(res.status == 202){
+                        //TODO back to main page, everithing was correct
+                    }else{
+                        switch(res.error){
+                            case 'user':
+                                //TODO show there is a problem with the character name
+                            break
+                            
+                            default:
+                                //TODO show there is a problem with I don't know what
+
+                        }
+                    }
+                })
+                .catch((error)=>{
+                    console.log('Request failed', error);
+                    
+                })
+            }
         },
         backToList: function(){
             //TODO just go back without saving
@@ -86,13 +121,12 @@ const indexApp = new Vue({
             //this.character = preview.make.bitmapData()
             //this.character.load('logo')
             //this.character.addToWorld(preview.world.centerX, preview.world.centerY, 0.5, 0.5,0.5,0.5);
-            console.log(this.preview.world)
-            this.character = this.preview.add.sprite(this.preview.world.centerX, this.preview.world.centerY, 'sprite')
-            this.character.scale.set(5);
-            console.log(this.character.animations.add('down', Phaser.Animation.generateFrameNames('',1,11,''),18,true,true))
-            //console.log(this.character.animations.add('left', Phaser.Animation.generateFrameNames('',12,23,1)))
-            //console.log(this.character.animations.add('right', Phaser.Animation.generateFrameNames('',12,23,1)))
-            //console.log(this.character.animations.add('up', Phaser.Animation.generateFrameNames('',24,34,1)))
+            this.character = this.preview.add.sprite(80, 150, 'sprite')
+            this.character.scale.set(10);
+            this.character.animations.add('down', Phaser.Animation.generateFrameNames('',1,11,''),18,true,true)
+            this.character.animations.add('left', Phaser.Animation.generateFrameNames('',12,23,1),18,true,true)
+            this.character.animations.add('right', Phaser.Animation.generateFrameNames('',12,23,1),18,true,true)
+            this.character.animations.add('up', Phaser.Animation.generateFrameNames('',24,34,1),18,true,true)
             //play('down') stop()
             /*
             
@@ -162,27 +196,4 @@ const indexApp = new Vue({
     },
 
 })
-/*
-var frame0 = [
-	'................',
-	'....BBBBBBBB....',
-	'....BBB..BBB....',
-	'....B.BBBBBBB...',
-	'....BBBBBBBBB.BB',
-	'....BBBBBBBBB..B',
-	'....BBBBBBBBB...',
-	'.....B.BBBB.....',
-	'.....BB........B',
-	'......BBB.....BB',
-	'........BBBBBBB.',
-	'................',
-	'................',
-	'................',
-	'................',
-	'................'
-];
-game.create.texture('yourKey', frame0, 6, 6, 0);
-
-
-*/
 console.log("newCharacter.js cargado")
