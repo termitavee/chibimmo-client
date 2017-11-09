@@ -21,9 +21,15 @@ const indexApp = new Vue({
     data: {
         user: getUser(),
         language: "en",
+        logOut: "log Out",
         
     },
-    methods: {       
+    methods: { 
+        
+        exitLog : function(){
+            ipcRenderer.send("logIn",false)
+        },
+        
         updateContent : function(){
             /*Update the information shown */
         },
@@ -66,7 +72,7 @@ const indexApp = new Vue({
             ipcRenderer.send("launchEditor")
             //En mi juego no se discrimina nada, elije un color de piel y pelo dentro de esa gama homosexual de colores
         })
-
+        
     }
 })
 

@@ -122,6 +122,7 @@ ipcMain.on("logIn", (event, logged) => {
   
 });
 
+  
 ipcMain.on("launchEditor", (event, content) => {
   console.log("ipcMain on create character");
   console.log(content);

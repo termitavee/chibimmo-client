@@ -49,6 +49,7 @@
 <script>
 const svgCaptcha = require('svg-captcha');
 const {setUser} = require('../js/data/db')
+
 module.exports = {
     name:"formContent",
     props:[],
@@ -144,7 +145,7 @@ module.exports = {
             if(validUser && validPass && validEmail && validCaptcha){
                 //TODO some kind of loading
                 const action = this.loginVisible? "LogIn":"SignUp"
-                
+                console.log(action)
                 fetch('http://127.0.0.1:3000/'+action,
                 {
                     method: "POST",
@@ -152,9 +153,11 @@ module.exports = {
                     body: JSON.stringify(this.form)
                 }).then(res=>res.json())
                 .then((res) => {
+
                     console.log(res)
                     if(res.status == 202){
                         if(res.action = "login"){
+                            
                             this.$root.$emit('logIn', res.user)
                             this.saveUser(res.user)
                         }else{
