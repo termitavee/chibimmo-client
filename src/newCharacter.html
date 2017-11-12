@@ -1,65 +1,91 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Chibimmon</title>
-    
+
     <link type="text/css" rel="stylesheet" href="../node_modules/purecss/build/pure.css">
     <script>require('electron')</script>
     <script src="../node_modules/vue/dist/vue.min.js"></script>
 </head>
+
 <body>
     <div class="pure-g" id="index">
-        
+
         <div id="leftContent">
-            
+
         </div>
-        
+
         <div class="pure-u-1-3" id="character-options">
             <h2>Customize Character</h2>
             <form>
                 <div>
-                    <span>Name</span> <br>
-                    <input type="text" v-model="form.name" name="text" value="" >
+                    <span>Name</span>
+                    <br>
+                    <input type="text" v-model="form.name" name="text" value="">
                 </div>
                 <div>
-                    <span>Class</span> <br>
-                    <input type="radio" name="class" v-model="form.className" value="sol" checked> Soldier<br>
-                    <input type="radio" name="class" v-model="form.className" value="mag"> Mage<br>
+                    <span>Class</span>
+                    <br>
+                    <input type="radio" name="class" v-model="form.className" value="sol" checked> Soldier
+                    <br>
+                    <input type="radio" name="class" v-model="form.className" value="mag"> Mage
+                    <br>
                     <input type="radio" name="class" v-model="form.className" value="rog"> Rogue
                 </div>
                 <div>
-                    <span>Orientation</span> <br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="off" checked> Ofensive<br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="def"> Defensive<br>
+                    <span>Orientation</span>
+                    <br>
+                    <input type="radio" name="orientation" v-model="form.orientation" value="off" checked> Ofensive
+                    <br>
+                    <input type="radio" name="orientation" v-model="form.orientation" value="def"> Defensive
+                    <br>
                     <input type="radio" name="orientation" v-model="form.orientation" value="n"> Neutral
                 </div>
                 <div>
-                    <span>Body color</span><br>
-                    
-                    <input type="color" v-model="form.color.body" v-on:change="this.changeColorBody" name="body-color" >
-                    
-                    <!-- TODO vue-color vue-colorpicker-->
+                    <span>Body color</span>
+                    <br>
+                    <input type="radio" name="body-color" v-model="form.color.body" value="0" checked> Default
+                    <br>
+                    <input type="radio" name="body-color" v-model="form.color.body" value="1"> Dark
+                    <br>
+                    <input type="radio" name="body-color" v-model="form.color.body" value="2"> Lightest
+                    <br>
+                    <input type="radio" name="body-color" v-model="form.color.body" value="3"> Darkest
+                    <br>
+                    <input type="radio" name="body-color" v-model="form.color.body" value="4"> Red
+                    <br>
+                    <input type="radio" name="body-color" v-model="form.color.body" value="5"> Blue
+                    <br>
+                    <input type="radio" name="body-color" v-model="form.color.body" value="6"> Green
+
                 </div>
                 <div>
                     <span>Hair</span>
+                    <br>
+                    <input type="radio" name="hair" v-model="form.hair" value="0" checked> None
+                    <br>
+                    <input type="radio" name="hair" v-model="form.hair" value="1" checked> Default
                     <!-- TODO icons of hair-->
                 </div>
                 <div>
-                    <span>Hair color</span><br>
-                    <input type="color" v-model="form.color.hair"  v-on:change="this.changeColorHair" name="head-color" >
+                    <span>Hair color</span>
+                    <br>
+                    <input type="color" v-model="form.color.hair" v-on:change="this.changeColorHair" name="head-color">
                 </div>
                 <div>
-                        <a v-text="save" @click="this.saveCharacter" class="pure-button" >Save</a>
-                        <a v-text="exit" @click="this.backToList" class="pure-button" >Exit</a>
-                        
+                    <a v-text="save" @click="this.saveCharacter" class="pure-button">Save</a>
+                    <a v-text="exit" @click="this.backToList" class="pure-button">Exit</a>
+
                 </div>
-            </form> 
-            
+            </form>
+
         </div>
     </div>
-    
-    <script src="../node_modules/phaser-ce/build/phaser.min.js"></script> 
-    <script src="./js/newCharacter.js"></script> 
+
+    <script src="../node_modules/phaser-ce/build/phaser.min.js"></script>
+    <script src="./js/newCharacter.js"></script>
 </body>
+
 </html>
