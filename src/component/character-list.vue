@@ -1,11 +1,10 @@
 <template>
 <div>
-<ul>
+
   <h3>List of characters created</h3>
-    <li vfor="(item, key) in characters">
-      <span v-text="item">
-        <!--hidden stats, show on click-->
-      </span>
+  <ul>
+    <li  v-for="(item, key) in characters" :key="key">
+        <character :character="item"/>
     </li>
     <li>
       <a @click="createNewCharacter" v-text="newCharacter" class="pure-button">Create new</a>
@@ -16,29 +15,29 @@
 </template>
 
 <script>
+const character = require("../component/character");
 
-const character = require('../component/character')
 module.exports = {
-    props:['characters'],
-    components:{
-      'character': character,
+  props: ["characters"],
+  components: {
+    character: character
+  },
+  data: function() {
+    return { newCharacter: "Create new" };
+  },
+  methods: {
+    createNewCharacter: function() {
+      this.$root.$emit("openCharacterEditor");
     },
-    data: function () {
-      return {newCharacter: "Create new"}
-    },
-    methods: {
-      createNewCharacter : function(){
-        this.$root.$emit('openCharacterEditor')
-      },
-      showDetails : function(){
-        this.$root.$emit('increment')
-      }
+    showDetails: function() {
+      //TODO
     }
-}
+  }
+};
 </script>
 
 <style scoped>
-ul{ 
+ul {
   list-style-type: none;
 }
 </style>

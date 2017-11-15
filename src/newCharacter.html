@@ -7,7 +7,8 @@
 
     <link type="text/css" rel="stylesheet" href="../node_modules/purecss/build/pure.css">
     <script>require('electron')</script>
-    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <!--vue.min.js-->
 </head>
 
 <body>
@@ -46,33 +47,33 @@
                 <div>
                     <span>Body color</span>
                     <br>
-                    <input type="radio" name="body-color" v-model="form.color.body" value="0" checked> Default
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="0" checked> Default
                     <br>
-                    <input type="radio" name="body-color" v-model="form.color.body" value="1"> Dark
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="1"> Dark
                     <br>
-                    <input type="radio" name="body-color" v-model="form.color.body" value="2"> Lightest
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="2"> Lightest
                     <br>
-                    <input type="radio" name="body-color" v-model="form.color.body" value="3"> Darkest
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="3"> Darkest
                     <br>
-                    <input type="radio" name="body-color" v-model="form.color.body" value="4"> Red
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="4"> Red
                     <br>
-                    <input type="radio" name="body-color" v-model="form.color.body" value="5"> Blue
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="5"> Blue
                     <br>
-                    <input type="radio" name="body-color" v-model="form.color.body" value="6"> Green
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="6"> Green
 
                 </div>
                 <div>
                     <span>Hair</span>
                     <br>
-                    <input type="radio" name="hair" v-model="form.hair" value="0" checked> None
+                    <input type="radio" name="hair" v-model="form.hair" value="0" v-on:change="this.changeHair" checked> None
                     <br>
-                    <input type="radio" name="hair" v-model="form.hair" value="1" checked> Default
+                    <input type="radio" name="hair" v-model="form.hair" value="1" v-on:change="this.changeHair" > Default
                     <!-- TODO icons of hair-->
                 </div>
                 <div>
                     <span>Hair color</span>
                     <br>
-                    <input type="color" v-model="form.color.hair" v-on:change="this.changeColorHair" name="head-color">
+                    <input type="color" v-model="form.hairColor" v-on:change="this.changeColorHair" name="head-color">
                 </div>
                 <div>
                     <a v-text="save" @click="this.saveCharacter" class="pure-button">Save</a>

@@ -4,78 +4,61 @@
 //TODO tomar token si hay
 */
 const svgCaptcha = require('svg-captcha');
-const {ipcRenderer} = require("electron");
+const { ipcRenderer } = require("electron");
 //import svgCaptcha  from'./component/log-in-form'
 //import {ipcRenderer} from './component/log-in-form'
 
 const logInForm = require('./component/log-in-form')
-const feed = require( './component/feed')
+const feed = require('./component/feed')
 
 //import logInForm from './component/log-in-form'
 //import characterList from './component/character-list'
 //import character from './component/character'
 
-console.log('logInForm')
-console.log(logInForm)
 const indexApp = new Vue({
     el: '#index',
-    components:{
+    components: {
         'log-in-form': logInForm,
         'feed': feed,
     },
     data: {
-        isLoading:true,
+        isLoading: true,
         isNotLogged: true,
-        userName:"Player",
-        userData:{},
-        language:"en",
-        
+        userName: "Player",
+        userData: {},
+        language: "en",
+
     },
-    methods: {       
-        updateContent : function(){
+    methods: {
+        updateContent: function () {
             /*Update the information shown */
         },
-        
-        launchLoggedContent : function(){
+
+        launchLoggedContent: function () {
             /*get data from this. userData */
             /*Update the information shown */
-            this.isNotLogged=false
-            
+            this.isNotLogged = false
+
         },
-        
-        createNewCharacter: function(){
-            /*toggle new window to create character */
-            ipcRenderer.send("launchEditor")
-        },
-        
-        saveNewCharacter: function(){
-            /*toggle new window to create character */
-            ipcRenderer.send("hideEditor")
-            
-        },
-        
-        launchGame: function(){
-            /*toggle new windo to play game, hide this */
-            ipcRenderer.send("LaunchGame")
-            
-        }
+
+
     },
     created() {
         //$root
         //TODO check language in database in case user has changed it and save in data
         //TODO check if exist token for this device and send to the server 
-        
+
         this.isLoading = false
-        this.$root.$on('logIn', function(params) {
-            
+        this.$root.$on('logIn', function (params) {
+
             console.log('vue on logIn', params);
             //TODO reload window?
             ipcRenderer.send("logIn", true)
-            
+
         })
-        
-        this.$root.$on('createNewCharacter', function(params) {
-            
+
+        this.$root.$on('createNewCharacter', function (params) {
+
             console.log('index on createNewCharacter', params);
             this.createNewCharacter()
         })

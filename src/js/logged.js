@@ -61,8 +61,11 @@ const indexApp = new Vue({
     created() {
         //$root
         //TODO check language in database in case user has changed it and save in data
-        //TODO check if exist token for this device and send to the server 
-        
+        console.log('oncreated')
+        console.log(this.user)
+
+
+
         this.$root.$on('openCharacterEditor', function(param) {
             console.log('logged.js on openCharacterEditor', param);
             if(param!=null){

@@ -1,34 +1,58 @@
 <template>
-  <ul>
-    <li vfor="character in characters">
-      <span v-text="character">
-        <!--hidden stats, show on click-->
-      </span>
-    </li>
-    <li>
-      <a @click="createNewCharacter" v-text="newCharacter"></a>
-    </li>
-  </ul>
+<div>
+  <span v-text="character._id" v-on:click="showDetails=!showDetails"/>
+  <span v-text="start"/>
+  
+  <div v-if="showDetails">
+    <span v-text="formatType()"></span>
+  
+    <span v-text="remove"/>
+  </div>
+  
+</div>
 </template>
 
 <script>
 module.exports = {
-    props:[],
-    data: function () {
-      return {
-        characters : [],
-
-      }
+  props: ["character"],
+  data: function() {
+    return {
+      showDetails: false,
+      start: "start",
+      remove: "delete"
+    };
+  },
+  methods: {
+    toogleShow: function() {
+      this.$emit("increment");
     },
-    methods: {
-      createNewCharacter : function(){
-        this.$emit('increment')
-      },
-      showDetails : function(){
-        this.$emit('increment')
+    edit: function() {
+      //TODO open editor just edit colors and hair
+      this.$emit("");
+    },
+    delete: function() {
+      this.$emit("");
+    },
+    start: function() {
+      //TODO launch game
+      this.$emit("");
+    },
+    rerender: function() {
+      //TODO something?
+    },
+    formatType: function() {
+      //TODO something?
+      switch (this.character.type) {
+        case "sol":
+          return "Soldier";
+        case "mag":
+          return "Mage";
+        case "rog":
+          return "Rogue";
       }
     }
-}
+  }
+};
 </script>
 
 <style scoped>

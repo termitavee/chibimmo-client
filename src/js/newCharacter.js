@@ -40,7 +40,6 @@ const indexApp = new Vue({
         'color-picker': colorPicker2
     },
     data: {
-        user: getUser(),
         language: "en",
         save: "Save",
         exit: "Exit",
@@ -49,7 +48,8 @@ const indexApp = new Vue({
             className: "sol",
             orientation: "n",
             hair: 0,
-            color: { hair: "#000000", body: "#dfa039" },
+            hairColor: '#000000',
+            bodyColor: 0,
         },
         preview: null,
         character: null,
@@ -60,15 +60,17 @@ const indexApp = new Vue({
         saveCharacter: function () {
             /*toggle new window to create character */
             //TODO check server, save and go back to logged screen
-
             console.log('lol save')
-            this.form.user = this.user.nick
+            
+            this.form.user = (getUser())._id
             console.log(this.form)
             const { name } = this.form
             if (name.length < 4) {
                 //TODO error too short
                 console.log('name short')
             } else {
+                //127.0.0.1
+                //termitavee.ddns.net
                 fetch('http://127.0.0.1:3000/create',
                     {
                         method: "POST",
@@ -78,8 +80,11 @@ const indexApp = new Vue({
                     .then((res) => {
                         console.log(res)
                         if (res.status == 202) {
-                            //TODO back to main page, everithing was correct
+                            //TODO update characters list
+                            console.log('success')
+                            this.backToList()
                         } else {
+                            console.log('failed')
                             switch (res.error) {
                                 case 'user':
                                     //TODO show there is a problem with the character name
@@ -101,47 +106,7 @@ const indexApp = new Vue({
             console.log('lol save')
             //TODO check valid data, not empty field
 
-            fetch('http://termitavee.ddns.net:3000/create',
-                {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: JSON.stringify(this.form)
-                }).then(res => res.json())
-                .then((res) => {
-                    console.log('res')
-                    console.log(res)
-                    if (res.status == 202) {
-                        if (res.action = "login") {
 
-                            this.$root.$emit('logIn', res.user)
-                            this.saveUser(res.user)
-                        } else {
-                            this.pass = ""
-                            email = ""
-                            captcha = ""
-                        }
-                    } else {
-                        switch (res.error) {
-                            case 'user':
-                                //TODO show there is a problem with the user
-                                break
-
-                            case 'password':
-                                //TODO show there is a problem with the password
-                                break
-                            default:
-                                //TODO show there is another error    
-                        }
-
-                        this.captcha = svgCaptcha.create()
-                    }
-                })
-                .catch((error) => {
-                    //if bad use?
-                    console.log('Request failed', error);
-                    this.captcha = svgCaptcha.create()
-
-                })
             ipcRenderer.send("logIn", true)
         },
         preload: function (phaser) {
@@ -161,7 +126,8 @@ const indexApp = new Vue({
             this.preview.load.atlasJSONHash('body4', './img/sprites/body/4/base.png', './img/sprites/body/4/base.json')
             this.preview.load.atlasJSONHash('body5', './img/sprites/body/5/base.png', './img/sprites/body/5/base.json')
             this.preview.load.atlasJSONHash('body6', './img/sprites/body/6/base.png', './img/sprites/body/6/base.json')
-            this.preview.load.atlasJSONHash('hair', './img/sprites/hair/1.png', './img/sprites/hair/1.json')
+            this.preview.load.atlasJSONHash('hair0', './img/sprites/hair/0.png', './img/sprites/hair/0.json')
+            this.preview.load.atlasJSONHash('hair1', './img/sprites/hair/1.png', './img/sprites/hair/1.json')
             //TODO this.preview.stage.disableVisibilityChange = true;
 
 
@@ -174,7 +140,7 @@ const indexApp = new Vue({
             //this.character.load('logo')
             //this.character.addToWorld(preview.world.centerX, preview.world.centerY, 0.5, 0.5,0.5,0.5);
             this.character = this.preview.add.sprite(80, 150, 'body0')
-            this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair'))
+            this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
 
             this.character.scale.set(10);
             this.character.animations.add('down', Phaser.Animation.generateFrameNames('', 1, 11, ''), 18, true, true)
@@ -187,13 +153,13 @@ const indexApp = new Vue({
             this.hair.animations.add('up', Phaser.Animation.generateFrameNames('', 24, 34, ''), 18, true, true)
             //play('down') stop()
             /*
-            //TODO only down works
+            
             var sprite = game.add.sprite(0, 0, 'yourGraphic');
             
             sprite.tint = 0xff00ff;
             */
-            this.character.animations.play('down')
-            this.hair.animations.play('down')
+            //this.character.animations.play('down')
+            //this.hair.animations.play('down')
 
             //this.character.tint = 0xff00ff
 
@@ -208,23 +174,44 @@ const indexApp = new Vue({
             //TODO change new color to know what to change 
             //TODO controll black and white 
             console.log('change body')
-            console.log(this.form.color)
+            switch (this.bodyColor) {
+                case 0:
+                    this.character = this.preview.add.sprite(80, 150, 'body0')
+                case 1:
+                    this.character = this.preview.add.sprite(80, 150, 'body1')
+                case 2:
+                    this.character = this.preview.add.sprite(80, 150, 'body2')
+                case 3:
+                    this.character = this.preview.add.sprite(80, 150, 'body3')
+                case 4:
+                    this.character = this.preview.add.sprite(80, 150, 'body4')
+                case 5:
+                    this.character = this.preview.add.sprite(80, 150, 'body5')
+                case 6:
+                    this.character = this.preview.add.sprite(80, 150, 'body6')
 
+            }
 
-
+        },
+        changeHair: function () {
+            if (this.form.hair = 0) {
+                this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
+            } else {
+                this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair1'))
+            }
         },
         changeColorHair: function () {
             //TODO change new color to know what to change 
             //TODO controll black and white 
-            
+
             console.log('change hair')
             console.log(this.form.color)
-            const c = this.form.color.body.charAt(0) == "#" ? '0x' + this.form.color.body.substring(1, 7) : '0x' + this.form.color.body
+            const c = '0x' + this.form.hairColor.charAt(0) == "#" ? this.form.hairColor.substring(1, 7) : this.form.hairColor
 
             console.log('c')
             console.log(c)
             this.hair.tint = c
-            
+
         },
 
     },
