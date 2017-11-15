@@ -194,6 +194,7 @@ const indexApp = new Vue({
 
         },
         changeHair: function () {
+            console.log(this.form.hair)
             if (this.form.hair = 0) {
                 this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
             } else {
@@ -217,6 +218,7 @@ const indexApp = new Vue({
     },
     mounted() {
         //$root
+        console.log(this.form)
         let self = this
         this.preview = new Phaser.Game(500, 600, Phaser.AUTO, "leftContent", { preload, create, update }, false, false);
 

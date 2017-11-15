@@ -139,7 +139,7 @@ ipcMain.on("hideEditor", (event, content) => {
   
 });
 
-ipcMain.on("LaunchGame", (event, content) => {
+ipcMain.on("launchGame", (event, content) => {
   console.log("ipcMain on enter game");
   console.log(content);
   loadGameWindow()

@@ -2,11 +2,11 @@ const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 //use shortid ? to generate id shortid.generate()
 
-const encrypt = (text)=>{
+const encrypt = (text) => {
     return text
 }
 
-const decrypt = (text)=>{
+const decrypt = (text) => {
     return text
 }
 
@@ -58,48 +58,60 @@ db.getState()
 //change db, this case clean everything
 db.setState({})
 */
-const setUser = (user)=>{
+const setUser = (user) => {
     const db = low(adapter)
     console.log('user to insert')
     console.log(user)
     return db.set('user', user).write()
 }
 
-const getUser = ()=>{
+const getUser = () => {
     const db = low(adapter)
-    let found =  db.get('user').value()
+    let found = db.get('user').value()
     console.log('user found')
     console.log(found)
     return found
 }
 
-const setLang = (lang)=>{
+const setLang = (lang) => {
     const db = low(adapter)
-    db.set({lang}).write()
+    db.set({ lang }).write()
 }
 
-const getLang = ()=>{
+const getLang = () => {
     const db = low(adapter)
     return db.get('lang').value()
 }
 
-const setRemember = (user, token)=>{
+const setRemember = (user, token) => {
     const db = low(adapter)
-    db.set({remember:{user,token}}).write()
+    db.set({ remember: { user, token } }).write()
 }
 
-const getRemember = (user)=>{
+const getRemember = (user) => {
     const db = low(adapter)
     return db.get('remember').value()
+}
+
+const setCharLaunch = (character) => {
+    const db = low(adapter)
+    db.set({ character }).write()
+}
+
+const getCharLaunch = () => {
+    const db = low(adapter)
+    //TODO delete?
+    return db.get('character').value()
 }
 
 module.exports = {
     setUser, getUser,
     setLang, getLang,
     setRemember, getRemember,
+    setCharLaunch, getCharLaunch
 }
 
-const createMonster= (name, statistics, sprite, drop)=>{
+const createMonster = (name, statistics, sprite, drop) => {
     /*{
             variable
             life
@@ -114,5 +126,5 @@ const createMonster= (name, statistics, sprite, drop)=>{
             destreza
             carisma
         }*/
-    return {name, statistics, sprite, drop}
+    return { name, statistics, sprite, drop }
 }

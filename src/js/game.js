@@ -2,7 +2,7 @@
 
 
 /*
-formilas de daño 
+formulas de daño 
 
 fis
 

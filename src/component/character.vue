@@ -1,7 +1,7 @@
 <template>
 <div>
   <span v-text="character._id" v-on:click="showDetails=!showDetails"/>
-  <span v-text="start"/>
+  <span v-text="start" v-on:click="start" />
   
   <div v-if="showDetails">
     <span v-text="formatType()"></span>
@@ -35,7 +35,7 @@ module.exports = {
     },
     start: function() {
       //TODO launch game
-      this.$emit("");
+      this.$emit("launchGame", character._id )
     },
     rerender: function() {
       //TODO something?
