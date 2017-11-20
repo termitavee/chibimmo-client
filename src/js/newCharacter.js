@@ -61,7 +61,7 @@ const indexApp = new Vue({
             /*toggle new window to create character */
             //TODO check server, save and go back to logged screen
             console.log('lol save')
-            
+
             this.form.user = (getUser())._id
             console.log(this.form)
             const { name } = this.form
@@ -102,6 +102,7 @@ const indexApp = new Vue({
                     })
             }
         },
+
         backToList: function () {
             console.log('lol save')
             //TODO check valid data, not empty field
@@ -109,6 +110,7 @@ const indexApp = new Vue({
 
             ipcRenderer.send("logIn", true)
         },
+
         preload: function (phaser) {
             //TODO load necesary images
             /**
@@ -164,41 +166,61 @@ const indexApp = new Vue({
             //this.character.tint = 0xff00ff
 
         },
+
         update: function (phaser) {
 
         },
+
         changeDirection: function () {
             //button to rotate character, up, left, right, down
         },
-        changeColorBody: function () {
+
+        changeBody: function () {
             //TODO change new color to know what to change 
             //TODO controll black and white 
             console.log('change body')
-            switch (this.bodyColor) {
+            console.log(this.form.bodyColor)
+
+            switch (Number(this.form.hair)) {
                 case 0:
                     this.character = this.preview.add.sprite(80, 150, 'body0')
+                    break
                 case 1:
                     this.character = this.preview.add.sprite(80, 150, 'body1')
+                    break
                 case 2:
                     this.character = this.preview.add.sprite(80, 150, 'body2')
+                    break
                 case 3:
                     this.character = this.preview.add.sprite(80, 150, 'body3')
+                    break
                 case 4:
                     this.character = this.preview.add.sprite(80, 150, 'body4')
+                    break
                 case 5:
                     this.character = this.preview.add.sprite(80, 150, 'body5')
+                    break
                 case 6:
                     this.character = this.preview.add.sprite(80, 150, 'body6')
+                    break
 
             }
 
         },
+
         changeHair: function () {
-            console.log(this.form.hair)
-            if (this.form.hair = 0) {
-                this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
-            } else {
-                this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair1'))
+            console.log('changeHair')
+            switch (Number(this.form.hair)) {
+                case 0:
+                    console.log('case 0')    
+                    this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
+                    break
+                case 1:
+                    console.log('case 1')
+                    this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair1'))
+                    break
+                default:
+                    console.log('default')    
             }
         },
         changeColorHair: function () {
@@ -220,7 +242,7 @@ const indexApp = new Vue({
         //$root
         console.log(this.form)
         let self = this
-        this.preview = new Phaser.Game(500, 600, Phaser.AUTO, "leftContent", { preload, create, update }, false, false);
+        this.preview = new Phaser.Game(500, 600, Phaser.AUTO, "leftContent", { preload, create, update }, true, false);
 
         function preload() {
             self.preload(this)

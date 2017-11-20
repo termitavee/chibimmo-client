@@ -52,11 +52,6 @@ const indexApp = new Vue({
 
         },
 
-        launchGame: function () {
-            /*toggle new windo to play game, hide this */
-            ipcRenderer.send("LaunchGame")
-
-        }
     },
     created() {
         //$root

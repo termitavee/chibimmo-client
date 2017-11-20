@@ -25,14 +25,14 @@ if (isDev) {
   mainWindowOptions= {
     width: 1200,
     height: 600,
-    icon: __dirname + '/img/favicon.ico'
+    icon: __dirname + '/img/icon.jpg'
   }
 } else {
   mainWindowOptions= {
     width: 800,
     height: 600,
     resizable:false ,
-    icon: __dirname + '/img/favicon.ico',
+    icon: __dirname + '/img/icon.jpg',
     webPreferences: {
       devTools: false
     }
@@ -77,7 +77,7 @@ function createMainWindow(){
 app.on('ready', function(){
   
   createMainWindow()
-  
+
   /*
   import { shell } from 'electron'
   
@@ -143,6 +143,14 @@ ipcMain.on("launchGame", (event, content) => {
   console.log("ipcMain on enter game");
   console.log(content);
   loadGameWindow()
+  mainWindow.setFullScreen(true)
+});
+
+ipcMain.on("exitGame", (event, content) => {
+  console.log("ipcMain on exit game");
+  console.log(content);
+  loadMainWindow()
+  mainWindow.setFullScreen(false)
 });
 
 console.log('render proccess completed')

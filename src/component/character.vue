@@ -1,7 +1,7 @@
 <template>
 <div>
   <span v-text="character._id" v-on:click="showDetails=!showDetails"/>
-  <span v-text="start" v-on:click="start" />
+  <span v-text="start" v-on:click="launchGame" />
   
   <div v-if="showDetails">
     <span v-text="formatType()"></span>
@@ -33,8 +33,9 @@ module.exports = {
     delete: function() {
       this.$emit("");
     },
-    start: function() {
+    launchGame: function() {
       //TODO launch game
+      console.log('character.vue will launch game')
       this.$emit("launchGame", character._id )
     },
     rerender: function() {

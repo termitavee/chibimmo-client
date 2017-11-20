@@ -1,12 +1,6 @@
-/*
-//main js file of menu
-//TODO tomar idioma de la base de datos, si hay, si no, por defecto inglés
-//TODO tomar token si hay
-*/
 const svgCaptcha = require('svg-captcha');
 const { ipcRenderer } = require("electron");
-//import svgCaptcha  from'./component/log-in-form'
-//import {ipcRenderer} from './component/log-in-form'
+const { shell } = require('electron')
 
 const logInForm = require('./component/log-in-form')
 const feed = require('./component/feed')
@@ -41,6 +35,11 @@ const indexApp = new Vue({
 
         },
 
+        launchWeb: function () {
+            
+            shell.openExternal('https://chibimmo.tumblr.com/')
+        }
+
 
     },
     created() {
@@ -52,7 +51,7 @@ const indexApp = new Vue({
         this.$root.$on('logIn', function (params) {
 
             console.log('vue on logIn', params);
-            //TODO reload window?
+            
             ipcRenderer.send("logIn", true)
 
         })

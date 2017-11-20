@@ -42,32 +42,32 @@
                     <br>
                     <input type="radio" name="orientation" v-model="form.orientation" value="def"> Defensive
                     <br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="n"> Neutral
+                    <input type="radio" name="orientation" v-model="form.orientation" value="n" > Neutral
                 </div>
                 <div>
                     <span>Body color</span>
                     <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="0" checked> Default
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="0" v-on:change="changeBody"checked> Default
                     <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="1"> Dark
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="1" v-on:change="changeBody"> Dark
                     <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="2"> Lightest
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="2" v-on:change="changeBody"> Lightest
                     <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="3"> Darkest
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="3" v-on:change="changeBody"> Darkest
                     <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="4"> Red
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="4" v-on:change="changeBody"> Red
                     <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="5"> Blue
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="5" v-on:change="changeBody"> Blue
                     <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="6"> Green
+                    <input type="radio" name="body-color" v-model="form.bodyColor" value="6" v-on:change="changeBody"> Green
 
                 </div>
                 <div>
                     <span>Hair</span>
                     <br>
-                    <input type="radio" name="hair" v-model="form.hair" value="0" checked> None
+                    <input type="radio" name="hair-type" v-model="form.hair" value="0" v-on:change="changeHair" checked> None
                     <br>
-                    <input type="radio" name="hair" v-model="form.hair" value="1"  > Default
+                    <input type="radio" name="hair-type" v-model="form.hair" value="1" v-on:change="changeHair"> Default
                     <!-- TODO icons of hair-->
                 </div>
                 <div>
