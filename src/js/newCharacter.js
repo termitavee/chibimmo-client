@@ -142,7 +142,7 @@ const indexApp = new Vue({
             //this.character.load('logo')
             //this.character.addToWorld(preview.world.centerX, preview.world.centerY, 0.5, 0.5,0.5,0.5);
             this.character = this.preview.add.sprite(80, 150, 'body0')
-            this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
+            this.hair = this.preview.add.sprite(0, 0, 'hair0')
 
             this.character.scale.set(10);
             this.character.animations.add('down', Phaser.Animation.generateFrameNames('', 1, 11, ''), 18, true, true)
@@ -160,8 +160,8 @@ const indexApp = new Vue({
             
             sprite.tint = 0xff00ff;
             */
-            //this.character.animations.play('down')
-            //this.hair.animations.play('down')
+            this.character.animations.play('down')
+            this.hair.animations.play('down')
 
             //this.character.tint = 0xff00ff
 
@@ -205,6 +205,8 @@ const indexApp = new Vue({
                     break
 
             }
+            this.character.animations.play('down')
+            this.hair.animations.play('down')
 
         },
 
@@ -213,15 +215,19 @@ const indexApp = new Vue({
             switch (Number(this.form.hair)) {
                 case 0:
                     console.log('case 0')    
-                    this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
+                    //this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
+                    this.hair = this.preview.add.sprite(0, 0, 'hair0')
                     break
                 case 1:
                     console.log('case 1')
-                    this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair1'))
+                    //this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair1'))
+                    this.hair = this.preview.add.sprite(0, 0, 'hair1')
                     break
                 default:
                     console.log('default')    
             }
+            this.character.animations.play('down')
+            this.hair.animations.play('down')
         },
         changeColorHair: function () {
             //TODO change new color to know what to change 

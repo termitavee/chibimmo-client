@@ -58,8 +58,8 @@ module.exports = {
       loginButton: "Change to Sign Up",
       loginVisible: true,
       form: {
-        user: "",
-        pass: "",
+        user: "root",
+        pass: "root",
         email: "",
         captcha: ""
       },

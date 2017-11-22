@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
-import isDev  from 'electron-is-dev';
+import isDev from 'electron-is-dev';
 
 //ONLY THIS IS THE MAIN PROCESS
 // Keep a global reference of the window object, if you don't, the window will
@@ -17,21 +17,25 @@ https://www.gitbook.com/
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 
+/* 
+width: 1200,
+  height: 600, */
+
 //main window options
-let mainWindowOptions=null;
-//process.env.NODE_ENV
+let mainWindowOptions = null;
+//TODO quitar resizable false para ponerlo en pantalla completa
 if (isDev) {
   //enableLiveReload()
-  mainWindowOptions= {
-    width: 1200,
+  mainWindowOptions = {
+    width: 800,
     height: 600,
     icon: __dirname + '/img/icon.jpg'
   }
 } else {
-  mainWindowOptions= {
+  mainWindowOptions = {
     width: 800,
     height: 600,
-    resizable:false ,
+    resizable: false,
     icon: __dirname + '/img/icon.jpg',
     webPreferences: {
       devTools: false
@@ -39,43 +43,43 @@ if (isDev) {
   }
 }
 
-function loadLogInWindow(){
+function loadLogInWindow() {
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 }
 
-function loadMainWindow(){
+function loadMainWindow() {
   mainWindow.loadURL(`file://${__dirname}/logged.html`);
 }
 
-function loadEditorWindow(){
+function loadEditorWindow() {
   mainWindow.loadURL(`file://${__dirname}/newCharacter.html`);
 }
 
-function loadGameWindow(){
+function loadGameWindow() {
   mainWindow.loadURL(`file://${__dirname}/game.html`);
 }
 
-function createMainWindow(){
+function createMainWindow() {
   mainWindow = new BrowserWindow(mainWindowOptions);
-  
+
   // and load the index.html of the app.
   loadLogInWindow()
-  
+
   // Open the DevTools.
-  if(isDev){
-    
+  if (isDev) {
+
     //installExtension(VUEJS_DEVTOOLS);
     mainWindow.webContents.openDevTools();
-  }else mainWindow.setMenu(null);
-  
+  } else mainWindow.setMenu(null);
+
   //TODO check that language and log status query is done only once
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }
-app.on('ready', function(){
-  
+app.on('ready', function () {
+
   createMainWindow()
 
   /*
@@ -88,7 +92,7 @@ app.on('ready', function(){
     shell.openExternal(url)
   })
   */
-  
+
 });
 
 // Quit when all windows are closed.
@@ -112,31 +116,31 @@ app.on('activate', () => {
 
 ipcMain.on("logIn", (event, logged) => {
   console.log("Main process on LogChanged");
-  console.log('content='+logged);
-  if(logged){
+  console.log('content=' + logged);
+  if (logged) {
     loadMainWindow()
-  }else{
+  } else {
     loadLogInWindow()
   }
   //mainWindow.reload()
-  
+
 });
 
-  
+
 ipcMain.on("launchEditor", (event, content) => {
   console.log("ipcMain on create character");
   console.log(content);
-  
+
   loadEditorWindow()
-  
+
 });
 
 ipcMain.on("hideEditor", (event, content) => {
   console.log("ipcMain on create character");
   console.log(content);
-  
+
   loadMainWindow()
-  
+
 });
 
 ipcMain.on("launchGame", (event, content) => {

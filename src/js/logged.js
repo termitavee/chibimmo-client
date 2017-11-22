@@ -71,7 +71,7 @@ const indexApp = new Vue({
 
         this.$root.$on('launchGame', function (character) {
             console.log('logged.js on launchGame for ', character);
-            if (param != null) {
+            if (character != null) {
                 setCharLaunch(character)
                 ipcRenderer.send("launchGame")
             } else

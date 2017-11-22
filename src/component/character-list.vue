@@ -32,7 +32,8 @@ module.exports = {
     showDetails: function() {
       //TODO
     }
-  }
+  },
+
 };
 </script>
 

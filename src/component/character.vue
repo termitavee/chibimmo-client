@@ -36,7 +36,7 @@ module.exports = {
     launchGame: function() {
       //TODO launch game
       console.log('character.vue will launch game')
-      this.$emit("launchGame", character._id )
+      this.$root.$emit("launchGame", this.character._id )
     },
     rerender: function() {
       //TODO something?
