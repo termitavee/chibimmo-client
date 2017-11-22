@@ -6,7 +6,7 @@
   <div v-if="showDetails">
     <span v-text="formatType()"></span>
   
-    <span v-text="remove"/>
+    <span v-text="remove" v-on:click="removeCharacter" />
   </div>
   
 </div>
@@ -28,10 +28,10 @@ module.exports = {
     },
     edit: function() {
       //TODO open editor just edit colors and hair
-      this.$emit("");
+      this.$root.$emit('openCharacterEditor', character);
     },
-    delete: function() {
-      this.$emit("");
+    removeCharacter: function() {
+      this.$root.$emit('remove', character._id);
     },
     launchGame: function() {
       //TODO launch game
@@ -39,10 +39,10 @@ module.exports = {
       this.$root.$emit("launchGame", this.character._id )
     },
     rerender: function() {
-      //TODO something?
+      this.$root.$emit('refresh');
     },
     formatType: function() {
-      //TODO something?
+      
       switch (this.character.type) {
         case "sol":
           return "Soldier";

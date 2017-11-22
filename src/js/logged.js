@@ -61,12 +61,12 @@ const indexApp = new Vue({
 
 
 
-        this.$root.$on('openCharacterEditor', function (param) {
-            console.log('logged.js on openCharacterEditor', param);
+        this.$root.$on('openCharacterEditor', function (character) {
+            console.log('logged.js on openCharacterEditor', character);
             if (param != null) {
-                //TODO send data to edit user
-            } else
-                ipcRenderer.send("launchEditor")
+                //TODO save data in db
+            }
+            ipcRenderer.send("launchEditor")
         })
 
         this.$root.$on('launchGame', function (character) {
@@ -75,9 +75,13 @@ const indexApp = new Vue({
                 setCharLaunch(character)
                 ipcRenderer.send("launchGame")
             } else
-                console.log('Something strange in launchGame')    
+                console.log('Something strange in launchGame')
 
         })
+
+        this.$root.$on("remove", function (id) {
+            console.log("remove on logged", id);
+        });
 
     }
 })

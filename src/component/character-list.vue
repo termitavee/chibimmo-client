@@ -3,7 +3,7 @@
 
   <h3>List of characters created</h3>
   <ul>
-    <li  v-for="(item, key) in characters" :key="key">
+    <li class="characterItem" v-for="(item, key) in characters" :key="key">
         <character :character="item"/>
     </li>
     <li>
@@ -29,16 +29,23 @@ module.exports = {
     createNewCharacter: function() {
       this.$root.$emit("openCharacterEditor");
     },
-    showDetails: function() {
-      //TODO
-    }
   },
-
+  mounted() {
+    this.$root.$on("remove", function(id) {
+      console.log("remove on character-list", id);
+    });
+  }
 };
 </script>
 
 <style scoped>
 ul {
   list-style-type: none;
+  padding-left: 0;
+  overflow-y: auto;
+}
+.characterItem{
+  margin-bottom: 10px;
+
 }
 </style>
