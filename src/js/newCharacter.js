@@ -54,6 +54,7 @@ const indexApp = new Vue({
         preview: null,
         character: null,
         hair: null,
+        moving: 0,
 
     },
     methods: {
@@ -144,7 +145,6 @@ const indexApp = new Vue({
             this.character = this.preview.add.sprite(80, 150, 'body0')
             this.hair = this.preview.add.sprite(0, 0, 'hair0')
 
-            this.character.scale.set(10);
             this.character.animations.add('down', Phaser.Animation.generateFrameNames('', 1, 11, ''), 18, true, true)
             this.character.animations.add('left', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
             this.character.animations.add('right', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
@@ -160,8 +160,8 @@ const indexApp = new Vue({
             
             sprite.tint = 0xff00ff;
             */
-            this.character.animations.play('down')
-            this.hair.animations.play('down')
+            //this.character.animations.play('down')
+            //this.hair.animations.play('down')
 
             //this.character.tint = 0xff00ff
 
@@ -173,6 +173,7 @@ const indexApp = new Vue({
 
         changeDirection: function () {
             //button to rotate character, up, left, right, down
+            this.checkAnimation()
         },
 
         changeBody: function () {
@@ -180,8 +181,33 @@ const indexApp = new Vue({
             //TODO controll black and white 
             console.log('change body')
             console.log(this.form.bodyColor)
+            this.addbody()
+            this.checkAnimation()
 
-            switch (Number(this.form.hair)) {
+        },
+
+        changeHair: function () {
+            console.log('changeHair')
+            //TODO va a fallar
+            this.addhair()
+        },
+        changeColorHair: function () {
+            //TODO change new color to know what to change 
+            //TODO controll black and white 
+
+            console.log('change hair')
+            console.log(this.form.color)
+            const c = '0x' + this.form.hairColor.charAt(0) == "#" ? this.form.hairColor.substring(1, 7) : this.form.hairColor
+
+            console.log('c')
+            console.log(c)
+            this.hair.tint = c
+
+        },
+        addbody: function () {
+            if (this.character != null)
+                this.character.remove()
+            switch (Number(this.form.bodyColor)) {
                 case 0:
                     this.character = this.preview.add.sprite(80, 150, 'body0')
                     break
@@ -204,17 +230,17 @@ const indexApp = new Vue({
                     this.character = this.preview.add.sprite(80, 150, 'body6')
                     break
 
+
             }
-            this.character.animations.play('down')
-            this.hair.animations.play('down')
 
+            this.character.scale.set(10);
+            this.addhair()
         },
-
-        changeHair: function () {
-            console.log('changeHair')
+        addhair: function () {
+            this.hair.kill()
             switch (Number(this.form.hair)) {
                 case 0:
-                    console.log('case 0')    
+                    console.log('case 0')
                     //this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
                     this.hair = this.preview.add.sprite(0, 0, 'hair0')
                     break
@@ -223,25 +249,35 @@ const indexApp = new Vue({
                     //this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair1'))
                     this.hair = this.preview.add.sprite(0, 0, 'hair1')
                     break
-                default:
-                    console.log('default')    
+
             }
-            this.character.animations.play('down')
-            this.hair.animations.play('down')
+
+            this.hair.scale.set(10);
         },
-        changeColorHair: function () {
-            //TODO change new color to know what to change 
-            //TODO controll black and white 
-
-            console.log('change hair')
-            console.log(this.form.color)
-            const c = '0x' + this.form.hairColor.charAt(0) == "#" ? this.form.hairColor.substring(1, 7) : this.form.hairColor
-
-            console.log('c')
-            console.log(c)
-            this.hair.tint = c
-
-        },
+        checkAnimation: function () {
+            switch (Number(this.moving)) {
+                case 0:
+                    this.character.animations.stop()
+                    this.hair.animations.stop()
+                    break
+                case 1:
+                    this.character.animations.play('up')
+                    this.hair.animations.play('up')
+                    break
+                case 2:
+                    this.character.animations.play('left')
+                    this.hair.animations.play('left')
+                    break
+                case 3:
+                    this.character.animations.play('down')
+                    this.hair.animations.play('down')
+                    break
+                case 4:
+                    this.character.animations.play('right')
+                    this.hair.animations.play('right')
+                    break
+            }
+        }
 
     },
     mounted() {

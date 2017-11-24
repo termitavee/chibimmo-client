@@ -85,7 +85,7 @@ const getLang = () => {
 
 const setRemember = (user, token) => {
     const db = low(adapter)
-    db.set({ remember: { user, token } }).write()
+    db.set('remember', { user, token } ).write()
 }
 
 const getRemember = (user) => {
@@ -94,13 +94,16 @@ const getRemember = (user) => {
 }
 
 const setCharLaunch = (character) => {
+    console.log('save character')
+    console.log(character)
     const db = low(adapter)
-    db.set({ character }).write()
+    db.set('character', character ).write()
 }
 
 const getCharLaunch = () => {
     const db = low(adapter)
     //TODO delete?
+
     return db.get('character').value()
 }
 

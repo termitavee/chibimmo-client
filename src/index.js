@@ -13,9 +13,6 @@ let mainWindow = null;
 * publish - make + github
 https://www.gitbook.com/
 */
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 
 /* 
 width: 1200,
@@ -27,8 +24,8 @@ let mainWindowOptions = null;
 if (isDev) {
   //enableLiveReload()
   mainWindowOptions = {
-    width: 800,
-    height: 600,
+    width: 1920,
+    height: 625,
     icon: __dirname + '/img/icon.jpg'
   }
 } else {
@@ -48,15 +45,22 @@ function loadLogInWindow() {
 }
 
 function loadMainWindow() {
-  mainWindow.loadURL(`file://${__dirname}/logged.html`);
+
+  //mainWindow.setFullScreen(false)
+
+  mainWindow.loadURL(`file://${__dirname}/logged.html`)
 }
 
 function loadEditorWindow() {
-  mainWindow.loadURL(`file://${__dirname}/newCharacter.html`);
+  mainWindow.loadURL(`file://${__dirname}/newCharacter.html`)
 }
 
 function loadGameWindow() {
-  mainWindow.loadURL(`file://${__dirname}/game.html`);
+  mainWindow.setResizable(true)
+  mainWindow.setFullScreen(true)
+  mainWindow.loadURL(`file://${__dirname}/game.html`)
+
+  mainWindow.setResizable(false)
 }
 
 function createMainWindow() {
