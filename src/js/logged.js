@@ -63,8 +63,9 @@ const indexApp = new Vue({
 
         this.$root.$on('openCharacterEditor', function (character) {
             console.log('logged.js on openCharacterEditor', character);
-            if (param != null) {
+            if (character != null) {
                 //TODO save data in db
+                
             }
             ipcRenderer.send("launchEditor")
         })

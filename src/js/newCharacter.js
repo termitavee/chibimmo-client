@@ -4,7 +4,8 @@ const { ipcRenderer } = require("electron");
 //import Phaser from '../node_modules/phaser-ce/build/phaser'
 //import Phaser from '../phaser-ce/build/phaser.min.js'
 
-const { getUser } = require('./js/data/db')
+const { getUser, getCharLaunch, setCharLaunch } = require('./js/data/db')
+
 console.log('getUser')
 console.log(getUser)
 //import colorPicker from './component/color-picker'
@@ -109,6 +110,7 @@ const indexApp = new Vue({
             //TODO check valid data, not empty field
 
 
+            setCharLaunch(null)
             ipcRenderer.send("logIn", true)
         },
 
@@ -142,9 +144,9 @@ const indexApp = new Vue({
             //this.character = preview.make.bitmapData()
             //this.character.load('logo')
             //this.character.addToWorld(preview.world.centerX, preview.world.centerY, 0.5, 0.5,0.5,0.5);
-            this.character = this.preview.add.sprite(80, 150, 'body0')
-            this.hair = this.preview.add.sprite(0, 0, 'hair0')
-
+            //this.character = this.preview.add.sprite(80, 150, 'body0')
+            //this.hair = this.preview.add.sprite(0, 0, 'hair0')
+            this.addBody()
             this.character.animations.add('down', Phaser.Animation.generateFrameNames('', 1, 11, ''), 18, true, true)
             this.character.animations.add('left', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
             this.character.animations.add('right', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
@@ -181,7 +183,7 @@ const indexApp = new Vue({
             //TODO controll black and white 
             console.log('change body')
             console.log(this.form.bodyColor)
-            this.addbody()
+            this.addBody()
             this.checkAnimation()
 
         },
@@ -204,9 +206,11 @@ const indexApp = new Vue({
             this.hair.tint = c
 
         },
-        addbody: function () {
+        addBody: function () {
+            console.log('addBody')
+            console.log(this)
             if (this.character != null)
-                this.character.remove()
+                this.hair.kill()
             switch (Number(this.form.bodyColor)) {
                 case 0:
                     this.character = this.preview.add.sprite(80, 150, 'body0')
@@ -232,22 +236,22 @@ const indexApp = new Vue({
 
 
             }
-
             this.character.scale.set(10);
             this.addhair()
         },
         addhair: function () {
-            this.hair.kill()
+            if (this.hair != null)
+                this.hair.kill()
             switch (Number(this.form.hair)) {
                 case 0:
                     console.log('case 0')
-                    //this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
-                    this.hair = this.preview.add.sprite(0, 0, 'hair0')
+                    //TODO this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
+                    this.hair = this.preview.add.sprite(80, 150, 'hair0')
                     break
                 case 1:
                     console.log('case 1')
-                    //this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair1'))
-                    this.hair = this.preview.add.sprite(0, 0, 'hair1')
+                    //TODO this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair1'))
+                    this.hair = this.preview.add.sprite(80, 150, 'hair1')
                     break
 
             }
@@ -282,7 +286,24 @@ const indexApp = new Vue({
     },
     mounted() {
         //$root
-        console.log(this.form)
+        const characterSaved = getCharLaunch()
+        console.log('characterSaved')
+        console.log(characterSaved)
+        if (characterSaved != null) {
+            const { _id, type, orientation, hair, hairColor, bodyColor } = characterSaved
+            /*TODO orientation: "n",
+            TODO hair: 0,
+            TODO hairColor: '#000000',
+            TODO bodyColor: 0, */
+            this.form.name = _id
+            this.form.className = type
+            //this.form.orientation = _id
+            //this.form.hair = _id
+            //this.form.hairColor = _id
+            //this.form.bodyColor = _id
+        }
+        
+
         let self = this
         this.preview = new Phaser.Game(500, 600, Phaser.AUTO, "leftContent", { preload, create, update }, true, false);
 

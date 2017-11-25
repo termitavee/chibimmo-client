@@ -56,11 +56,11 @@ function loadEditorWindow() {
 }
 
 function loadGameWindow() {
-  mainWindow.setResizable(true)
+  //mainWindow.setResizable(true)
   mainWindow.setFullScreen(true)
   mainWindow.loadURL(`file://${__dirname}/game.html`)
 
-  mainWindow.setResizable(false)
+  //mainWindow.setResizable(false)
 }
 
 function createMainWindow() {

@@ -4,6 +4,7 @@ const { shell } = require('electron')
 
 const logInForm = require('./component/log-in-form')
 const feed = require('./component/feed')
+const { getUser, getCharLaunch, setCharLaunch } = require('./js/data/db')
 
 //import logInForm from './component/log-in-form'
 //import characterList from './component/character-list'
@@ -47,6 +48,7 @@ const indexApp = new Vue({
         //TODO check language in database in case user has changed it and save in data
         //TODO check if exist token for this device and send to the server 
 
+        setCharLaunch(null)
         this.isLoading = false
         this.$root.$on('logIn', function (params) {
 
