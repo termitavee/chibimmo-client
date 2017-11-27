@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="chat">
 
   <ul id="chat-List" >
     <li v-for="(item, key) in messages" :key="key">{{item.user+": "+item.content}}</li>
@@ -66,5 +66,8 @@ ul {
   list-style-type: none;
   padding: 5px;
   height: 85%;
+}
+#chat{
+  background-color: rgba(255, 255, 255, 0.4);
 }
 </style>

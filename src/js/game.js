@@ -9,7 +9,7 @@ const { io } = require('socket.io-client')
 const chat = require('./component/chat')
 
 const { getUser, getCharLaunch, setCharLaunch } = require('./js/data/db')
-
+let moving = 0;
 const indexApp = new Vue({
   el: '#index',
   components: {
@@ -71,9 +71,9 @@ const indexApp = new Vue({
 
       //Add user
       //TODO get character personalization
-      const { } = this.character 
+      const { } = this.character
 
-      this.player = this.game.add.sprite(10, 10, 'body0')
+      this.player = this.game.add.sprite(3200, 3200, 'body0')
       this.player.hair = this.player.addChild(this.game.make.sprite(0, 0, 'hair0'))
 
       this.player.animations.add('down', Phaser.Animation.generateFrameNames('', 1, 11, ''), 18, true, true)
@@ -85,37 +85,69 @@ const indexApp = new Vue({
       this.player.hair.animations.add('right', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
       this.player.hair.animations.add('up', Phaser.Animation.generateFrameNames('', 24, 34, ''), 18, true, true)
 
-      this.player.body.setSize(22, 18);
       this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
-      this.game.camera.follow(this.player);
 
+      this.player.body.setSize(22, 18);
+      this.game.camera.follow(this.player);
+      this.player.body.collideWorldBounds = true;
+      this.player.anchor.setTo(.5, .5)
+
+      console.log(this.player.play)
+      console.log(this.animations)
 
       //this.map.addTilesetImage('wood_tileset','wood_tileset')
     },
     update: function (phaser) {
       //TODO control movement and user actions
-      let moving =true
+      moving = 0
       if (this.cursors.left.isDown) {
         this.player.body.velocity.x = -100;
-        this.player.play('left');
+        this.player.scale.setTo(-1, 1);
+        moving = 1
       } else if (this.cursors.right.isDown) {
         this.player.body.velocity.x = 100;
-        this.player.play('right');
+        this.player.scale.setTo(1, 1);
+
+        moving = 2
       } else {
-        this.player.body.velocity.x = 0
-        moving=false
+        this.player.body.velocity.x = 0;
+        
       }
 
       if (this.cursors.up.isDown) {
         this.player.body.velocity.y = -100;
-        this.player.play('up');
+        moving = 3
       } else if (this.cursors.down.isDown) {
         this.player.body.velocity.y = 100;
-        this.player.play('down');
+        moving = 4
       } else {
-        this.player.body.velocity.y = 0
-        if (!moving)
+        this.player.body.velocity.y = 0;
+      }
+      switch (moving) {
+        case 0:
+
           this.player.animations.stop()
+          break
+
+        case 1:
+
+          this.player.play('right');
+          break
+
+        case 2:
+
+          this.player.play('left');
+          break
+
+        case 3:
+
+          this.player.play('up');
+          break
+
+        case 4:
+
+          this.player.play('down');
+          break
       }
 
       //TODO send data to server
