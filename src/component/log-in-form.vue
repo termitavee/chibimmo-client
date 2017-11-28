@@ -147,63 +147,47 @@ module.exports = {
         console.log(action);
         //http://127.0.0.1:3000
         //termitavee.ddns.net
-        fetch("http://127.0.0.1:3000/" + action, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: JSON.stringify(this.form)
-        })
-          .then(res => res.json())
-          .then(res => {
-            console.log(res);
-            if (res.status == 202) {
-              if ((res.action == "login")) {
-                this.saveUser(res.user);                
-                this.$root.$emit("logIn", res.user);
-              } else {
-                this.loginVisible = true;
-                this.pass = "";
-                email = "";
-                captcha = "";
-              }
-            } else {
-              switch (res.error) {
-                case "user":
-                  //TODO show there is a problem with the user
-                  break;
-
-                case "password":
-                  //TODO show there is a problem with the pass
-                  break;
-                case "email":
-                  break;
-
-                case "User exist":
-                  //TODO show there is a problem with the email
-                  break;
-
-                case "internal error":
-                //TODO server error
-                  break;
-
-
-              }
-            }
-          })
-          .catch(error => {
-            //if bad use?
-            console.log("Request failed", error);
-            this.captcha = svgCaptcha.create();
-          });
+        this.$root.$emit("logIn", { action, form: this.form });
       } else {
         this.captcha = svgCaptcha.create();
         //TODO mark wrong parts
       }
     },
-    saveUser: function(user) {
-      console.log("setUser(user)");
-      console.log(user)
-      console.log(setUser(user));
-    }
+  },
+  created() {
+    this.$root.$on("logInError", function(error) {
+      switch (error) {
+        case "user":
+          //TODO show there is a problem with the user
+          break;
+
+        case "password":
+          //TODO show there is a problem with the pass
+          break;
+        case "email":
+          break;
+
+        case "User exist":
+          //TODO show there is a problem with the email
+          break;
+
+        case "internal error":
+          //TODO server error
+          break;
+        default:
+          //if bad use? SERVER NOT FOUND
+          console.log("Request failed", error);
+          this.captcha = svgCaptcha.create();
+      }
+    });
+
+    this.$root.$on("signedUp", function() {
+
+      this.loginVisible = true;
+      this.pass = "";
+      email = "";
+      captcha = "";
+    });
   }
 };
 </script>

@@ -4,7 +4,7 @@ const { shell } = require('electron')
 
 const logInForm = require('./component/log-in-form')
 const feed = require('./component/feed')
-const { getUser, getCharLaunch, setCharLaunch } = require('./js/data/db')
+const { getUser, setUser, getCharLaunch, setCharLaunch, getIP, setIP } = require('./js/data/db')
 
 //import logInForm from './component/log-in-form'
 //import characterList from './component/character-list'
@@ -19,10 +19,9 @@ const indexApp = new Vue({
     data: {
         isLoading: true,
         isNotLogged: true,
-        userName: "Player",
         userData: {},
         language: "en",
-
+        formIP: getIP(), 
     },
     methods: {
         updateContent: function () {
@@ -50,19 +49,48 @@ const indexApp = new Vue({
 
         setCharLaunch(null)
         this.isLoading = false
+
         this.$root.$on('logIn', function (params) {
 
             console.log('vue on logIn', params);
+
+            fetch("http://" + this.formIP + ":3000/" + params.action, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: JSON.stringify(params.form)
+            })
+                .then(res => res.json())
+                .then(res => {
+                    setIP(this.formIP)
+                    //TODO alert("response of server");
+
+                    console.log(res);
+                    if (res.status == 202) {
+                        if ((res.action == "login")) {
+                            setUser(res.user)
+                            ipcRenderer.send("logIn", true)
+                        } else {
+                            this.$root.$emit("signedUp")
+                            this.loginVisible = true;
+                            this.pass = "";
+                            email = "";
+                            captcha = "";
+                        }
+                    } else {
+                        this.$root.$emit("logInError", res.error);
+                    }
+                })
+                .catch(error => {
+                    //TODO marcar ip erronea
+                    //net::ERR_CONNECTION_REFUSED
+                    //net::ERR_ADDRESS_UNREACHABLE
+                    console.log(error)
+                    this.$root.$emit("logInError", error);
+                });            
             
-            ipcRenderer.send("logIn", true)
 
         })
 
-        this.$root.$on('createNewCharacter', function (params) {
-
-            console.log('index on createNewCharacter', params);
-            this.createNewCharacter()
-        })
     }
 })
 
