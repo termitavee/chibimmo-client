@@ -58,14 +58,14 @@ db.getState()
 //change db, this case clean everything
 db.setState({})
 */
-const setUser = (user) => {
+export const setUser = (user) => {
     const db = low(adapter)
     console.log('user to insert')
     console.log(user)
     return db.set('user', user).write()
 }
 
-const getUser = () => {
+export const getUser = () => {
     const db = low(adapter)
     let found = db.get('user').value()
     console.log('user found')
@@ -73,46 +73,62 @@ const getUser = () => {
     return found
 }
 
-const setLang = (lang) => {
+export const setLang = (lang) => {
     const db = low(adapter)
     db.set({ lang }).write()
 }
 
-const getLang = () => {
+export const getLang = () => {
     const db = low(adapter)
     return db.get('lang').value()
 }
 
-const setRemember = (user, token) => {
+export const setRemember = (user, token) => {
     const db = low(adapter)
-    db.set('remember', { user, token } ).write()
+    db.set('remember', { user, token }).write()
 }
 
-const getRemember = (user) => {
+export const getRemember = (user) => {
     const db = low(adapter)
     return db.get('remember').value()
 }
 
-const setCharLaunch = (character) => {
+export const setCharLaunch = (character) => {
     console.log('save character')
     console.log(character)
     const db = low(adapter)
-    db.set('character', character ).write()
+    db.set('character', character).write()
 }
 
-const getCharLaunch = () => {
+export const getCharLaunch = () => {
     const db = low(adapter)
     //TODO delete?
 
     return db.get('character').value()
 }
 
-module.exports = {
-    setUser, getUser,
-    setLang, getLang,
-    setRemember, getRemember,
-    setCharLaunch, getCharLaunch
+export const setIP = (ip) => {
+    const db = low(adapter)
+    db.set('ip', ip).write()
 }
+
+export const getIP = () => {
+    const db = low(adapter)
+    const value = db.get('ip').value()
+    console.log("ip ="+value)
+    return value || "127.0.0.1"
+}
+
+export const setLanguage = (language) => {
+    const db = low(adapter)
+    db.set('language', language).write()
+}
+
+export const getLanguage = () => {
+    const db = low(adapter)
+    return db.get('language').value()
+}
+
 
 const createMonster = (name, statistics, sprite, drop) => {
     /*{
