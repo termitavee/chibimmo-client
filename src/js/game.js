@@ -64,6 +64,9 @@ const indexApp = new Vue({
       const foreground = this.map.createLayer('foreground');
       const details = this.map.createLayer('details');
 
+      foreground.setScale(worldScale);
+      details.setScale(worldScale);
+      
       background.resizeWorld();
       foreground.resizeWorld();
       details.resizeWorld();
