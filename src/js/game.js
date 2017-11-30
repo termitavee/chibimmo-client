@@ -5,7 +5,9 @@ fis
 mag
 mix
 */
-const { io } = require('socket.io-client')
+import io from "socket.io-client";
+
+//const { io } = require('socket.io-client')
 const chat = require('./component/chat')
 
 const { getUser, getCharLaunch, setCharLaunch } = require('./js/data/db')
@@ -19,8 +21,10 @@ const indexApp = new Vue({
     user: {},
     character: {},
     language: "en",
+    server: io("http://127.0.0.1:3000/game"),
     game: {},
     map: {},
+    layer: {},
     player: {},
     characters: {},
     cursors: {},
@@ -53,101 +57,102 @@ const indexApp = new Vue({
 
     },
     create: function (phaser) {
-      console.log(this.game)
-
+      
       this.map = this.game.add.tilemap('myWorld')
 
       this.map.addTilesetImage('wood_tileset', 'wood_tileset')
       this.map.addTilesetImage('town_forest_tiles', 'town_forest_tiles')
+      this.layer.background = this.map.createLayer('background');
+      this.layer.foreground = this.map.createLayer('foreground');
+//6,7,8,19,21, 24 ,36,37, 
+      //this.map.setCollision([189, 190, 191, 192, 205, 206, 207, 208, 221, 222, 223, 224, 237, 238, 239, 240, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 277, 278, 279, 279, 280, 281, 282, 283, 284, 285, 286], true, this.layer.foreground)
 
-      const background = this.map.createLayer('background');
-      const foreground = this.map.createLayer('foreground');
-      const details = this.map.createLayer('details');
+      this.map.setCollisionBetween(189, 192, true, this.layer.foreground)
+      this.map.setCollisionBetween(205, 208, true, this.layer.foreground)
+      this.map.setCollisionBetween(221, 224, true, this.layer.foreground)
+      this.map.setCollisionBetween(237, 240, true, this.layer.foreground)
+      this.map.setCollisionBetween(253, 263, true, this.layer.foreground)
+      this.map.setCollisionBetween(277, 286, true, this.layer.foreground)
+      //foreground.setScale(worldScale);
+      //background.setScale(worldScale);
+      this.layer.foreground.debug = true;
 
-      foreground.setScale(worldScale);
-      details.setScale(worldScale);
-      
-      background.resizeWorld();
-      foreground.resizeWorld();
-      details.resizeWorld();
+      this.layer.background.resizeWorld();
+      this.layer.foreground.resizeWorld();
       this.cursors = this.game.input.keyboard.createCursorKeys();
 
       //Add user
       //TODO get character personalization
       const { } = this.character
-
-      this.player = this.game.add.sprite(3200, 3200, 'body0')
+      //TODO posicion x*32+16
+      this.player = this.game.add.sprite(3216, 3664, 'body0')
       this.player.hair = this.player.addChild(this.game.make.sprite(0, 0, 'hair0'))
 
       this.player.animations.add('down', Phaser.Animation.generateFrameNames('', 1, 11, ''), 18, true, true)
-      this.player.animations.add('left', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
-      this.player.animations.add('right', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
+      this.player.animations.add('lat', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
       this.player.animations.add('up', Phaser.Animation.generateFrameNames('', 24, 34, ''), 18, true, true)
       this.player.hair.animations.add('down', Phaser.Animation.generateFrameNames('', 1, 11, ''), 18, true, true)
-      this.player.hair.animations.add('left', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
-      this.player.hair.animations.add('right', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
+      this.player.hair.animations.add('lat', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
       this.player.hair.animations.add('up', Phaser.Animation.generateFrameNames('', 24, 34, ''), 18, true, true)
 
-      this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+      this.game.physics.enable(this.player)
 
       this.player.body.setSize(22, 18);
       this.game.camera.follow(this.player);
       this.player.body.collideWorldBounds = true;
       this.player.anchor.setTo(.5, .5)
+      //Phaser.Physics.Arcade.collide(this.player, this.layer.foreground)
 
-      console.log(this.player.play)
-      console.log(this.animations)
+
 
       //this.map.addTilesetImage('wood_tileset','wood_tileset')
     },
     update: function (phaser) {
       //TODO control movement and user actions
+      this.game.physics.arcade.collide(this.player, this.layer.foreground);
       moving = 0
       if (this.cursors.left.isDown) {
-        this.player.body.velocity.x = -100;
+        this.player.body.velocity.x = -1000;
         this.player.scale.setTo(-1, 1);
         moving = 1
       } else if (this.cursors.right.isDown) {
-        this.player.body.velocity.x = 100;
+        this.player.body.velocity.x = 1000;
         this.player.scale.setTo(1, 1);
 
-        moving = 2
       } else {
         this.player.body.velocity.x = 0;
-        
+
       }
 
       if (this.cursors.up.isDown) {
-        this.player.body.velocity.y = -100;
-        moving = 3
+        this.player.body.velocity.y = -1000;
+        moving = 2
       } else if (this.cursors.down.isDown) {
-        this.player.body.velocity.y = 100;
-        moving = 4
+        this.player.body.velocity.y = 1000;
+        moving = 3
       } else {
         this.player.body.velocity.y = 0;
       }
+      //TODO     this.socket.emit("moveUSer", this.user._id);
       switch (moving) {
         case 0:
-
+          
           this.player.animations.stop()
           break
 
         case 1:
 
-          this.player.play('right');
+          this.player.play('lat'); 0
+          
           break
+
 
         case 2:
-
-          this.player.play('left');
-          break
-
-        case 3:
 
           this.player.play('up');
           break
 
-        case 4:
+        case 3:
 
           this.player.play('down');
           break
@@ -174,7 +179,7 @@ const indexApp = new Vue({
     this.character = getCharLaunch()
 
     let self = this
-    console.log(this)
+
     this.game = new Phaser.Game('100', '100', Phaser.AUTO, "mainContent", { preload, create, update }, true, false);
     function preload() {
       self.preload(this)
@@ -188,6 +193,26 @@ const indexApp = new Vue({
     function update() {
       self.update(this)
     }
+
+    this.server.on("connect", function () {
+      console.log("connected");
+    });
+    this.server.emit("startGame", this.user._id);
+
+    this.server.on("updateGame", function (newContent) {
+      console.log("new content recived");
+      console.log(newContent);
+    });
+
+    this.server.on("alert", function (newContent) {
+      console.log("new important content recived");
+      console.log(newContent);
+    });
+
+    this.server.on("disconnect", function () {
+      console.log("disconected");
+    });
+
   }
 })
 
