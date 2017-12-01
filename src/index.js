@@ -32,10 +32,10 @@ if (isDev) {
   mainWindowOptions = {
     width: 800,
     height: 600,
-    resizable: false,
+    //TODO resizable: false,
     icon: __dirname + '/img/icon.jpg',
     webPreferences: {
-      devTools: false
+      devTools: true
     }
   }
 }
@@ -56,11 +56,11 @@ function loadEditorWindow() {
 }
 
 function loadGameWindow() {
-  //mainWindow.setResizable(true)
+  mainWindow.setResizable(true)
   mainWindow.setFullScreen(true)
   mainWindow.loadURL(`file://${__dirname}/game.html`)
 
-  //mainWindow.setResizable(false)
+  mainWindow.setResizable(false)
 }
 
 function createMainWindow() {
@@ -70,12 +70,14 @@ function createMainWindow() {
   loadLogInWindow()
 
   // Open the DevTools.
+  /*
   if (isDev) {
 
     //installExtension(VUEJS_DEVTOOLS);
     mainWindow.webContents.openDevTools();
-  } else mainWindow.setMenu(null);
+  } else mainWindow.setMenu(null);*/
 
+  mainWindow.webContents.openDevTools();
   //TODO check that language and log status query is done only once
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -133,6 +135,7 @@ ipcMain.on("logIn", (event, logged) => {
 
 ipcMain.on("launchEditor", (event, content) => {
   console.log("ipcMain on create character");
+  //TODO save content so editor can load it
   console.log(content);
 
   loadEditorWindow()

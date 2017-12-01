@@ -36,7 +36,7 @@
       "electronPackagerConfig": {
         "dir": "./src",
         "packageManager": "npm",
-        "asar": true,
+        "asar": false,
         "icon": "./src/img/icon.jpg"
       },
       "electronWinstallerConfig": {
@@ -64,7 +64,7 @@
     "socket.io": "^2.0.4",
     "svg-captcha": "^1.3.11",
     "vue": "^2.4.4",
-    "vue-color": "^2.4.1"
+    "vueify": "^9.4.1"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",

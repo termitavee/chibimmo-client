@@ -57,16 +57,16 @@ const indexApp = new Vue({
 
     },
     create: function (phaser) {
-      
+
       this.map = this.game.add.tilemap('myWorld')
 
       this.map.addTilesetImage('wood_tileset', 'wood_tileset')
       this.map.addTilesetImage('town_forest_tiles', 'town_forest_tiles')
       this.layer.background = this.map.createLayer('background');
       this.layer.foreground = this.map.createLayer('foreground');
-//6,7,8,19,21, 24 ,36,37, 
+      //6,7,8,19,21, 24 ,36,37, 
       //this.map.setCollision([189, 190, 191, 192, 205, 206, 207, 208, 221, 222, 223, 224, 237, 238, 239, 240, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 277, 278, 279, 279, 280, 281, 282, 283, 284, 285, 286], true, this.layer.foreground)
-
+      //TODO colision and characters do async
       this.map.setCollisionBetween(189, 192, true, this.layer.foreground)
       this.map.setCollisionBetween(205, 208, true, this.layer.foreground)
       this.map.setCollisionBetween(221, 224, true, this.layer.foreground)
@@ -101,11 +101,8 @@ const indexApp = new Vue({
       this.game.camera.follow(this.player);
       this.player.body.collideWorldBounds = true;
       this.player.anchor.setTo(.5, .5)
-      //Phaser.Physics.Arcade.collide(this.player, this.layer.foreground)
+      Phaser.Physics.Arcade.collide(this.player, this.layer.foreground)
 
-
-
-      //this.map.addTilesetImage('wood_tileset','wood_tileset')
     },
     update: function (phaser) {
       //TODO control movement and user actions
@@ -118,7 +115,7 @@ const indexApp = new Vue({
       } else if (this.cursors.right.isDown) {
         this.player.body.velocity.x = 1000;
         this.player.scale.setTo(1, 1);
-
+        moving = 1
       } else {
         this.player.body.velocity.x = 0;
 
@@ -134,26 +131,18 @@ const indexApp = new Vue({
         this.player.body.velocity.y = 0;
       }
       //TODO     this.socket.emit("moveUSer", this.user._id);
+      //TODO @keyup.esc open menu
       switch (moving) {
         case 0:
-          
           this.player.animations.stop()
           break
-
         case 1:
-
-          this.player.play('lat'); 0
-          
+          this.player.play('lat'); 
           break
-
-
         case 2:
-
           this.player.play('up');
           break
-
         case 3:
-
           this.player.play('down');
           break
       }

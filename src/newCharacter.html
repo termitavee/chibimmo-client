@@ -8,6 +8,8 @@
     <link type="text/css" rel="stylesheet" href="../node_modules/purecss/build/pure.css">
     <script>require('electron')</script>
     <script src="../node_modules/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="./style/global.css">
+    <link rel="stylesheet" href="./style/newCharacter.css">
     <!--vue.min.js-->
 </head>
 
@@ -42,38 +44,38 @@
                     <br>
                     <input type="radio" name="orientation" v-model="form.orientation" value="def"> Defensive
                     <br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="n" > Neutral
+                    <input type="radio" name="orientation" v-model="form.orientation" value="n"> Neutral
                 </div>
                 <div>
                     <span>Body color</span>
                     <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="0" v-on:change="changeBody"checked> Default
-                    <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="1" v-on:change="changeBody"> Dark
-                    <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="2" v-on:change="changeBody"> Lightest
-                    <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="3" v-on:change="changeBody"> Darkest
-                    <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="4" v-on:change="changeBody"> Red
-                    <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="5" v-on:change="changeBody"> Blue
-                    <br>
-                    <input type="radio" name="body-color" v-model="form.bodyColor" value="6" v-on:change="changeBody"> Green
+                    <button class="color-button orange" @click.prevent="changeBody(0)" />
+                    <button class="color-button brown" @click.prevent="changeBody(1)" />
+                    <button class="color-button light" @click.prevent="changeBody(2)" />
+                    <button class="color-button dark" @click.prevent="changeBody(3)" />
+                    <button class="color-button red" @click.prevent="changeBody(4)" />
+                    <button class="color-button blue" @click.prevent="changeBody(5)" />
+                    <button class="color-button green" @click.prevent="changeBody(6)" />
 
                 </div>
                 <div>
                     <span>Hair</span>
                     <br>
-                    <input type="radio" name="hair-type" v-model="form.hair" value="0" v-on:change="changeHair" checked> None
-                    <br>
-                    <input type="radio" name="hair-type" v-model="form.hair" value="1" v-on:change="changeHair"> Default
-                    <!-- TODO icons of hair-->
+                    <button class="hair-button none" @click.prevent="changeHair(0)"> 0</button>
+                    <button class="hair-button basic" @click.prevent="changeHair(1)"> 1</button>
+
                 </div>
                 <div>
                     <span>Hair color</span>
                     <br>
-                    <input type="color" v-model="form.hairColor" v-on:change="this.changeColorHair" name="head-color">
+                    <button class="color-button black" @click.prevent="changeColor('0x000000')" />
+                    <button class="color-button white" @click.prevent="changeColor('0xffffff')" />
+                    <button class="color-button yellow" @click.prevent="changeColor('0xc4c046')" />
+                    <button class="color-button brown" @click.prevent="changeColor('0x492d00')" />
+                    <button class="color-button red" @click.prevent="changeColor('0xb00101')" />
+                    <button class="color-button blue" @click.prevent="changeColor('0x017ab0')" />
+                    <button class="color-button green" @click.prevent="changeColor('0x2ab001')" />
+                    <button class="color-button pink" @click.prevent="changeColor('0xFF0080')" />
                 </div>
                 <div>
                     <a v-text="save" @click="this.saveCharacter" class="pure-button">Save</a>
