@@ -9,7 +9,7 @@
     "pack": "electron-forge package",
     "build": "electron-forge make",
     "db": "sudo service mongod start",
-    "server": "nodemon ../chibimmo-server/index.js",
+    "server": "pm2 start ../chibimmo-server/index.js --name chibimmo",
     "lint": "eslint src"
   },
   "keywords": [],

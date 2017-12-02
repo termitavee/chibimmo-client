@@ -84,6 +84,8 @@ const indexApp = new Vue({
                     //TODO marcar ip erronea
                     //net::ERR_CONNECTION_REFUSED
                     //net::ERR_ADDRESS_UNREACHABLE
+                    //net::ERR_EMPTY_RESPONSE db not launched
+ 
                     console.log(error)
                     this.$root.$emit("logInError", error);
                 });            

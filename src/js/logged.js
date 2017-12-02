@@ -9,8 +9,7 @@ const character = require('./component/character')
 //import characterList from './component/character-list'
 //import character from './component/character'
 const { getUser, setCharLaunch } = require('./js/data/db')
-console.log('getUser')
-console.log(getUser)
+
 const indexApp = new Vue({
     el: '#index',
     components: {
@@ -54,12 +53,7 @@ const indexApp = new Vue({
 
     },
     created() {
-        //$root
         //TODO check language in database in case user has changed it and save in data
-        console.log('oncreated')
-        console.log(this.user)
-
-
 
         this.$root.$on('openCharacterEditor', function (character) {
             console.log('logged.js on openCharacterEditor', character);

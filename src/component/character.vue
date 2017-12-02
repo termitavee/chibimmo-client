@@ -30,7 +30,7 @@ module.exports = {
       this.$emit("increment");
     },
     editCharacter: function() {
-      //TODO open editor just edit colors and hair
+      //TODO save in local storange
       this.$root.$emit("openCharacterEditor", character);
     },
     removeCharacter: function() {

@@ -120,6 +120,11 @@ app.on('activate', () => {
 
 //comunication
 
+global.sharedObject = {
+  someProperty: 'default value'
+}
+
+
 ipcMain.on("logIn", (event, logged) => {
   console.log("Main process on LogChanged");
   console.log('content=' + logged);
