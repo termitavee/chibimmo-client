@@ -1,132 +1,51 @@
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
-//use shortid ? to generate id shortid.generate()
+//Save localStorage.setItem('key', JSON.stringify(value)) 
+//load JSON.parse(localStorage.getItem('key'))
 
-const encrypt = (text) => {
-    return text
-}
-
-const decrypt = (text) => {
-    return text
-}
-
-const adapter = new FileSync('db.json')
-/*const adapter = new FileSync('db.json',{
-    serialize: (data) => encrypt(JSON.stringify(data)),
-    deserialize: (data) => JSON.parse(decrypt(data))
-})*/
-
-/*
-//const db = low(adapter)
-
-//bd.defaults({default: {content: "data", value:"value"}}).write()
-
-//get and write
-db.get('default')
-.push({content: "new data", value:"new value"})
-.write()
-
-db.set('default.content', 'another new date')
-db.set('default.content', 'another new value')
-.write()
-
-//query, value find, write save
-db.get('default').find({ content: "new data" })
-
-.filter({published: true})
-.sortBy('views')
-.take(5)
-.size()
-.assign({propertu:value})//update
-.remove({ title: 'low!' })//delete item (after get)
-unset('user.name') //remove property (standalone)
-
-.value()
-
-//name can be called before write or value
-db._.mixin({
-    name: function(input){
-        return "output"
-    },
-    putId: function(){
-        //add unique id
-    }
-})
-
-//get all
-db.getState()
-//change db, this case clean everything
-db.setState({})
-*/
 export const setUser = (user) => {
-    const db = low(adapter)
-    console.log('user to insert')
-    console.log(user)
-    return db.set('user', user).write()
+    localStorage.setItem('key', JSON.stringify(user))
 }
-
 export const getUser = () => {
-    const db = low(adapter)
-    let found = db.get('user').value()
-    console.log('user found')
-    console.log(found)
-    return found
+    return JSON.parse(localStorage.getItem('user'))
 }
 
 export const setLang = (lang) => {
-    const db = low(adapter)
-    db.set({ lang }).write()
+    localStorage.setItem('lang', JSON.stringify(lang))
 }
 
 export const getLang = () => {
-    const db = low(adapter)
-    return db.get('lang').value()
+    return JSON.parse(localStorage.getItem('lang'))
 }
 
 export const setRemember = (user, token) => {
-    const db = low(adapter)
-    db.set('remember', { user, token }).write()
+    localStorage.setItem('remember', JSON.stringify({ user, token }))
 }
 
-export const getRemember = (user) => {
-    const db = low(adapter)
-    return db.get('remember').value()
+export const getRemember = () => {
+    return JSON.parse(localStorage.getItem('remember'))
 }
 
 export const setCharLaunch = (character) => {
-    console.log('save character')
-    console.log(character)
-    const db = low(adapter)
-    db.set('character', character).write()
+    localStorage.setItem('character', JSON.stringify(character))
 }
 
 export const getCharLaunch = () => {
-    const db = low(adapter)
-    //TODO delete?
-
-    return db.get('character').value()
+    return JSON.parse(localStorage.getItem('character'))
 }
 
 export const setIP = (ip) => {
-    const db = low(adapter)
-    db.set('ip', ip).write()
+    localStorage.setItem('ip', JSON.stringify(ip))
 }
 
 export const getIP = () => {
-    const db = low(adapter)
-    const value = db.get('ip').value()
-    console.log("ip ="+value)
-    return value || "127.0.0.1"
+    return JSON.parse(localStorage.getItem('ip')) || "127.0.0.1"
 }
 
 export const setLanguage = (language) => {
-    const db = low(adapter)
-    db.set('language', language).write()
+    localStorage.setItem('language', JSON.stringify(language))
 }
 
 export const getLanguage = () => {
-    const db = low(adapter)
-    return db.get('language').value()
+    return JSON.parse(localStorage.getItem('language'))
 }
 
 
