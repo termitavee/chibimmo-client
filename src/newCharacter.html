@@ -27,24 +27,27 @@
                     <span>Name</span>
                     <br>
                     <input type="text" v-model="form.name" name="text" value="">
+                    <br>
+                    <br>
                 </div>
                 <div>
                     <span>Class</span>
                     <br>
-                    <input type="radio" name="class" v-model="form.className" value="sol" checked> Soldier
+                    <button class="classes" @click.prevent="changeClass('0', $event)">Soldier</button>
+                    <button class="classes" @click.prevent="changeClass('1', $event)">Mage</button>
+                    <button class="classes" @click.prevent="changeClass('2', $event)">Rogue</button>
                     <br>
-                    <input type="radio" name="class" v-model="form.className" value="mag"> Mage
                     <br>
-                    <input type="radio" name="class" v-model="form.className" value="rog"> Rogue
                 </div>
                 <div>
                     <span>Orientation</span>
+
                     <br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="off" checked> Ofensive
+                    <button class="orientation" @click.prevent="changeOrientation('0', $event)">Ofensive</button>
+                    <button class="orientation" @click.prevent="changeOrientation('1', $event)">Defensive</button>
+                    <button class="orientation" @click.prevent="changeOrientation('2', $event)">Neutral</button>
                     <br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="def"> Defensive
                     <br>
-                    <input type="radio" name="orientation" v-model="form.orientation" value="n"> Neutral
                 </div>
                 <div>
                     <span>Body color</span>
@@ -55,15 +58,17 @@
                     <button class="color-button dark" @click.prevent="changeBody(3)" />
                     <button class="color-button red" @click.prevent="changeBody(4)" />
                     <button class="color-button blue" @click.prevent="changeBody(5)" />
-                    <button class="color-button green" @click.prevent="changeBody(6)" />
-
+                    <button class="color-button green" @click.prevent="changeBody(6)" ></button>
+                    <br>
+                    <br>
                 </div>
                 <div>
                     <span>Hair</span>
                     <br>
                     <button class="hair-button none" @click.prevent="changeHair(0)"> 0</button>
                     <button class="hair-button basic" @click.prevent="changeHair(1)"> 1</button>
-
+                    <br>
+                    <br>
                 </div>
                 <div>
                     <span>Hair color</span>
@@ -75,7 +80,9 @@
                     <button class="color-button red" @click.prevent="changeColor('0xb00101')" />
                     <button class="color-button blue" @click.prevent="changeColor('0x017ab0')" />
                     <button class="color-button green" @click.prevent="changeColor('0x2ab001')" />
-                    <button class="color-button pink" @click.prevent="changeColor('0xFF0080')" />
+                    <button class="color-button pink" @click.prevent="changeColor('0xFF0080')" ></button>
+                    <br>
+                    <br>
                 </div>
                 <div>
                     <a v-text="save" @click="this.saveCharacter" class="pure-button">Save</a>

@@ -32,7 +32,7 @@ module.exports = {
   },
   mounted() {
     this.$root.$on("remove", function(id) {
-      console.log("remove on character-list", id);
+      //console.log("remove on character-list", id);
     });
   }
 };

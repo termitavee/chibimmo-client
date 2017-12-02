@@ -1,14 +1,9 @@
 const { ipcRenderer } = require("electron");
-//import svgCaptcha  from'./component/log-in-form'
-//import {ipcRenderer} from './component/log-in-form'
 
 const feed = require('./component/feed')
 const characterList = require('./component/character-list')
 const character = require('./component/character')
-//import logInForm from './component/log-in-form'
-//import characterList from './component/character-list'
-//import character from './component/character'
-const { getUser, setCharLaunch } = require('./js/data/db')
+const { getUser, setCharLaunch, getIP } = require('./js/data/db')
 
 const indexApp = new Vue({
     el: '#index',
@@ -76,6 +71,32 @@ const indexApp = new Vue({
 
         this.$root.$on("remove", function (id) {
             console.log("remove on logged", id);
+            const serverIP = getIP()
+            const dataSend = JSON.stringify({ user: this.user._id, name: id })
+            console.log('Fetch data')
+            console.log(serverIP)
+            console.log(dataSend)
+            fetch("http://" + serverIP + ":3000/deletecharacter", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: dataSend
+            })
+                .then(res => res.json())
+                .then(res => {
+                    console.log(res);
+                    if (res.status == 202) {
+                        console.log('mensaje de borrado con éxito, refrescar ')
+                        //TODO borrar res.character de la lista y de localStorange
+                    } else {
+                        console.log('mensaje de error')
+                    }
+                })
+                .catch(error => {
+
+                    console.log('mensaje de error en la petición')
+                    console.log(error)
+                    
+                }); 
         });
 
     }

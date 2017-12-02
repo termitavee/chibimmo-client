@@ -1,44 +1,10 @@
 const { ipcRenderer } = require("electron");
-//import '../node_modules/phaser-ce/build/custom/pixi.js'
-//import '../node_modules/phaser-ce/build/custom/p2'
-//import Phaser from '../node_modules/phaser-ce/build/phaser'
-//import Phaser from '../phaser-ce/build/phaser.min.js'
 
 const { getUser, getCharLaunch, setCharLaunch } = require('./js/data/db')
-
-console.log('getUser')
-console.log(getUser)
-//import colorPicker from './component/color-picker'
-import colorPicker2 from './component/color-picker-2'
-/*var defaultProps = {
-    hex: '#194d33',
-    hsl: {
-        h: 150,
-        s: 0.5,
-        l: 0.2,
-        a: 1
-    },
-    hsv: {
-        h: 150,
-        s: 0.66,
-        v: 0.30,
-        a: 1
-    },
-    rgba: {
-        r: 25,
-        g: 77,
-        b: 51,
-        a: 1
-    },
-    a: 1
-}*/
-
 
 const indexApp = new Vue({
   el: '#index',
   components: {
-
-    'color-picker': colorPicker2
   },
   data: {
     language: "en",
@@ -46,8 +12,8 @@ const indexApp = new Vue({
     exit: "Exit",
     form: {
       name: "",
-      className: "sol",
-      orientation: "n",
+      className: "",
+      orientation: "",
       hair: 0,
       hairColor: '0x000000',
       bodyColor: 0,
@@ -55,6 +21,7 @@ const indexApp = new Vue({
     preview: null,
     character: null,
     hair: null,
+    clothes:null,
     moving: 0,
 
   },
@@ -68,7 +35,7 @@ const indexApp = new Vue({
       console.log(this.form)
       const { name } = this.form
       if (name.length < 4) {
-        //TODO error too short
+        //TODO check class and orientation not empty
         console.log('name short')
       } else {
         //127.0.0.1
@@ -78,7 +45,8 @@ const indexApp = new Vue({
             method: "POST",
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify(this.form)
-          }).then(res => res.json())
+          })
+          .then(res => res.json())
           .then((res) => {
             console.log(res)
             if (res.status == 202) {
@@ -100,7 +68,6 @@ const indexApp = new Vue({
           })
           .catch((error) => {
             console.log('Request failed', error);
-
           })
       }
     },
@@ -116,11 +83,7 @@ const indexApp = new Vue({
 
     preload: function (phaser) {
       //TODO load necesary images
-      /**
-      game.load.image('star', 'assets/star.png');
-      game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-      
-      */
+
       //this.preview.load.image('logo', './img/icon.jpg');
       this.preview.load.image('logo', './img/transparent.png');
       //TODO default, change name
@@ -133,6 +96,7 @@ const indexApp = new Vue({
       this.preview.load.atlasJSONHash('body6', './img/sprites/body/6/base.png', './img/sprites/body/6/base.json')
       this.preview.load.atlasJSONHash('hair0', './img/sprites/hair/0.png', './img/sprites/hair/0.json')
       this.preview.load.atlasJSONHash('hair1', './img/sprites/hair/1.png', './img/sprites/hair/1.json')
+      this.preview.load.atlasJSONHash('clothes0', './img/sprites/body/0/clothes.png', './img/sprites/body/0/clothes.json')
       //TODO this.preview.stage.disableVisibilityChange = true;
 
 
@@ -141,57 +105,66 @@ const indexApp = new Vue({
 
     create: function (phaser) {
 
-      //this.character.load('logo')
-      //this.character.addToWorld(preview.world.centerX, preview.world.centerY, 0.5, 0.5,0.5,0.5);
       this.addBody()
       this.character.animations.add('down', Phaser.Animation.generateFrameNames('', 1, 11, ''), 18, true, true)
-      this.character.animations.add('left', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
-      this.character.animations.add('right', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
+      this.character.animations.add('lateral', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
       this.character.animations.add('up', Phaser.Animation.generateFrameNames('', 24, 34, ''), 18, true, true)
       this.hair.animations.add('down', Phaser.Animation.generateFrameNames('', 1, 11, ''), 18, true, true)
-      this.hair.animations.add('left', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
-      this.hair.animations.add('right', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
+      this.hair.animations.add('lateral', Phaser.Animation.generateFrameNames('', 12, 23, ''), 18, true, true)
       this.hair.animations.add('up', Phaser.Animation.generateFrameNames('', 24, 34, ''), 18, true, true)
-      //play('down') stop()
-      /*
-      
-      var sprite = game.add.sprite(0, 0, 'yourGraphic');
-      
-      sprite.tint = 0xff00ff;
-      */
-      //this.character.animations.play('down')
-      //this.hair.animations.play('down')
 
-      //this.character.tint = 0xff00ff
 
     },
 
-    update: function (phaser) {
-
-    },
+    update: function (phaser) {},
 
     changeDirection: function () {
       //button to rotate character, up, left, right, down
       this.checkAnimation()
     },
 
-    changeBody: function (id, event) {
+    changeClass: function (id) {
+
+      this.form.className = id
+
+      const buttons = document.getElementsByClassName('classes')
+      //TODO clothes??
+      buttons[0].disabled = (id == 0)
+      buttons[1].disabled = (id == 1)
+      buttons[2].disabled = (id == 2)
+
+
+    },
+
+    changeOrientation: function (id, event) {
+
+      if (id) this.form.orientation = id
+      
+      const buttons = document.getElementsByClassName('orientation')
+
+      buttons[0].disabled = (id == 0)
+      buttons[1].disabled = (id == 1)
+      buttons[2].disabled = (id == 2)
+
+    },
+
+    changeBody: function (id) {
 
       if (!isNaN(id)) this.form.bodyColor = id
-    
+
       this.addBody()
       this.checkAnimation()
 
     },
 
-    changeHair: function (id, event) {
+    changeHair: function (id) {
 
       if (!isNaN(id)) this.form.hair = id
-      
+
       this.addhair()
     },
-    changeColor: function (id, event) {
-      
+    changeColor: function (id) {
+
       if (id) this.form.hairColor = id
 
       //TODO change new color to know what to change 
@@ -232,6 +205,8 @@ const indexApp = new Vue({
 
 
       }
+      this.clothes = this.preview.add.sprite(80, 150, 'clothes0')
+      this.clothes.scale.set(10);
       this.character.scale.set(10);
       this.addhair()
     },
@@ -266,16 +241,16 @@ const indexApp = new Vue({
           this.hair.animations.play('up')
           break
         case 2:
-          this.character.animations.play('left')
-          this.hair.animations.play('left')
+          this.character.animations.play('lateral')
+          this.hair.animations.play('lateral')
           break
         case 3:
           this.character.animations.play('down')
           this.hair.animations.play('down')
           break
         case 4:
-          this.character.animations.play('right')
-          this.hair.animations.play('right')
+          this.character.animations.play('lateral')
+          this.hair.animations.play('lateral')
           break
       }
     }
@@ -284,8 +259,7 @@ const indexApp = new Vue({
   mounted() {
     //$root
     const characterSaved = getCharLaunch()
-    console.log('characterSaved')
-    console.log(characterSaved)
+    
     if (characterSaved != null) {
       const { _id, type, orientation, hair, hairColor, bodyColor } = characterSaved
       /*TODO orientation: "n",
@@ -294,10 +268,11 @@ const indexApp = new Vue({
       TODO bodyColor: 0, */
       this.form.name = _id
       this.form.className = type
-      //this.form.orientation = _id
-      //this.form.hair = _id
-      //this.form.hairColor = _id
-      //this.form.bodyColor = _id
+      this.form.orientation = orientation
+      this.form.bodyColor = bodyColor
+      this.form.hair = hair
+      this.form.hairColor = hairColor
+      //TODO refresh?
     }
 
 

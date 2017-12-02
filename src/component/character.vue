@@ -15,6 +15,8 @@
 </template>
 
 <script>
+const { setUser, setCharLaunch } = require('../js/data/db')
+
 module.exports = {
   props: ["character"],
   data: function() {
@@ -31,10 +33,11 @@ module.exports = {
     },
     editCharacter: function() {
       //TODO save in local storange
-      this.$root.$emit("openCharacterEditor", character);
+      setCharLaunch(this.character)
+      this.$root.$emit("openCharacterEditor");
     },
     removeCharacter: function() {
-      this.$root.$emit("remove", character._id);
+      this.$root.$emit("remove", this.character._id);
     },
     launchGame: function() {
       //TODO launch game
