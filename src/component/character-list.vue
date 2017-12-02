@@ -28,7 +28,7 @@ module.exports = {
   methods: {
     createNewCharacter: function() {
       this.$root.$emit("openCharacterEditor");
-    },
+    }
   },
   mounted() {
     this.$root.$on("remove", function(id) {
@@ -43,9 +43,11 @@ ul {
   list-style-type: none;
   padding-left: 0;
   overflow-y: auto;
+  height: 422px;
 }
-.characterItem{
-  margin-bottom: 10px;
 
+.characterItem {
+  margin-bottom: 10px;
 }
+
 </style>

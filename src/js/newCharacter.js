@@ -21,7 +21,7 @@ const indexApp = new Vue({
     preview: null,
     character: null,
     hair: null,
-    clothes:null,
+    clothes: null,
     moving: 0,
 
   },
@@ -33,11 +33,9 @@ const indexApp = new Vue({
 
       this.form.user = (getUser())._id
       console.log(this.form)
-      const { name } = this.form
-      if (name.length < 4) {
-        //TODO check class and orientation not empty
-        console.log('name short')
-      } else {
+      const { name, className, orientation } = this.form
+      if (this.checkForm()) {
+        console.log('checked ok')
         //127.0.0.1
         //termitavee.ddns.net
         fetch('http://127.0.0.1:3000/create',
@@ -69,7 +67,28 @@ const indexApp = new Vue({
           .catch((error) => {
             console.log('Request failed', error);
           })
+      } else console.log('some field wrong');
+    },
+
+    checkForm: function () {
+      let valid = true
+
+      const { name, className, orientation } = this.form
+
+      if (name.length < 4) {
+        //TODO check class and orientation not empty
+        console.log('name short')
+        valid = false
       }
+      if (className == "") {
+        console.log('unselected class')
+        valid = false
+      }
+      if (className == "") {
+        console.log('unselected orientation')
+        valid = false
+      }
+      return valid
     },
 
     backToList: function () {
@@ -99,8 +118,6 @@ const indexApp = new Vue({
       this.preview.load.atlasJSONHash('clothes0', './img/sprites/body/0/clothes.png', './img/sprites/body/0/clothes.json')
       //TODO this.preview.stage.disableVisibilityChange = true;
 
-
-
     },
 
     create: function (phaser) {
@@ -116,7 +133,7 @@ const indexApp = new Vue({
 
     },
 
-    update: function (phaser) {},
+    update: function (phaser) { },
 
     changeDirection: function () {
       //button to rotate character, up, left, right, down
@@ -139,7 +156,7 @@ const indexApp = new Vue({
     changeOrientation: function (id, event) {
 
       if (id) this.form.orientation = id
-      
+
       const buttons = document.getElementsByClassName('orientation')
 
       buttons[0].disabled = (id == 0)
@@ -178,7 +195,7 @@ const indexApp = new Vue({
     },
     addBody: function () {
 
-      if (this.character != null)
+      if (this.hair != null)
         this.hair.kill()
       switch (Number(this.form.bodyColor)) {
         case 0:
@@ -259,7 +276,7 @@ const indexApp = new Vue({
   mounted() {
     //$root
     const characterSaved = getCharLaunch()
-    
+
     if (characterSaved != null) {
       const { _id, type, orientation, hair, hairColor, bodyColor } = characterSaved
       /*TODO orientation: "n",
@@ -272,9 +289,13 @@ const indexApp = new Vue({
       this.form.bodyColor = bodyColor
       this.form.hair = hair
       this.form.hairColor = hairColor
-      //TODO refresh?
-    }
+      /*name can't change */
+      //disabled
+      document.getElementsByTagName('input')[0].disabled = true
 
+
+    }
+    console.log(this.form)
 
     let self = this
     this.preview = new Phaser.Game(500, 600, Phaser.AUTO, "leftContent", { preload, create, update }, true, false);
