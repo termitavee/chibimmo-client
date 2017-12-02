@@ -2,7 +2,7 @@
 //load JSON.parse(localStorage.getItem('key'))
 
 export const setUser = (user) => {
-    localStorage.setItem('key', JSON.stringify(user))
+    localStorage.setItem('user', JSON.stringify(user))
 }
 export const getUser = () => {
     return JSON.parse(localStorage.getItem('user'))
