@@ -15,7 +15,8 @@
 
 <script>
 import io from "socket.io-client";
-
+//, { transports: ['websocket'] }
+let that = null
 module.exports = {
   props: ["user"],
   data: function() {
@@ -33,25 +34,28 @@ module.exports = {
         console.log(
           "send message " + this.sendMessage + " by " + this.user._id
         );
-        this.socket.emit("message", this.sendMessage);
+        this.socket.emit("message", {user: this.user._id, content: this.sendMessage});
         this.messages.push({ user: this.user._id, content: this.sendMessage });
         this.sendMessage = "";
       }else{
-        //TODO IDK
+        //TODO lose focus on input
+document.getElementsByTagName('input')[0].blur()
       }
     }
   },
 
   mounted: function() {
+    that = this
     this.socket.on("connect", function() {
       console.log("connected");
     });
-    this.socket.emit("setUser", this.user._id);
 
-    this.socket.on("newMessagge", function(message) {
+    this.socket.on("newMessage", function(message) {
       console.log("message recived");
       console.log(message);
-      this.messages.push({ user: message.user, content: message.content });
+      //TODO TypeError: Cannot read property 'push' of undefined
+
+      that.messages.push({ user: message.user, content: message.content });
     });
 
     this.socket.on("disconnect", function() {

@@ -9,13 +9,15 @@ import io from "socket.io-client";
 
 //const { io } = require('socket.io-client')
 const chat = require('./component/chat')
+const characterBar = require('./component/character-bar')
 
 const { getUser, getCharLaunch, setCharLaunch } = require('./js/data/db')
 let moving = 0;
 const indexApp = new Vue({
   el: '#index',
   components: {
-    'chat': chat
+    'chat': chat,
+    'character-bar': characterBar
   },
   data: {
     user: {},
@@ -44,6 +46,7 @@ const indexApp = new Vue({
       this.game.load.atlasJSONHash('hair0', './img/sprites/hair/0.png', './img/sprites/hair/0.json')
       this.game.load.atlasJSONHash('hair1', './img/sprites/hair/1.png', './img/sprites/hair/1.json')
       //All clothes
+      this.game.load.atlasJSONHash('clothes0', './img/sprites/body/0/clothes.png', './img/sprites/body/0/clothes.json')
       //All items
       //All maps
       //this.game.load.tilemap('myWorld', './img/map/world 1.json', null, Phaser.Tilemap.TILED_JSON);
@@ -101,7 +104,7 @@ const indexApp = new Vue({
       this.game.camera.follow(this.player);
       this.player.body.collideWorldBounds = true;
       this.player.anchor.setTo(.5, .5)
-      Phaser.Physics.Arcade.collide(this.player, this.layer.foreground)
+      //TODO Phaser.Physics.Arcade.collide(this.player, this.layer.foreground)
 
     },
     update: function (phaser) {
@@ -137,7 +140,7 @@ const indexApp = new Vue({
           this.player.animations.stop()
           break
         case 1:
-          this.player.play('lat'); 
+          this.player.play('lat');
           break
         case 2:
           this.player.play('up');
@@ -152,6 +155,20 @@ const indexApp = new Vue({
     addCharacter: function (character) {
       //TODO get character visual parameters, print it and save reference
 
+      //save character
+      // = character
+      //create game character
+      const { bodyColor, hair, hairColor, equipment, stadistics, map, position } = character
+      const newPlayer = this.game.add.sprite(position.x, position.y, `body${bodyColor}`)
+      newPlayer.hair = this.player.addChild(this.game.make.sprite(0, 0, `body${hair}`))
+      newPlayer.hair.tint = hairColor
+
+      //TODO movement
+
+
+      //save reference
+      this.characters[character._id] = newPlayer
+      this.characters[character._id].stats = character
     },
     editCharacter: function (character) {
       //TODO get character visual parameters, print it and save reference

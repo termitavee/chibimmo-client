@@ -1,14 +1,9 @@
 const svgCaptcha = require('svg-captcha');
-const { ipcRenderer } = require("electron");
-const { shell } = require('electron')
+const { ipcRenderer, shell } = require("electron");
 
 const logInForm = require('./component/log-in-form')
 const feed = require('./component/feed')
 const { getUser, setUser, getCharLaunch, setCharLaunch, getIP, setIP } = require('./js/data/db')
-
-//import logInForm from './component/log-in-form'
-//import characterList from './component/character-list'
-//import character from './component/character'
 
 const indexApp = new Vue({
     el: '#index',
@@ -24,19 +19,12 @@ const indexApp = new Vue({
         formIP: getIP(), 
     },
     methods: {
-        updateContent: function () {
-            /*Update the information shown */
-        },
-
         launchLoggedContent: function () {
-            /*get data from this. userData */
-            /*Update the information shown */
             this.isNotLogged = false
 
         },
 
         launchWeb: function () {
-            
             shell.openExternal('https://chibimmo.tumblr.com/')
         }
 
