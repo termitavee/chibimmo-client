@@ -6,7 +6,7 @@ mag
 mix
 */
 import io from "socket.io-client";
-
+//TODO change ip
 //const { io } = require('socket.io-client')
 const chat = require('./component/chat')
 const characterBar = require('./component/character-bar')
