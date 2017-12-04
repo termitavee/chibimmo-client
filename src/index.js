@@ -70,14 +70,15 @@ function createMainWindow() {
   loadLogInWindow()
 
   // Open the DevTools.
-  /*
+
   if (isDev) {
-
-    //installExtension(VUEJS_DEVTOOLS);
+    installExtension(VUEJS_DEVTOOLS);
     mainWindow.webContents.openDevTools();
-  } else mainWindow.setMenu(null);*/
+  } else {
+    mainWindow.setMenu(null)
+  }
 
-  mainWindow.webContents.openDevTools();
+  
   //TODO check that language and log status query is done only once
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {

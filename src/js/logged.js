@@ -25,10 +25,6 @@ const indexApp = new Vue({
       ipcRenderer.send("logIn", false)
     },
 
-    updateContent: function () {
-      /*Update the information shown */
-    },
-
     launchLoggedContent: function () {
       /*get data from this. userData */
       /*Update the information shown */
@@ -51,12 +47,8 @@ const indexApp = new Vue({
   created() {
     //TODO check language in database in case user has changed it and save in data
 
-    this.$root.$on('openCharacterEditor', function (character) {
-      console.log('logged.js on openCharacterEditor', character);
-      if (character != null) {
-        //TODO save data in db
-
-      }
+    this.$root.$on('openCharacterEditor', function () {
+      console.log('logged.js on openCharacterEditor');
       ipcRenderer.send("launchEditor")
     })
 
@@ -70,9 +62,9 @@ const indexApp = new Vue({
 
     })
 
-    this.$root.$on("remove", function (id) {
-      console.log("remove on logged", id);
-
+    this.$root.$on("remove", function (param) {
+      console.log("remove on logged", param);
+      const {id, pos} = param
 
       //const charName = this.character._id;
       dialog.showMessageBox(
@@ -99,7 +91,11 @@ const indexApp = new Vue({
                 console.log(res);
                 if (res.status == 202) {
                   console.log('mensaje de borrado con éxito, refrescar ')
-                  //TODO borrar res.character de la lista y de localStorange
+
+                  this.user.characters.splice(pos, 1)
+                  setCharLaunch(this.user)
+
+                  //TODO borrar pos de la lista 
                 } else {
                   console.log('mensaje de error')
                 }

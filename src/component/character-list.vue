@@ -4,7 +4,7 @@
   <h3>List of characters created</h3>
   <ul>
     <li class="characterItem" v-for="(item, key) in characters" :key="key">
-        <character :character="item"/>
+        <character :character="item" :reference="key"/>
     </li>
     <li>
       <a @click="createNewCharacter" v-text="newCharacter" class="pure-button">Create new</a>
@@ -16,6 +16,7 @@
 
 <script>
 const character = require("../component/character");
+const { setCharLaunch } = require("../js/data/db");
 
 module.exports = {
   props: ["characters"],
@@ -27,14 +28,11 @@ module.exports = {
   },
   methods: {
     createNewCharacter: function() {
+      setCharLaunch(null)
       this.$root.$emit("openCharacterEditor");
     }
   },
-  mounted() {
-    this.$root.$on("remove", function(id) {
-      //console.log("remove on character-list", id);
-    });
-  }
+ 
 };
 </script>
 

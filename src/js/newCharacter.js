@@ -1,6 +1,6 @@
 const { ipcRenderer } = require("electron");
 
-const { getUser, getCharLaunch, setCharLaunch } = require('./js/data/db')
+const { getUser, setUser, getCharLaunch, setCharLaunch, getIP } = require('./js/data/db')
 
 const indexApp = new Vue({
   el: '#index',
@@ -31,14 +31,13 @@ const indexApp = new Vue({
       //TODO check server, save and go back to logged screen
       console.log('lol save')
 
-      this.form.user = (getUser())._id
+      this.form.user = getUser()
       console.log(this.form)
-      const { name, className, orientation } = this.form
       if (this.checkForm()) {
         console.log('checked ok')
         //127.0.0.1
         //termitavee.ddns.net
-        fetch('http://127.0.0.1:3000/create',
+        fetch('http://'+getIP()+':3000/create',
           {
             method: "POST",
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -50,6 +49,9 @@ const indexApp = new Vue({
             if (res.status == 202) {
               //TODO update characters list
               console.log('success')
+
+              this.form.user.characters.push(res.char)
+              setUser(this.form.user)
               this.backToList()
             } else {
               console.log('failed')
@@ -276,7 +278,8 @@ const indexApp = new Vue({
   mounted() {
     //$root
     const characterSaved = getCharLaunch()
-
+    console.log('========== cewCharacterjs - mounted - characterSaved ===========')
+    console.log(characterSaved)
     if (characterSaved != null) {
       const { _id, type, orientation, hair, hairColor, bodyColor } = characterSaved
       /*TODO orientation: "n",
@@ -292,10 +295,9 @@ const indexApp = new Vue({
       /*name can't change */
       //disabled
       document.getElementsByTagName('input')[0].disabled = true
-
+      console.log(this.form)
 
     }
-    console.log(this.form)
 
     let self = this
     this.preview = new Phaser.Game(500, 600, Phaser.AUTO, "leftContent", { preload, create, update }, true, false);
@@ -320,4 +322,3 @@ const indexApp = new Vue({
   },
 
 })
-console.log("newCharacter.js cargado")

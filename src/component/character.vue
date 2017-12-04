@@ -1,6 +1,6 @@
 <template>
 <div>
-  <span v-text="character._id" v-on:click="showDetails=!showDetails"/>
+  <span v-text="character._id" v-on:click="showDetails =! showDetails"/>
   <span v-text="start" v-on:click="launchGame" />
   
   <div v-if="showDetails">
@@ -9,7 +9,7 @@
     <br>
     <span v-text="'Location '+formatMap()"></span>
     <br>
-    <span v-text="'equipment '+formatEquipment()"></span>
+    <span v-text="'equipment '+formatEquipment()" v-on:click="printKey" ></span>
     <br>
     <span v-text="'created on '+formatDate()"></span>
     <br>
@@ -21,11 +21,10 @@
 </template>
 
 <script>
-
-const { setUser, setCharLaunch } = require("../js/data/db");
+const { setCharLaunch } = require("../js/data/db");
 
 module.exports = {
-  props: ["character"],
+  props: ["character", "reference"],
   data: function() {
     return {
       showDetails: false,
@@ -35,25 +34,30 @@ module.exports = {
     };
   },
   methods: {
-    toogleShow: function() {
-      this.$emit("increment");
+    printKey: function() {
+      console.log("========== key ===========");
+      console.log(this.reference);
     },
     editCharacter: function() {
       //TODO save in local storange
+      console.log(
+        "========== character.vue - edit - this.character ==========="
+      );
+      console.log(this.character);
       setCharLaunch(this.character);
       this.$root.$emit("openCharacterEditor");
     },
     removeCharacter: function() {
-
-       this.$root.$emit("remove", this.character._id);
+      this.showDetails =! this.showDetails
+      this.$root.$emit("remove", {
+        id: this.character._id,
+        pos: this.reference
+      });
     },
     launchGame: function() {
       //TODO launch game
       console.log("character.vue will launch game");
       this.$root.$emit("launchGame", this.character);
-    },
-    rerender: function() {
-      this.$root.$emit("refresh");
     },
     formatType: function() {
       switch (this.character.type) {
