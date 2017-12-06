@@ -6,14 +6,14 @@
         <!-- <p v-html="content"></p> -->
         <a class="twitter-timeline" href="https://twitter.com/chibimmo?ref_src=twsrc%5Etfw"></a> 
     </div>
-        <!--TODOs
-        -scroll in content block
-        add <a class="twitter-timeline" href="https://twitter.com/chibimmo?ref_src=twsrc%5Etfw">Tweets by chibimmo</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-    -->
+
 </div>
 </template>
 
 <script>
+/**TODO on finish loading twitter (?) id="twitter-widget-0"
+ * do this https://stackoverflow.com/questions/45925354/open-iframe-link-in-the-browser-using-electron
+ */
 module.exports = {
   props: [],
   data: function() {
@@ -47,9 +47,6 @@ module.exports = {
   position: absolute;
   z-index: 1;
   padding: 10px 20% 15px 20%;
-/*   padding-left: 20%;
-  padding-right: 20%;
-  padding-top: 10px;
-  padding-bottom: 15px; */
+
 }
 </style>

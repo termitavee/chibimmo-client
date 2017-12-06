@@ -61,7 +61,8 @@ module.exports = {
         user: "root",
         pass: "root",
         email: "",
-        captcha: ""
+        captcha: "",
+        remember: false
       },
       captcha: svgCaptcha.create(),
       submitButton: "Submit"

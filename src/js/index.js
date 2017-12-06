@@ -3,8 +3,8 @@ const { ipcRenderer, shell } = require("electron");
 
 const logInForm = require('./component/log-in-form')
 const feed = require('./component/feed')
-const { getUser, setUser, getCharLaunch, setCharLaunch, getIP, setIP } = require('./js/data/db')
-
+const { getUser, setUser, getCharLaunch, setCharLaunch, setIP } = require('./js/data/db')
+//getIP and setRemember is imported in init.js
 const indexApp = new Vue({
     el: '#index',
     components: {
@@ -56,6 +56,7 @@ const indexApp = new Vue({
                     if (res.status == 202) {
                         if ((res.action == "login")) {
                             setUser(res.user)
+                            //TODO remember if necesary
                             ipcRenderer.send("logIn", true)
                         } else {
                             this.$root.$emit("signedUp")
