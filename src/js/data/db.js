@@ -48,7 +48,6 @@ export const getLanguage = () => {
     return JSON.parse(localStorage.getItem('language'))
 }
 
-
 const createMonster = (name, statistics, sprite, drop) => {
     /*{
             variable
