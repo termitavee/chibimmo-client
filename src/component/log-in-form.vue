@@ -4,25 +4,25 @@
     
     <div v-show="!loginVisible">
         <p>
-            <span>User name</span>
+            <span>User name</span><br>
             <input type="text" v-model="form.user">
         </p>
         <p>
-            <span>Pasword</span>
+            <span>Pasword</span><br>
             <input type="password" v-model="form.pass">
         </p>
         <p>
-            <span>Email</span>
+            <span>Email</span><br>
             <input type="email" v-model="form.email">
         </p>
         <p>
-            <span>Refere as...</span></br>
+            <span>Refere as...</span></br><br>
             <input type="radio" name="gender" value="male" > he<br>
             <input type="radio" name="gender" value="female"> she<br>
             <input type="radio" name="gender" value="unknow" checked> you (or I, whatever) don't care
         </p>
         <p>
-            <span>Introduce captcha below</span>
+            <span>Enter captcha below</span>
             <div v-html="captcha.data"></div>
             
             <input type="text" v-model="form.catcha" @keyup.enter="submit">
@@ -31,12 +31,17 @@
     
     <div v-show="loginVisible">
         <p>
-            <span>User name</span>
+            <span>User name</span><br>
             <input type="text" v-model="form.user">
         </p>
         <p>
-            <span>Pasword</span>
+            <span>Pasword</span><br>
             <input type="password" v-model="form.pass" @keyup.enter="submit">
+        </p>
+        <p>
+            <input type="checkbox" v-model="form.remember">
+            <span>Remember?</span>
+
         </p>
         
     </div>
@@ -48,6 +53,7 @@
 
 <script>
 const svgCaptcha = require("svg-captcha");
+const device = require("os").hostname();
 const { setUser } = require("../js/data/db");
 
 module.exports = {
@@ -58,11 +64,12 @@ module.exports = {
       loginButton: "Change to Sign Up",
       loginVisible: true,
       form: {
-        user: "root",
-        pass: "root",
+        user: "",
+        pass: "",
         email: "",
         captcha: "",
-        remember: false
+        remember: false,
+        device: device
       },
       captcha: svgCaptcha.create(),
       submitButton: "Submit"
@@ -153,7 +160,7 @@ module.exports = {
         this.captcha = svgCaptcha.create();
         //TODO mark wrong parts
       }
-    },
+    }
   },
   created() {
     this.$root.$on("logInError", function(error) {
@@ -183,7 +190,6 @@ module.exports = {
     });
 
     this.$root.$on("signedUp", function() {
-
       this.loginVisible = true;
       this.pass = "";
       email = "";
@@ -194,5 +200,7 @@ module.exports = {
 </script>
 
 <style scoped>
-
+#formContent {
+  margin-top: 15px;
+}
 </style>

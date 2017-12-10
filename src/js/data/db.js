@@ -17,11 +17,15 @@ export const getLang = () => {
 }
 
 export const setRemember = (user, token) => {
+    console.log('set')
+    console.log({ user, token })
     localStorage.setItem('remember', JSON.stringify({ user, token }))
 }
 
 export const getRemember = () => {
-    return JSON.parse(localStorage.getItem('remember'))
+    const getted = JSON.parse(localStorage.getItem('remember'))
+    console.log(getted)
+    return getted
 }
 
 export const setCharLaunch = (character) => {

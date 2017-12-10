@@ -19,41 +19,17 @@ width: 1200,
   height: 600, */
 
 //main window options
-let mainWindowOptions = null;
-//TODO quitar resizable false para ponerlo en pantalla completa
-if (isDev) {
-  //enableLiveReload()
-  mainWindowOptions = {
-    width: 1920,
-    height: 625,
-    icon: __dirname + '/img/icon.jpg'
-  }
-} else {
-  mainWindowOptions = {
-    width: 800,
-    height: 600,
-    //TODO resizable: false,
-    icon: __dirname + '/img/icon.jpg',
-    webPreferences: {
-      devTools: true
-    }
+let mainWindowOptions = {
+  width: 800,
+  height: 600,
+  icon: __dirname + '/img/icon.jpg',
+  resizable: false,
+  webPreferences: {
+    devTools: true
   }
 }
+//TODO quitar devtools
 
-function loadLogInWindow() {
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
-}
-
-function loadMainWindow() {
-
-  //mainWindow.setFullScreen(false)
-
-  mainWindow.loadURL(`file://${__dirname}/logged.html`)
-}
-
-function loadEditorWindow() {
-  mainWindow.loadURL(`file://${__dirname}/newCharacter.html`)
-}
 
 function loadGameWindow() {
   mainWindow.setResizable(true)
@@ -67,7 +43,7 @@ function createMainWindow() {
   mainWindow = new BrowserWindow(mainWindowOptions);
 
   // and load the index.html of the app.
-  loadLogInWindow()
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
 
@@ -78,7 +54,7 @@ function createMainWindow() {
     mainWindow.setMenu(null)
   }
 
-  
+
   //TODO check that language and log status query is done only once
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -121,53 +97,12 @@ app.on('activate', () => {
 
 //comunication
 
-global.sharedObject = {
-  someProperty: 'default value'
-}
-
-
-ipcMain.on("logIn", (event, logged) => {
-  console.log("Main process on LogChanged");
-  console.log('content=' + logged);
-  if (logged) {
-    loadMainWindow()
-  } else {
-    loadLogInWindow()
-  }
-  //mainWindow.reload()
-
-});
-
-
-ipcMain.on("launchEditor", (event, content) => {
-  console.log("ipcMain on create character");
-  //TODO save content so editor can load it
+ipcMain.on("fullScreen", (event, content) => {
+  console.log("ipcMain on fullScreen");
   console.log(content);
-
-  loadEditorWindow()
-
-});
-
-ipcMain.on("hideEditor", (event, content) => {
-  console.log("ipcMain on create character");
-  console.log(content);
-
-  loadMainWindow()
-
-});
-
-ipcMain.on("launchGame", (event, content) => {
-  console.log("ipcMain on enter game");
-  console.log(content);
-  loadGameWindow()
-  mainWindow.setFullScreen(true)
-});
-
-ipcMain.on("exitGame", (event, content) => {
-  console.log("ipcMain on exit game");
-  console.log(content);
-  loadMainWindow()
-  mainWindow.setFullScreen(false)
+  mainWindow.setResizable(true)
+  mainWindow.setFullScreen(content === true)
+  mainWindow.setResizable(false)
 });
 
 console.log('render proccess completed')

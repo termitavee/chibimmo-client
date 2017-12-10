@@ -18,7 +18,7 @@
     </div>
   </div>
   <div id="menu" >
-    <span>Menu</span>
+    <game-menu></game-menu>
     <ul>
 <!--       <li @click="getElementById('life').style.width = '100%'">item1</li>
       <li @click="getElementById('magic').style.width = '0%'">item1</li>
@@ -30,8 +30,12 @@
 </template>
 
 <script>
+import gameMenu from "./game-menu";
 module.exports = {
   props: ["life", "magic", "stamina"],
+  components: {
+    "game-menu": gameMenu
+  },
   data: function() {
     return {
       showMenu: false,
@@ -58,9 +62,9 @@ module.exports = {
   mounted: function() {
     //TODO props {max, current}
     //life", "magic", "stamina
-    this.lifeBar = document.getElementById('life').style.width = '100%'
-    this.magicBar = document.getElementById('magic').style.width = '90%'
-    this.staminaBar = document.getElementById('stamina').style.width = '20%'
+    this.lifeBar = document.getElementById("life").style.width = "100%";
+    this.magicBar = document.getElementById("magic").style.width = "90%";
+    this.staminaBar = document.getElementById("stamina").style.width = "20%";
   },
   watch: {
     life: (curernt, previous) => {

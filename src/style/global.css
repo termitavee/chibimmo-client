@@ -1,6 +1,12 @@
-body{
+body {
   overflow: hidden
 }
-.scroll{
+
+.scroll {
   overflow-y: auto
+}
+
+.bottom {
+  position: absolute;
+  bottom: 10px;
 }

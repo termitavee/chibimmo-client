@@ -6,7 +6,8 @@
   </ul>
 
   <div id="chat-mesage" >
-    <input type="text" v-model="sendMessage"  @keyup.enter="send" maxlength="35"/>
+    <!-- @focus="writting" v-on:blur="stopped" -->
+    <input type="text" v-model="sendMessage" ref="textBox" @keyup.enter="send" maxlength="35"  v-on:onblur="blurInput"/>
     <span @click="send" v-text="sendButton"/>
   </div>
 
@@ -16,14 +17,14 @@
 <script>
 import io from "socket.io-client";
 //, { transports: ['websocket'] }
-let that = null
+let that = null;
 module.exports = {
-  props: ["user"],
+  props: ["user","serverIP"],
   data: function() {
     return {
       messages: [{ user: "System", content: "Welcome to the chat" }],
       sendMessage: "",
-      socket: io("http://127.0.0.1:3000/chat"),
+      socket: io(`http://${this.serverIP}:3000/chat`),
       sendButton: "Send"
     };
   },
@@ -34,18 +35,28 @@ module.exports = {
         console.log(
           "send message " + this.sendMessage + " by " + this.user._id
         );
-        this.socket.emit("message", {user: this.user._id, content: this.sendMessage});
+        this.socket.emit("message", {
+          user: this.user._id,
+          content: this.sendMessage
+        });
         this.messages.push({ user: this.user._id, content: this.sendMessage });
         this.sendMessage = "";
-      }else{
+      } else {
         //TODO lose focus on input
-document.getElementsByTagName('input')[0].blur()
+        document.getElementsByTagName("input")[0].blur();
       }
     }
   },
-
+  writting: function() {
+    //TODO send event to avoid listening keyboard
+    console.log('is foccused')
+  },
+  blurInput: function() {
+    //TODO send event to constinue
+    console.log('is blured')
+  },
   mounted: function() {
-    that = this
+    that = this;
     this.socket.on("connect", function() {
       console.log("connected");
     });
@@ -53,13 +64,15 @@ document.getElementsByTagName('input')[0].blur()
     this.socket.on("newMessage", function(message) {
       console.log("message recived");
       console.log(message);
-      //TODO TypeError: Cannot read property 'push' of undefined
-
       that.messages.push({ user: message.user, content: message.content });
     });
 
     this.socket.on("disconnect", function() {
       console.log("disconected");
+    });
+    this.$root.$on("focusChat", function() {
+      document.getElementsByTagName("input")[0].focus();
+
     });
   }
 };
@@ -71,7 +84,7 @@ ul {
   padding: 5px;
   height: 85%;
 }
-#chat{
+#chat {
   background-color: rgba(255, 255, 255, 0.4);
 }
 </style>
