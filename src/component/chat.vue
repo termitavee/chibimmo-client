@@ -7,7 +7,7 @@
 
   <div id="chat-mesage" >
     <!-- @focus="writting" v-on:blur="stopped" -->
-    <input type="text" v-model="sendMessage" ref="textBox" @keyup.enter="send" maxlength="35"  v-on:onblur="blurInput"/>
+    <input type="text" v-model="sendMessage" ref="textBox" @keyup.enter="send" maxlength="35"/>
     <span @click="send" v-text="sendButton"/>
   </div>
 
@@ -19,7 +19,7 @@ import io from "socket.io-client";
 //, { transports: ['websocket'] }
 let that = null;
 module.exports = {
-  props: ["user","serverIP"],
+  props: ["user", "serverIP"],
   data: function() {
     return {
       messages: [{ user: "System", content: "Welcome to the chat" }],
@@ -49,14 +49,16 @@ module.exports = {
   },
   writting: function() {
     //TODO send event to avoid listening keyboard
-    console.log('is foccused')
+    console.log("is foccused");
   },
   blurInput: function() {
     //TODO send event to constinue
-    console.log('is blured')
+    console.log("is blured");
   },
   mounted: function() {
     that = this;
+
+    //socket functionality
     this.socket.on("connect", function() {
       console.log("connected");
     });
@@ -71,9 +73,15 @@ module.exports = {
       console.log("disconected");
     });
     this.$root.$on("focusChat", function() {
-      document.getElementsByTagName("input")[0].focus();
-
+      document.getElementsByTagName("input")[0].focus()
     });
+    document.getElementsByTagName("input")[0].onblur = function() {
+      that.blurInput()
+    };
+
+    document.getElementsByTagName("input")[0].onfocus = function() {
+      that.writting()
+    };
   }
 };
 </script>
@@ -86,5 +94,6 @@ ul {
 }
 #chat {
   background-color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0em;
 }
 </style>

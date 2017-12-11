@@ -18,7 +18,6 @@ export const getLang = () => {
 
 export const setRemember = (user, token) => {
     console.log('set')
-    console.log({ user, token })
     localStorage.setItem('remember', JSON.stringify({ user, token }))
 }
 

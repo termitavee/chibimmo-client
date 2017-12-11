@@ -177,7 +177,7 @@ module.exports = {
       //this.$router.push('/logged')
       this.$router.go(-1);
     },
-
+ 
     preload: function(phaser) {
 
       //this.preview.load.image('logo', './img/icon.jpg');

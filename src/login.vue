@@ -27,7 +27,6 @@ const { getRemember, setRemember, getIP } = require("./js/data/db");
 
 const device = require("os").hostname();
 const remember = getRemember() || null;
-console.log(remember);
 
 //require('./js/library/widgets.js')
 const {
@@ -62,8 +61,8 @@ module.exports = {
       shell.openExternal("https://chibimmo.tumblr.com/");
     },
     checkToken: function() {
-      console.log(this.formIP);
-      if (remember != null && this.formIP != null) {
+
+      if (remember != null && this.formIP != null && window.history.length>2) {
         fetch("http://" + this.formIP + ":3000/login", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -77,10 +76,11 @@ module.exports = {
           .then(res => res.json())
           .then(res => {
             console.log("response");
+            console.log(res);
             if (res.status == 202) {
               setUser(res.user);
-              //user, token, device
-              setRemember({ user: res.user._id, token: res.token, device });
+              if(this.form.remember)
+              setRemember(res.user._id, res.token );
 
               this.$router.push("/logged");
             }

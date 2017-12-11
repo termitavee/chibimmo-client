@@ -1,6 +1,6 @@
 <template>
 <div id="index">
-  <div id="mainContent" />
+  <div id="mainContent" v-on:click="dummyF"/>
   <character-bar></character-bar>
   <chat id="chat" :user="user" :serverIP="serverIP" />
   <div id="referenceDiv"></div>
@@ -8,13 +8,7 @@
 </template>
 
 <script>
-/*TODO Phaser.Cache.getPhysicsData: Key "town_forest_tiles" not found in Cache.
-create @ game.vue? [sm]:148
-create @ game.vue? [sm]:439
-Uncaught TypeError: Cannot read property 'group' of undefined
-    at VueComponent.create (game.vue? [sm]:232)
-    at Object.create (game.vue? [sm]:439)
-*/
+//queckes todo delete
 import io from "socket.io-client";
 /*
 formulas de daño 
@@ -24,8 +18,8 @@ mix
 */
 const chat = require("./component/chat");
 const characterBar = require("./component/character-bar");
-const {getUser, getIP, getCharLaunch} = require("./js/data/db")
-const serverIP  = getIP();
+const { getUser, getIP, getCharLaunch } = require("./js/data/db");
+const serverIP = getIP();
 module.exports = {
   props: [""],
   data: function() {
@@ -51,6 +45,9 @@ module.exports = {
     "character-bar": characterBar
   },
   methods: {
+    dummyF: function(param){
+      console.log(param)
+    },
     preload: function(phaser) {
       //All skin
       this.game.load.atlasJSONHash(
@@ -149,12 +146,12 @@ module.exports = {
       this.map.setCollisionBetween(277, 286, true, this.layer.foreground);
       //setTileIndexCallback
       //setTileLocationCallback
-      //TODO hitMap
-      const levelData = this.game.cache.getPhysicsData("town_forest_tiles");
-      console.log(levelData);
+
+      //const levelData = this.game.cache.getPhysicsData("town_forest_tiles");
+      //console.log(levelData);
       //this.game.load.physics('level', 'assets/level.json');
-      this.game.physics.p2.convertTilemap(this.map, this.layer.foreground);
-      this.layer.foreground.debug = true; //TODO delete
+      //this.game.physics.p2.convertTilemap(this.map, this.layer.foreground);
+      //this.layer.foreground.debug = true; //TODO delete
 
       //this.game.physics.p2.restitution = 0.5;
 
@@ -168,6 +165,8 @@ module.exports = {
         hairColor,
         bodyColor
       } = this.character;
+      console.log("========== game.js - create() - this.character ==========");
+      console.log(this.character);
       // posicion x*32+16
       this.player = this.game.add.sprite(3216, 3664, "body0");
       this.player.hair = this.player.addChild(
@@ -235,19 +234,19 @@ module.exports = {
       //TODO When the game loses focus set InputManager.enabled (game.input) to false, and switch it back when it gets focus again.
 
       //prepare colisiohn with other players
-      characters = game.add.group();
+      //characters = game.add.group();
       /*var panda = pandas.create(game.world.randomX, game.world.randomY, 'panda');
         panda.body.setRectangle(40, 40); */
-      this.charactersColisionGroup = game.physics.p2.createCollisionGroup();
+      this.charactersColisionGroup = this.game.physics.p2.createCollisionGroup();
       this.charactersColisionGroup.enableBody = true;
       this.charactersColisionGroup.physicsBodyType = Phaser.Physics.P2JS;
       //prepare colisiohn with enemies
-      this.enemyColisionGroup = game.physics.p2.createCollisionGroup();
-      this.enemyColisionGroup.enableBody = true;
-      this.enemyColisionGroup.physicsBodyType = Phaser.Physics.P2JS;
+      //this.enemyColisionGroup = this.game.physics.p2.createCollisionGroup();
+      //this.enemyColisionGroup.enableBody = true;
+      //this.enemyColisionGroup.physicsBodyType = Phaser.Physics.P2JS;
       // this.mapColisionGroup = game.physics.p2.createCollisionGroup();
-      this.player.body.collides(charactersColisionGroup, hitplayer, this);
-      this.player.body.collides(enemyColisionGroup, hitenemy, this);
+      this.player.body.collides(this.charactersColisionGroup, this.hitplayer, this);
+      //this.player.body.collides(enemyColisionGroup, hitenemy, this);
       //this.player.body.collides(mapColisionGroup, hitmap, this);
     },
     update: function(phaser) {

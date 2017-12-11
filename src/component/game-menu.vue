@@ -1,9 +1,9 @@
 <template>
-<div>
+<div id='menu-root'>
 <ul>
-  <li :click="showMenu = !showMenu"> Menu </li>
-  <li v-if="showMenu" :click="exitGame"> Salir</li>
-  <li v-if="showMenu" :click="exitFull"> Cerrar</li>
+  <li > <button @click="this.toogleMenu" href="#">Menu</button> </li>
+  <li v-show="showMenu" > <button @click="exitGame" > Salir </button> </li>
+  <li v-show="showMenu" > <button @click="exitFull" > Cerrar </button ></li>
   
 </ul>
 
@@ -24,11 +24,18 @@ module.exports = {
     };
   },
   methods: {
-    exitGame: () => {
+    toogleMenu: function() {
+      console.log("click 0");
+      console.log(this);
+      this.showMenu = !this.showMenu;
+    },
+    exitGame: function() {
+      console.log("click 1");
       this.$router.go(-1);
     },
-    exitFull: () => {
-      windowRef.close()
+    exitFull: function() {
+      console.log("click 1");
+      this.windowRef.close();
     }
   },
 
@@ -37,5 +44,7 @@ module.exports = {
 </script>
 
 <style scoped>
-
+#menu-root {
+  letter-spacing: 0em;
+}
 </style>

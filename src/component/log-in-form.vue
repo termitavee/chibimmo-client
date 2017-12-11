@@ -52,6 +52,7 @@
 </template>
 
 <script>
+
 const svgCaptcha = require("svg-captcha");
 const device = require("os").hostname();
 const { setUser } = require("../js/data/db");

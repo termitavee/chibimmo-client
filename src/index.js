@@ -14,10 +14,6 @@ let mainWindow = null;
 https://www.gitbook.com/
 */
 
-/* 
-width: 1200,
-  height: 600, */
-
 //main window options
 let mainWindowOptions = {
   width: 800,

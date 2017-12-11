@@ -84,14 +84,11 @@ module.exports = {
 <style scoped>
 /* set fixed style, position, total width color */
 /*container*/
-#top-bar {
-  position: absolute;
-  left: 1%;
-  top: 1%;
-  right: 1%;
-}
+
 #stats {
-  text-align: left;
+  top: 1%;
+  left: 1%;
+  position: absolute;
   width: 50%;
 }
 #menu {

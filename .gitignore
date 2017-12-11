@@ -3,3 +3,4 @@ out
 .vscode
 src/component/old/*
 db.json
+chibimmo-*.tgz
