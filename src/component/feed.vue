@@ -1,7 +1,7 @@
 <template>
 <div>
    
-    <h2 id="tile"v-text="title">Project Chibimmo</h2>
+    <h2 id="tile" v-text="title">Project Chibimmo</h2>
     <div id="feed">
         <!-- <p v-html="content"></p> -->
          <a class="twitter-timeline" href="https://twitter.com/chibimmo?ref_src=twsrc%5Etfw"></a>  

@@ -88,6 +88,7 @@ module.exports = {
           .catch(error => {});
       }
     }
+    //TODO check server session
   },
   created: function() {
     //$root

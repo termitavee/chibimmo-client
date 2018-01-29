@@ -15,6 +15,7 @@
 </template>
 
 <script>
+//TODO implementar pestañas para chat locales
 import io from "socket.io-client";
 //, { transports: ['websocket'] }
 let that = null;

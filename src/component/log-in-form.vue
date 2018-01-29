@@ -23,7 +23,7 @@
             <span>Enter captcha below</span>
             <div v-html="captcha.data"></div>
             
-            <input type="text" v-model="form.catcha" @keyup.enter="submit" />
+            <input type="text" v-model="form.catcha" @keyup.enter="submit">
         </p>
     </div>
     

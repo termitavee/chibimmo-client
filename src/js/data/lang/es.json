@@ -1,0 +1,182 @@
+{
+  "windows": {
+    "logIn": {
+      "server": "dirección del servidor",
+      "web": "Web oficial"
+    },
+    "logged": {
+      "user": "Usuario",
+      "logOut": "Cerrar sesión"
+    },
+    "editor": {
+      "title": "Personalizar Personaje",
+      "name": "Nombre",
+      "class": "Trabajo",
+      "classType": [
+        "Soldado",
+        "Mago",
+        "Pícaro"
+      ],
+      "orientation": "Orientación",
+      "orientationType": [
+        "Ofensivo",
+        "Defensivo",
+        "Neutro"
+      ],
+      "bColor": "Color de cuerpo",
+      "hair": "Pelo",
+      "hColor": "Color de pelo",
+      "save": "Guardar",
+      "Exit": "Salir"
+    },
+    "info": {
+      "title": "¿Qué es Chibimmo?",
+      "content": "<p>Contenido</p>"
+    }
+  },
+  "component": {
+    "feed": {
+      "title": "Project Chibimmo"
+    },
+    "logIn": {
+      "changeSignIn": "cambiar a crear cuenta",
+      "changeSignUp": "cambiar a iniciar sesión",
+      "nick": "usuario",
+      "pass": "Contraseña",
+      "remember": "Recordar",
+      "confirm": "Confirmar contraseña",
+      "email": "Correo electrónico",
+      "captcha": "inserta el captcha abajo",
+      "submit": "Submit"
+    },
+    "characterList": {
+      "title": "List of characters",
+      "new": "Create new character"
+    },
+    "character": {
+      "the": "The",
+      "location": "Create new character",
+      "equip": "Equipment",
+      "created": "Created on",
+      "edit": "Edit",
+      "delete": "Delete",
+      "format": {
+        "type": [
+          "Soldier",
+          "Mage",
+          "Rogue"
+        ],
+        "orientation": [
+          "Offensive",
+          "Defensive",
+          "Neutral"
+        ],
+        "equip": [
+          "something",
+          "Armor lv1",
+          "Armor lv2",
+          "Armor lv3"
+        ],
+        "map": [
+          "Test Zone",
+          "World Map",
+          "village 1",
+          "village 2",
+          "city 1",
+          "city 2",
+          "island 1",
+          "island 2",
+          "desertic area",
+          "graveyard",
+          "house by the sea",
+          "borderline"
+        ],
+        "color": [
+          "default",
+          "brown",
+          "light",
+          "dark",
+          "red",
+          "blue",
+          "green"
+        ]
+      }
+    }
+  },
+  "game": {
+    "window": {
+      "chapter1": {
+        "1": {
+          "name": "Welcom to the Bimo's world"
+        },
+        "2": {
+          "name": "Find a place"
+        },
+        "3": {
+          "name": "Learn from your errors"
+        },
+        "4": {
+          "name": "Far away"
+        },
+        "5": {
+          "name": "Until the end"
+        }
+      },
+      "locations": {
+        "0": {
+          "name": "World map",
+          "intro": "Hi there, You don't know who am I, me neither. bla bla bla"
+        },
+        "1": {
+          "name": "village 1"
+        },
+        "2": {
+          "name": "village 2"
+        },
+        "3": {
+          "name": "city 1"
+        },
+        "4": {
+          "name": "city 2"
+        },
+        "5": {
+          "name": "island 1"
+        },
+        "6": {
+          "name": "island 2"
+        },
+        "7": {
+          "name": "desertic area"
+        },
+        "8": {
+          "name": "graveyard"
+        },
+        "9": {
+          "name": "house by the sea"
+        },
+        "10": {
+          "name": "borderline"
+        },
+        "11": {
+          "name": "worldMap"
+        },
+        "12": {
+          "name": "worldMap"
+        }
+      }
+    },
+    "chat": {
+      "welcome": "Welcome to the chat",
+      "send": "Send"
+    },
+    "menu": {
+      "title": "Menu",
+      "inventory": "Inventory",
+      "map": "Map",
+      "messages": "Messages",
+      "pets": "Pets",
+      "exit": "Send",
+      "close": "Send"
+    }
+  }
+}
