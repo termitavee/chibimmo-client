@@ -26,15 +26,6 @@ let mainWindowOptions = {
 }
 //TODO quitar devtools
 
-
-function loadGameWindow() {
-  mainWindow.setResizable(true)
-  mainWindow.setFullScreen(true)
-  mainWindow.loadURL(`file://${__dirname}/game.html`)
-
-  mainWindow.setResizable(false)
-}
-
 function createMainWindow() {
   mainWindow = new BrowserWindow(mainWindowOptions);
 
@@ -96,9 +87,10 @@ app.on('activate', () => {
 ipcMain.on("fullScreen", (event, content) => {
   console.log("ipcMain on fullScreen");
   console.log(content);
+  /*
   mainWindow.setResizable(true)
   mainWindow.setFullScreen(content === true)
-  mainWindow.setResizable(false)
+  mainWindow.setResizable(false)*/
 });
 
 console.log('render proccess completed')

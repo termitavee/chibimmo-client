@@ -22,8 +22,8 @@ const { dialog } = remote;
 const feed = require("./component/feed");
 const characterList = require("./component/character-list");
 const character = require("./component/character");
-const { getUser, setCharLaunch, getIP } = require("./js/data/db");
-
+const { getUser, setCharLaunch, getCharLaunch, getIP } = require("./js/data/db");
+//TODO check getCharLaunch for created user
 //require('./js/library/widgets.js')
 module.exports = {
   props: [],
@@ -52,6 +52,13 @@ module.exports = {
     }
   },
   created: function() {
+    const addCharacter = getCharLaunch()
+    if(addCharacter){
+      this.user.characters.push(addCharacter)
+      //to avoid fails
+      setCharLaunch(undefined)
+    }
+
     this.$root.$on("openCharacterEditor", function() {
       console.log("logged.js on openCharacterEditor");
       //ipcRenderer.send("launchEditor");

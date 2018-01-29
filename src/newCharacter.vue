@@ -1,7 +1,7 @@
 <template>
 <div class="pure-g" id="index">
 
-    <div id="leftContent"class="pure-u-2-3" >
+    <div id="leftContent" class="pure-u-2-3" >
     </div>
 
     <div class="pure-u-1-3" id="character-options">
@@ -80,7 +80,7 @@
 <script>/* 
 import {getCharLaunch, getUser}from './js/data/db' */
 const {getCharLaunch,setCharLaunch, getUser} = require('./js/data/db')
-
+//import {getIP, setCharLaunch} from './js/data/db'
 module.exports = {
   props: [""],
   data: function() {
@@ -96,6 +96,7 @@ module.exports = {
         hairColor: "0x000000",
         bodyColor: 0
       },
+      ipServer: getIP(),
       preview: null,
       character: null,
       hair: null,
@@ -115,7 +116,7 @@ module.exports = {
         console.log("checked ok");
         //127.0.0.1
         //termitavee.ddns.net
-        fetch("http://" + getIP() + ":3000/create", {
+        fetch("http://" + this.ipServer + ":3000/create", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: JSON.stringify(this.form)
@@ -128,7 +129,7 @@ module.exports = {
               console.log("success");
 
               this.form.user.characters.push(res.char);
-              setUser(this.form.user);
+              setCharLaunch(res.char);
               this.backToList();
             } else {
               console.log("failed");

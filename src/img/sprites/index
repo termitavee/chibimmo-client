@@ -10,8 +10,16 @@ Body - each folder is an index for each
 
   clothes:
     0 default
+  weapon
+    0 default
+    1 sword
+    2 staff
+    3 dagger
 
 enemy- non human enemy sprites
+
 hair - each hair type (json, image and preview)
   0 - non hair
   1 - standar
+
+

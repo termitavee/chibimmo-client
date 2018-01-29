@@ -15,10 +15,18 @@ formulas de daño
 fis
 mag
 mix
+
+    game.camera.shake(0.05, 500);
+
+game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+
+
+
+
 */
 const chat = require("./component/chat");
 const characterBar = require("./component/character-bar");
-const { getUser, getIP, getCharLaunch } = require("./js/data/db");
+const { getUser, getIP, getCharLaunch, setCharLaunch } = require("./js/data/db");
 const serverIP = getIP();
 module.exports = {
   props: [""],
@@ -103,6 +111,7 @@ module.exports = {
         "./img/sprites/body/0/clothes.json"
       );
       //All items
+      
       //All maps
       this.game.load.tilemap(
         "myWorld",
@@ -225,6 +234,8 @@ module.exports = {
       this.player.body.addRectangle(15, 20);
       this.player.body.fixedRotation = true;
       this.player.body.collideWorldBounds = true;
+    //  The smaller the value, the smooth the camera (and the longer it takes to catch up)
+    //.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
       this.game.camera.follow(this.player);
       //TODO all key listener, wasd, esc, enter
@@ -395,7 +406,12 @@ module.exports = {
       //TODO edit found
     },
     deleteCharacter: function(character) {
-      //TODO get character visual parameters, print it and remove reference
+      const { _id, equipment, map, position } = character;
+      const found = this.characters.filter((character, index, list) => {
+        return character._id == id;
+      }, true);
+
+      //TODO remove found
     },
     addMiniMap: function() {
       //TODO IDK
@@ -485,6 +501,7 @@ module.exports = {
        game.input.enabled = false;
  
      }); */
+     setCharLaunch(undefined)
   }
 };
 </script>
@@ -506,8 +523,8 @@ module.exports = {
   width: 20%;
 }
 
-#topContent {
-}
+/* #topContent {
+} */
 
 #mainContent {
   background-color: lightgrey;

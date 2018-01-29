@@ -12,20 +12,18 @@
             <input type="password" v-model="form.pass">
         </p>
         <p>
-            <span>Email</span><br>
-            <input type="email" v-model="form.email">
+            <span>Repeat pasword</span><br>
+            <input type="password" v-model="form.pass2">
         </p>
         <p>
-            <span>Refere as...</span></br><br>
-            <input type="radio" name="gender" value="male" > he<br>
-            <input type="radio" name="gender" value="female"> she<br>
-            <input type="radio" name="gender" value="unknow" checked> you (or I, whatever) don't care
+            <span>Email</span><br>
+            <input type="email" v-model="form.email">
         </p>
         <p>
             <span>Enter captcha below</span>
             <div v-html="captcha.data"></div>
             
-            <input type="text" v-model="form.catcha" @keyup.enter="submit">
+            <input type="text" v-model="form.catcha" @keyup.enter="submit" />
         </p>
     </div>
     
@@ -52,7 +50,6 @@
 </template>
 
 <script>
-
 const svgCaptcha = require("svg-captcha");
 const device = require("os").hostname();
 const { setUser } = require("../js/data/db");
@@ -67,6 +64,7 @@ module.exports = {
       form: {
         user: "",
         pass: "",
+        pass2: "",
         email: "",
         captcha: "",
         remember: false,
@@ -85,12 +83,15 @@ module.exports = {
       this.loginVisible = !this.loginVisible;
     },
     submit: function() {
-      const { user, pass, email, captcha } = this.form;
+      const { user, pass, pass2, email, captcha } = this.form;
       let validUser = false;
       let messageUser = "";
 
       let validPass = false;
       let messagePass = "";
+
+      let validPass2 = false;
+      let messagePass2 = "";
 
       let validEmail = false;
       let messageEmail = "";
@@ -114,7 +115,10 @@ module.exports = {
         validPass = false;
         messagePass = "password too hort";
       } else {
-        validPass = true;
+        if (pass != pass2) {
+          validPass2 = false;
+          messagePass2 = "password don't match";
+        } else validPass = true;
 
         if (!digitPatt.test(pass)) messagePass = "May use numbers";
 
@@ -141,6 +145,7 @@ module.exports = {
       //TODO some testing
       console.log("validUser=" + validUser);
       console.log("validPass=" + validPass);
+      console.log("validPass2=" + validPass2);
       console.log("validEmail=" + validEmail);
       console.log("validCaptcha=" + validCaptcha);
       console.log("messageUser=" + messageUser);
@@ -148,9 +153,10 @@ module.exports = {
       console.log("messageEmail=" + messageEmail);
       validUser = true;
       validPass = true;
+      validPass2 = true;
       validEmail = true;
       validCaptcha = true;
-      if (validUser && validPass && validEmail && validCaptcha) {
+      if (validUser && validPass && validPass2 && validEmail && validCaptcha) {
         //TODO some kind of loading
         const action = this.loginVisible ? "LogIn" : "SignUp";
         console.log(action);
@@ -193,8 +199,8 @@ module.exports = {
     this.$root.$on("signedUp", function() {
       this.loginVisible = true;
       this.pass = "";
-      email = "";
-      captcha = "";
+      this.email = "";
+      this.captcha = "";
     });
   }
 };

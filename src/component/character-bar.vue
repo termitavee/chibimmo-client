@@ -100,8 +100,8 @@ module.exports = {
 }
 .bar {
   margin-top: 5px;
-  height: 20px;
-  width: 500px;
+  height: 10px;
+  width: 200px;
   position: relative;
   border-radius: 25px;
   border: 2px solid #444;
@@ -110,7 +110,7 @@ module.exports = {
 }
 .stat {
   transition: 2s;
-  height: 20px;
+  height: 10px;
   border-radius: 25px;
 }
 #life {
