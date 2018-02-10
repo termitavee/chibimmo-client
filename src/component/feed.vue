@@ -25,9 +25,7 @@ module.exports = {
     };
   },
   methods: {
-    createNewCharacter: function() {
-      this.$emit("increment");
-    },
+    
     showDetails: function() {
       this.$emit("increment");
     },

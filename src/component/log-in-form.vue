@@ -21,7 +21,7 @@
         </p>
         <p>
             <span>Enter captcha below</span>
-            <div v-html="captcha.data"></div>
+            <span v-html="captcha.data"></span>
             
             <input type="text" v-model="form.catcha" @keyup.enter="submit">
         </p>
@@ -51,7 +51,6 @@
 
 <script>
 const svgCaptcha = require("svg-captcha");
-const device = require("os").hostname();
 const { setUser } = require("../js/data/db");
 
 module.exports = {
@@ -67,8 +66,7 @@ module.exports = {
         pass2: "",
         email: "",
         captcha: "",
-        remember: false,
-        device: device
+        remember: false
       },
       captcha: svgCaptcha.create(),
       submitButton: "Submit"
