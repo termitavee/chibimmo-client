@@ -1,0 +1,178 @@
+{
+  "weapon": [
+    [
+      {
+        "damage": 1,
+        "uses": 0,
+        "price": 20
+      },
+      {
+        "damage": 2,
+        "uses": 0,
+        "price": 400
+      },
+      {
+        "damage": 4,
+        "uses": 0,
+        "price": 1000
+      }
+    ],
+    [
+      {
+        "damage": 2,
+        "uses": 0,
+        "price": 20
+      },
+      {
+        "damage": 4,
+        "uses": 0,
+        "price": 400
+      },
+      {
+        "damage": 8,
+        "uses": 0,
+        "price": 1000
+      }
+    ],
+    [
+      {
+        "damage": 4,
+        "uses": 0,
+        "price": 20
+      },
+      {
+        "damage": 8,
+        "uses": 0,
+        "price": 400
+      },
+      {
+        "damage": 16,
+        "uses": 0,
+        "price": 1000
+      }
+    ]
+  ],
+  "armor": [
+    [
+      {
+        "def": 2,
+        "mind": 6,
+        "uses": 0,
+        "price": 40
+      },
+      {
+        "def": 4,
+        "mind": 8,
+        "uses": 0,
+        "price": 600
+      },
+      {
+        "def": 8,
+        "mind": 16,
+        "uses": 0,
+        "price": 1200
+      }
+    ],
+    [
+      {
+        "def": 4,
+        "mind": 4,
+        "uses": 0,
+        "price": 40
+      },
+      {
+        "def": 6,
+        "mind": 6,
+        "uses": 0,
+        "price": 600
+      },
+      {
+        "def": 12,
+        "mind": 12,
+        "uses": 0,
+        "price": 1200
+      }
+    ],
+    [
+      {
+        "def": 6,
+        "mind": 2,
+        "uses": 0,
+        "price": 40
+      },
+      {
+        "def": 8,
+        "mind": 4,
+        "uses": 0,
+        "price": 600
+      },
+      {
+        "def": 16,
+        "mind": 8,
+        "uses": 0,
+        "price": 1200
+      }
+    ]
+  ],
+  "potion": [
+    [
+      {
+        "percent": 25,
+        "uses": 1,
+        "price": 50
+      },
+      {
+        "percent": 50,
+        "uses": 1,
+        "price": 100
+      },
+      {
+        "percent": 75,
+        "uses": 1,
+        "price": 250
+      }
+    ],
+    [
+      {
+        "percent": 25,
+        "uses": 1,
+        "price": 50
+      },
+      {
+        "percent": 50,
+        "uses": 1,
+        "price": 100
+      },
+      {
+        "percent": 75,
+        "uses": 1,
+        "price": 250
+      }
+    ],
+    [
+      {
+        "percent": 25,
+        "uses": 1,
+        "price": 50
+      },
+      {
+        "percent": 50,
+        "uses": 1,
+        "price": 100
+      },
+      {
+        "percent": 75,
+        "uses": 1,
+        "price": 250
+      }
+    ]
+  ],
+  "other": [
+    {
+      "price": 1
+    },
+    {
+      "price": 250
+    }
+  ]
+}

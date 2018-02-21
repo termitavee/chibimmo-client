@@ -178,5 +178,104 @@
       "exit": "Send",
       "close": "Send"
     }
+  },
+  "general": {
+    "archivements": [
+      {
+        "name": "left or right",
+        "description": "",
+        "requirement": ""
+      },
+      {
+        "name": "it was not so difficult",
+        "description": "",
+        "requirement": ""
+      },
+      {
+        "name": "assassin",
+        "description": "",
+        "requirement": ""
+      },
+      {
+        "name": "too bright",
+        "description": "",
+        "requirement": ""
+      },
+      {
+        "name": "too dark",
+        "description": "",
+        "requirement": ""
+      },
+      {
+        "name": "large family",
+        "description": "",
+        "requirement": ""
+      },
+      {
+        "name": "This is too difficult",
+        "description": "",
+        "requirement": ""
+      },
+      {
+        "name": "kamikaze",
+        "description": "",
+        "requirement": ""
+      }
+    ],
+    "items": {
+      "weapon": [
+        {
+          "name": "wand",
+          "desc": "magic damage weapon"
+        },
+        {
+          "name": "dagger",
+          "desc": "low damage weapon"
+        },
+        {
+          "name": "sword",
+          "desc": "high damage weapon"
+        }
+      ],
+      "armor": [
+        {
+          "name": "light armor",
+          "desc": "small defense, for mages"
+        },
+        {
+          "name": "medium armor",
+          "desc": "medium defense, for rogues"
+        },
+        {
+          "name": "heavy armor",
+          "desc": "high defense, for warriors"
+        }
+      ],
+      "potion": [
+        {
+          "name": "red potion",
+          "desc": "restore life"
+        },
+        {
+          "name": "blue potion",
+          "desc": "restore magic"
+        },
+        {
+          "name": "green potion",
+          "desc": "restore stamina"
+        }
+      ],
+      "other": [
+        {
+          "name": "money",
+          "desc": "used to buy things"
+        },
+        {
+          "name": "jewel",
+          "desc": "Aparently no use, someone may buy it"
+        }
+      ]
+    },
+    "misions": {}
   }
 }
