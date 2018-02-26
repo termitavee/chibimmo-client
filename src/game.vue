@@ -22,7 +22,6 @@ game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 
 
 
-
 */
 const chat = require("./component/chat");
 const characterBar = require("./component/character-bar");

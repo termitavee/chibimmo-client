@@ -2,48 +2,43 @@
 <div id="formContent">
     <a v-text="loginButton" @click="toggleLogin" class="pure-button" >Log in</a>
     
-    <div v-show="!loginVisible">
-        <p>
-            <span>User name</span><br>
-            <input type="text" v-model="form.user">
-        </p>
-        <p>
-            <span>Pasword</span><br>
-            <input type="password" v-model="form.pass">
-        </p>
-        <p>
-            <span>Repeat pasword</span><br>
-            <input type="password" v-model="form.pass2">
-        </p>
-        <p>
-            <span>Email</span><br>
-            <input type="email" v-model="form.email">
-        </p>
-        <p>
-            <span>Enter captcha below</span>
-            <span v-html="captcha.data"></span>
-            
-            <input type="text" v-model="form.catcha" @keyup.enter="submit">
-        </p>
-    </div>
-    
-    <div v-show="loginVisible">
-        <p>
-            <span>User name</span><br>
-            <input type="text" v-model="form.user">
-        </p>
-        <p>
-            <span>Pasword</span><br>
-            <input type="password" v-model="form.pass" @keyup.enter="submit">
-        </p>
-        <p>
-            <input type="checkbox" v-model="form.remember">
-            <span>Remember?</span>
+    <p>
+      <span>User name</span><br>
+      <input type="text" v-model="form.user" @input="$v.form.user.$touch()"  v-bind:class="{error: $v.form.user.$error && !loginVisible, valid: $v.form.user.$dirty && !$v.form.user.$invalid && !loginVisible}"><br>
+      <span class="error-msg" v-if="$v.form.user.$error && !loginVisible"> Name too short.</span>
+    </p>
+    <p>
+      <span>Pasword</span><br>
+      <input type="password" v-model="form.pass" @input="$v.form.pass.$touch()"  v-bind:class="{error: $v.form.pass.$error && !loginVisible, valid: $v.form.pass.$dirty && !$v.form.pass.$invalid && !loginVisible}"><br>
+      <span class="error-msg" v-if="$v.form.pass.$error && !loginVisible"> Password too insecure.</span>
+    </p>
 
-        </p>
+    <div v-show="!loginVisible">
+      <p>
+        <span>Repeat pasword</span><br>
+        <input type="password" v-model="form.pass2" @input="$v.form.pass2.$touch()"  v-bind:class="{error: $v.form.pass2.$error, valid: $v.form.pass2.$dirty && !$v.form.pass2.$invalid}"><br>
+        <span class="error-msg" v-if="$v.form.pass2.$error">Passwords do not match.</span>
+      </p>
+      <p>
+        <span>Email</span><br>
+        <input type="email" v-model="form.email" @input="$v.form.email.$touch()"  v-bind:class="{error: $v.form.email.$error, valid: $v.form.email.$dirty && !$v.form.email.$invalid}"><br>
+        <span class="error-msg" v-if="$v.form.email.$error">Not a valid Email.</span>
+      </p>
+        <p>
+          <span>Enter captcha below</span>
+          <span v-html="captcha.data"></span>
+          <input type="text" v-model="form.catcha" @keyup.enter="submit">
+      </p>
+    </div>
+    <div v-show="loginVisible">
+      <p>
+        <input type="checkbox" v-model="form.remember">
+        <span>Remember?</span>
+      </p>
         
     </div>
-    <a v-text="submitButton" @click="submit" class="pure-button" >Submit</a>
+   
+  <a v-text="submitButton" @click="submit" class="pure-button" >Submit</a>
     
 </div><!--end login block-->
 
@@ -51,8 +46,20 @@
 
 <script>
 const svgCaptcha = require("svg-captcha");
-const { setUser } = require("../js/data/db");
+const {
+  required,
+  minLength,
+  maxLength,
+  requiredUnless,
+  sameAs,
+  ipAddress,
+  url,
+  or,
+  email
+} = require("vuelidate/lib/validators");
 
+const { setUser } = require("../js/data/db");
+//TODO captcha
 module.exports = {
   name: "formContent",
   props: [],
@@ -72,6 +79,32 @@ module.exports = {
       submitButton: "Submit"
     };
   },
+  validations: {
+    form: {
+      user: {
+        required,
+        minLength: minLength(4)
+      },
+      pass: {
+        required,
+        minLength: minLength(6)
+      },
+      pass2: {
+        required: requiredUnless("loginVisible"),
+        sameAsPassword: sameAs("pass")
+      },
+      email: {
+        email,
+        required: requiredUnless("loginVisible"),
+        minLength: minLength(4)
+      },
+      captcha: {
+        required: requiredUnless("loginVisible"),
+        minLength: minLength(4),
+        maxLength: maxLength(4)
+      }
+    }
+  },
   methods: {
     toggleLogin: function() {
       this.loginButton = this.loginVisible
@@ -81,80 +114,12 @@ module.exports = {
       this.loginVisible = !this.loginVisible;
     },
     submit: function() {
-      const { user, pass, pass2, email, captcha } = this.form;
-      let validUser = false;
-      let messageUser = "";
-
-      let validPass = false;
-      let messagePass = "";
-
-      let validPass2 = false;
-      let messagePass2 = "";
-
-      let validEmail = false;
-      let messageEmail = "";
-
-      let validCaptcha = false;
-
-      const symbPatt = /\W/g;
-      const digitPatt = /\d/g;
-      const emailPatt = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/i;
-
-      //check user
-      if (user.length < 4) {
-        validUser = false;
-        messageUser = "name too hort";
-      } else {
-        validUser = true;
-      }
-
-      //check pass
-      if (pass.length < 6) {
-        validPass = false;
-        messagePass = "password too hort";
-      } else {
-        if (pass != pass2) {
-          validPass2 = false;
-          messagePass2 = "password don't match";
-        } else validPass = true;
-
-        if (!digitPatt.test(pass)) messagePass = "May use numbers";
-
-        if (!symbPatt.test(pass))
-          messagePass =
-            messagePass.length != 0
-              ? messagePass + " and symbols"
-              : "May use symbols";
-      }
-      if (!this.loginVisible) {
-        if (emailPatt.test(email)) {
-          validEmail = true;
-        } else {
-          validEmail = false;
-          messageEmail = "There is something strange here";
-        }
-
-        if (captcha == this.captcha.text) validCaptcha = true;
-      } else {
-        validEmail = true;
-        validCaptcha = true;
-      }
-
-      //TODO some testing
-      console.log("validUser=" + validUser);
-      console.log("validPass=" + validPass);
-      console.log("validPass2=" + validPass2);
-      console.log("validEmail=" + validEmail);
-      console.log("validCaptcha=" + validCaptcha);
-      console.log("messageUser=" + messageUser);
-      console.log("messagePass=" + messagePass);
-      console.log("messageEmail=" + messageEmail);
-      validUser = true;
-      validPass = true;
-      validPass2 = true;
-      validEmail = true;
-      validCaptcha = true;
-      if (validUser && validPass && validPass2 && validEmail && validCaptcha) {
+      const { form, formIP } = this.$v;
+      if (
+        !form.user.$invalid &&
+        !form.pass.$invalid &&
+        (this.loginVisible || (!form.pass2.$invalid && !form.email.$invalid))
+      ) {
         //TODO some kind of loading
         const action = this.loginVisible ? "LogIn" : "SignUp";
         console.log(action);
@@ -207,5 +172,38 @@ module.exports = {
 <style scoped>
 #formContent {
   margin-top: 15px;
+}
+input {
+  border: 1px solid silver;
+  border-radius: 4px;
+  background: white;
+  padding: 5px 10px;
+}
+
+.error {
+  border-color: red;
+  background: #fdd;
+}
+
+.error:focus {
+  outline-color: #f99;
+}
+
+.valid {
+  border-color: #5a5;
+  background: #efe;
+}
+
+.valid:focus {
+  outline-color: #8e8;
+}
+
+.center {
+  text-align: center;
+}
+
+.error-msg {
+  color: red;
+  font-size: small;
 }
 </style>

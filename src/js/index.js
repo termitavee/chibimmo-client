@@ -1,8 +1,13 @@
+import VueRouter from 'vue-router'
+import Vuelidate from 'vuelidate'
+
 const login = require('./login')
 const logged = require('./logged')
 const newCharacter = require('./newCharacter')
 const game = require('./game')
 
+Vue.use(VueRouter)
+Vue.use(Vuelidate)
 
 const routes = [
   { path: '/login', component: login },

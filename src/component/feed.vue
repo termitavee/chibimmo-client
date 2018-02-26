@@ -16,7 +16,7 @@
  * do this https://stackoverflow.com/questions/45925354/open-iframe-link-in-the-browser-using-electron
  */
 module.exports = {
-  props: [],
+  props: ["formIP"],
   data: function() {
     return {
       title: "Project Chibimmo",
@@ -40,22 +40,8 @@ module.exports = {
     }
   },
   created: function() {
-    //clean prevouous
-    let twScriptTag = document.getElementsByTagName("script")[4];
-    console.log(twScriptTag);
-    if (twScriptTag.src.includes("twitter"))
-      twScriptTag.parentElement.removeChild(twScriptTag);
-
-    let content = document.getElementById("twitter-widget-0");
-    console.log(content);
-    if (content) content.parentElement.removeChild(content);
-    console.log(document.getElementById("twitter-widget-0"));
-
-    let twSandBox = document.getElementById("rufous-sandbox");
-    console.log(twSandBox);
-    if (twSandBox) twSandBox.parentElement.removeChild(twSandBox);
-    console.log(document.getElementById("rufous-sandbox"));
-    eval(require("../js/library/widgets.js"))
+    
+    
   },
   mounted: function() {
     require("../js/library/widgets.js");
