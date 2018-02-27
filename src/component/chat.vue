@@ -25,7 +25,7 @@ module.exports = {
     return {
       messages: [{ user: "System", content: "Welcome to the chat" }],
       sendMessage: "",
-      socket: io(`http://${this.serverIP}:3000/chat`),
+      socket: io(`http://${this.serverIP}:1993/chat`),
       sendButton: "Send"
     };
   },

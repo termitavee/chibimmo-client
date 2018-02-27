@@ -16,13 +16,12 @@ export const getLang = () => {
     return JSON.parse(localStorage.getItem('lang'))
 }
 
-export const setRemember = (user, token) => {
-    console.log('set')
-    localStorage.setItem('remember', JSON.stringify({ user, token }))
+export const setRemember = (user) => {
+    localStorage.setItem('remember', user)
 }
 
 export const getRemember = () => {
-    const getted = JSON.parse(localStorage.getItem('remember'))
+    const getted = localStorage.getItem('remember')
     console.log(getted)
     return getted
 }

@@ -2,12 +2,12 @@
 <div id="index">
         
   <div class="pure-u-2-3" id="leftContent">
-      <feed></feed>
+      <feed :language="fileText.component"></feed>
   </div><!--end side block-->
   
   <div class="pure-u-1-3" id="main-content">
       
-      <h2 v-text="user._id">Player</h2><a @click="exitLog" class="pure-button" href="#" v-text="logOut"></a>
+      <h2 v-text="user._id || text.user"></h2><a @click="exitLog" class="pure-button" href="#" v-text="text.logOut"></a>
 
       <character-list :characters="user.characters"/>
       
@@ -16,14 +16,16 @@
 </template>
 
 <script>
-const { ipcRenderer, remote } = require("electron");
-const { dialog } = remote;
+const { ipcRenderer, remote } = require("electron")
+const { dialog } = remote
 
-const feed = require("./component/feed");
-const characterList = require("./component/character-list");
-const character = require("./component/character");
-const { getUser, setCharLaunch, getCharLaunch, getIP } = require("./js/data/db");
-//TODO check getCharLaunch for created user
+const feed = require("./component/feed")
+const characterList = require("./component/character-list")
+const character = require("./component/character")
+const { getUser, setCharLaunch, getCharLaunch, getIP } = require("./js/data/db")
+const enText = require("./js/data/lang/en.json")
+const esText = require("./js/data/lang/es.json")
+
 //require('./js/library/widgets.js')
 module.exports = {
   props: [],
@@ -31,13 +33,15 @@ module.exports = {
     return {
       user: getUser(),
       language: "en",
-      logOut: "log Out"
+      formIP: "127.0.0.1",
+      fileText: enText,
+      text: enText.windows.logged,
     };
   },
   components: {
-    feed: feed,
+    "feed": feed,
     "character-list": characterList,
-    character: character
+    "character": character
   },
   methods: {
     exitLog: function() {
@@ -53,6 +57,8 @@ module.exports = {
   },
   created: function() {
     const addCharacter = getCharLaunch()
+    this.formIP = getIP()
+
     if(addCharacter){
       this.user.characters.push(addCharacter)
       //to avoid fails
@@ -85,25 +91,24 @@ module.exports = {
           type: "warning",
           buttons: ["Cancel", "Delete", "Cancel"],
           title: "chibimmo ask you",
-          message: 'Are you shure you want to delete "' + id + '"?'
+          message: `Are you shure you want to delete "${id}"?`
         },
         answer => {
           if (answer == 1) {
-            const serverIP = getIP();
             const dataSend = JSON.stringify({ user: this.user._id, name: id });
             console.log("Fetch data");
             console.log(serverIP);
             console.log(dataSend);
-            fetch("http://" + serverIP + ":3000/deletecharacter", {
-              method: "POST",
+            fetch(`http://${formIP}:1993/character/${id}`, {
+              method: "DELETE",
+              credentials: "include",
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: dataSend
             })
               .then(res => res.json())
               .then(res => {
                 console.log(res);
                 if (res.status == 202) {
-                  console.log("mensaje de borrado con éxito, refrescar ");
+                  console.log("personaje de borrado con éxito, refrescar ");
 
                   this.user.characters.splice(pos, 1);
                   setCharLaunch(this.user);
@@ -125,7 +130,6 @@ module.exports = {
   }
 };
 
-console.log("logged.js cargado");
 </script>
 
 <style scoped>

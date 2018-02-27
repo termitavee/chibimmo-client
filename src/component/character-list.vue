@@ -1,17 +1,15 @@
 <template>
 <div>
-
-  <h3>List of characters created</h3>
+  <h3 v-text="comText.component.characterList.title">List of characters created</h3>
   <ul>
     <li class="characterItem" v-for="(item, key) in characters" :key="key">
-        <character :character="item" :reference="key"/>
+        <character :character="item" :reference="key" :comText="comText"/>
     </li>
     <li>
-      <a @click="createNewCharacter" v-text="newCharacter" class="pure-button">Create new</a>
+      <a @click="createNewCharacter" v-text="comText.component.characterList.new" class="pure-button">Create new</a>
     </li>
   </ul>
 </div>
-  
 </template>
 
 <script>
@@ -19,7 +17,7 @@ const character = require("../component/character");
 const { setCharLaunch } = require("../js/data/db");
 
 module.exports = {
-  props: ["characters"],
+  props: ["characters", "comText"],
   components: {
     character: character
   },

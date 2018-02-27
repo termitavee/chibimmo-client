@@ -1,19 +1,18 @@
 <template>
-<div id="index">
+<div id="index" class="pure-1-1">
 
-    <div class="pure-u-2-3" id="leftContent">
-      <feed></feed>
-    </div>
-    <!--end side block-->
+    <div id="main-content">
 
-    <div class="pure-u-1-3" id="main-content">
-
-      <log-in-form> </log-in-form>
+      <log-in-form :comText="fileText.component"> </log-in-form>
       <div class="bottom">
-        <span>Server</span>
-        <input type="text" v-model="formIP">
+        <span v-text="text.server">Server</span><br>
+        <input type="text" v-model="formIP"><br>
         <a href="#" target="" v-on:click="launchWeb">Oficial web</a>
       </div>
+
+    </div>
+    <div>
+<language-selector id="languageBox" :change="changeLang" :language="fileText.component.lang"/>
 
     </div>
     <!--end main block-->
@@ -22,13 +21,19 @@
 
 <script>
 const logInForm = require("./component/log-in-form");
+const languageSelector = require("./component/language");
 const feed = require("./component/feed");
-const { getRemember, setRemember, getIP } = require("./js/data/db");
+const enText = require("./js/data/lang/en.json");
+const esText = require("./js/data/lang/es.json");
+console.log(enText);
+const {
+  getRemember,
+  setRemember,
+  getIP,
+  getLang,
+  setLang
+} = require("./js/data/db");
 
-const device = require("os").hostname();
-const remember = getRemember() || null;
-
-//require('./js/library/widgets.js')
 const {
   getUser,
   setUser,
@@ -41,14 +46,17 @@ module.exports = {
   props: [""],
   components: {
     "log-in-form": logInForm,
-    feed: feed
+    feed: feed,
+    "language-selector": languageSelector
   },
   data: function() {
     return {
       isLoading: true,
       isNotLogged: true,
       userData: {},
-      language: "en",
+      lang: "none",
+      fileText: enText,
+      text: enText.windows.logIn,
       formIP: getIP()
     };
   },
@@ -60,66 +68,28 @@ module.exports = {
     launchWeb: function() {
       shell.openExternal("https://chibimmo.tumblr.com/");
     },
-    checkToken: function() {
-
-      if (remember != null && this.formIP != null && window.history.length>2) {
-        fetch("http://" + this.formIP + ":3000/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: JSON.stringify({
-            token: remember.token,
-            user: remember.user,
-            remember: true,
-            device
-          })
-        })
-          .then(res => res.json())
-          .then(res => {
-            console.log("response");
-            console.log(res);
-            if (res.status == 202) {
-              setUser(res.user);
-              if(this.form.remember)
-              setRemember(res.user._id, res.token );
-
-              this.$router.push("/logged");
-            }
-          })
-          .catch(error => {});
-      }
-    }
-    //TODO check server session
-  },
-  created: function() {
-    //$root
-    //TODO check language in database in case user has changed it and save in data
-    //TODO check if exist token for this device and send to the server
-    console.log("created");
-    setCharLaunch(null);
-    this.isLoading = false;
-
-    this.checkToken();
-    const that = this
-    this.$root.$on("logIn", function(params) {
-      console.log("vue on logIn", params);
-
-      fetch("http://" + that.formIP + ":3000/" + params.action, {
+    doLogin: function(params, action = login) {
+      console.log("do login");
+      console.log(params);
+      console.log(action);
+      fetch(`http://${this.formIP}:1993/${action}`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: JSON.stringify(params.form)
+        body: JSON.stringify(params)
       })
         .then(res => res.json())
         .then(res => {
-          setIP(that.formIP);
-          //TODO alert("response of server");
+          setIP(this.formIP);
 
+          this.isLoading = false;
           console.log(res);
           if (res.status == 202) {
             if (res.action == "login") {
               setUser(res.user);
-              if (res.token) setRemember(res.user._id, res.token);
+              if (res.remember) setRemember(res.user._id);
 
-              that.$router.push("/logged");
+              this.$router.push("/logged");
             } else {
               this.$root.$emit("signedUp");
             }
@@ -133,18 +103,72 @@ module.exports = {
           //net::ERR_ADDRESS_UNREACHABLE
           //net::ERR_EMPTY_RESPONSE db not launched
 
+          this.isLoading = false;
           console.log(error);
           this.$root.$emit("logInError", error);
         });
+    },
+    changeLang: function(newLang) {
+      if (this.lang != newLang) {
+        this.lang = newLang;
+        setLang(newLang);
+        switch (newLang) {
+          case "en":
+            //JSON.parse(JSON.stringify(enText))
+            this.text = enText["windows"]["logIn"]
+            this.fileText = enText
+
+            break
+          case "es":
+            this.text = esText["windows"]["logIn"]
+            this.fileText = esText
+        }
+      }
+    }
+  },
+  created: function() {
+    const remember = getRemember() || false;
+    console.log(remember);
+    //autologin
+    if (remember && this.formIP != null && window.history.length > 2) {
+      console.log("should do a login");
+      doLogin({ user: remember, remember: true });
+    }
+    //load language
+    this.language = getLang() || "en";
+
+    setCharLaunch(null);
+    const that = this;
+    this.$root.$on("logIn", function(params) {
+      console.log("vue on logIn", params);
+      that.doLogin(params.form, params.action);
     });
+  },
+  mounted: function() {
+    this.changeLang(this.lang);
   }
 };
-
-console.log("login.js cargado");
 </script>
 
 <style scoped>
 #index {
   width: 100%;
+}
+#main-content {
+  width: 100%;
+  text-align: center;
+
+  letter-spacing: 0em;
+}
+#languageBox {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.bottom {
+  position: absolute;
+  bottom: 10px;
+  left: 1px;
+  right: 1px;
 }
 </style>

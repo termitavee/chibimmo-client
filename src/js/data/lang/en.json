@@ -1,7 +1,7 @@
 {
   "windows": {
     "logIn": {
-      "server": "Server ulr or IP",
+      "server": "Server's url or IP",
       "web": "Oficial Web"
     },
     "logged": {
@@ -37,6 +37,9 @@
   "component": {
     "feed": {
       "title": "Project Chibimmo"
+    },
+    "lang": {
+      "title": "Language"
     },
     "logIn": {
       "changeSignIn": "Change to create account",

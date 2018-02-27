@@ -1,44 +1,44 @@
 <template>
 <div id="formContent">
-    <a v-text="loginButton" @click="toggleLogin" class="pure-button" >Log in</a>
+    <a v-text="loginVisible?comText.logIn.changeSignIn:comText.logIn.changeSignUp" @click="toggleLogin" class="pure-button" >Log in</a>
     
     <p>
-      <span>User name</span><br>
+      <span v-text="comText.logIn.nick">User name</span><br>
       <input type="text" v-model="form.user" @input="$v.form.user.$touch()"  v-bind:class="{error: $v.form.user.$error && !loginVisible, valid: $v.form.user.$dirty && !$v.form.user.$invalid && !loginVisible}"><br>
       <span class="error-msg" v-if="$v.form.user.$error && !loginVisible"> Name too short.</span>
     </p>
     <p>
-      <span>Pasword</span><br>
+      <span v-text="comText.logIn.pass">Pasword</span><br>
       <input type="password" v-model="form.pass" @input="$v.form.pass.$touch()"  v-bind:class="{error: $v.form.pass.$error && !loginVisible, valid: $v.form.pass.$dirty && !$v.form.pass.$invalid && !loginVisible}"><br>
       <span class="error-msg" v-if="$v.form.pass.$error && !loginVisible"> Password too insecure.</span>
     </p>
 
     <div v-show="!loginVisible">
       <p>
-        <span>Repeat pasword</span><br>
+        <span v-text="comText.logIn.confirm">Repeat pasword</span><br>
         <input type="password" v-model="form.pass2" @input="$v.form.pass2.$touch()"  v-bind:class="{error: $v.form.pass2.$error, valid: $v.form.pass2.$dirty && !$v.form.pass2.$invalid}"><br>
         <span class="error-msg" v-if="$v.form.pass2.$error">Passwords do not match.</span>
       </p>
       <p>
-        <span>Email</span><br>
+        <span v-text="comText.logIn.email">Email</span><br>
         <input type="email" v-model="form.email" @input="$v.form.email.$touch()"  v-bind:class="{error: $v.form.email.$error, valid: $v.form.email.$dirty && !$v.form.email.$invalid}"><br>
         <span class="error-msg" v-if="$v.form.email.$error">Not a valid Email.</span>
       </p>
         <p>
-          <span>Enter captcha below</span>
-          <span v-html="captcha.data"></span>
+          <span v-text="comText.logIn.captcha">Enter captcha below</span><br>
+          <span v-html="captcha.data"></span><br>
           <input type="text" v-model="form.catcha" @keyup.enter="submit">
       </p>
     </div>
     <div v-show="loginVisible">
       <p>
         <input type="checkbox" v-model="form.remember">
-        <span>Remember?</span>
+        <span v-text="comText.logIn.remember">Remember?</span>
       </p>
         
     </div>
    
-  <a v-text="submitButton" @click="submit" class="pure-button" >Submit</a>
+  <a v-text="comText.logIn.submit" @click="submit" class="pure-button" >Submit</a>
     
 </div><!--end login block-->
 
@@ -62,17 +62,18 @@ const { setUser } = require("../js/data/db");
 //TODO captcha
 module.exports = {
   name: "formContent",
-  props: [],
+  props: ["comText"],
   data: function() {
     return {
       loginButton: "Change to Sign Up",
       loginVisible: true,
       form: {
-        user: "",
-        pass: "",
+        user: "termitavee",
+        pass: "termitavee",
         pass2: "",
         email: "",
         captcha: "",
+        text: {},
         remember: false
       },
       captcha: svgCaptcha.create(),
@@ -108,8 +109,8 @@ module.exports = {
   methods: {
     toggleLogin: function() {
       this.loginButton = this.loginVisible
-        ? "Change to LogIn"
-        : "Change to Sign Up";
+        ? this.comText.logIn.changeSignUp
+        : this.comText.logIn.changeSignIn;
 
       this.loginVisible = !this.loginVisible;
     },
@@ -123,7 +124,7 @@ module.exports = {
         //TODO some kind of loading
         const action = this.loginVisible ? "LogIn" : "SignUp";
         console.log(action);
-        //http://127.0.0.1:3000
+        //http://127.0.0.1:1993
         //termitavee.ddns.net
         this.$root.$emit("logIn", { action, form: this.form });
       } else {
@@ -133,6 +134,9 @@ module.exports = {
     }
   },
   created() {
+    console.log(this);
+    this.text = this.comText.logIn;
+    this.loginButton = this.comText.logIn.changeSignIn;
     this.$root.$on("logInError", function(error) {
       switch (error) {
         case "user":
@@ -173,13 +177,6 @@ module.exports = {
 #formContent {
   margin-top: 15px;
 }
-input {
-  border: 1px solid silver;
-  border-radius: 4px;
-  background: white;
-  padding: 5px 10px;
-}
-
 .error {
   border-color: red;
   background: #fdd;

@@ -1,20 +1,20 @@
 <template>
 <div>
   <span v-text="character._id" v-on:click="showDetails =! showDetails"/>
-  <span v-text="start" v-on:click="launchGame" />
+  <span v-text="comText.component.character." v-on:click="launchGame" />
   
   <div v-if="showDetails">
     <span v-text="formatBodyColor()"></span>
-    <span v-text="'The '+formatOrientation()+' '+formatType()"></span>
+    <span v-text="comText.component.character. +formatOrientation()+' '+formatType()"></span>
     <br>
-    <span v-text="'Location '+formatMap()"></span>
+    <span v-text="comText.component.character. +formatMap()"></span>
     <br>
-    <span v-text="'equipment '+formatEquipment()" v-on:click="printKey" ></span>
+    <span v-text="comText.component.character. +formatEquipment()" v-on:click="printKey" ></span>
     <br>
-    <span v-text="'created on '+formatDate()"></span>
+    <span v-text="comText.component.character. +formatDate()"></span>
     <br>
-    <span class="remove-char" v-text="remove" v-on:click="removeCharacter" />
-    <span class="edit-char" v-text="edit" v-on:click="editCharacter" />
+    <span class="remove-char"v-text="comText.component.character." v-on:click="removeCharacter" />
+    <span class="edit-char" v-text="comText.component.character." v-on:click="editCharacter" />
   </div>
   
 </div>
@@ -24,7 +24,7 @@
 const { setCharLaunch } = require("../js/data/db");
 
 module.exports = {
-  props: ["character", "reference"],
+  props: ["character", "reference", "comText"],
   data: function() {
     return {
       showDetails: false,

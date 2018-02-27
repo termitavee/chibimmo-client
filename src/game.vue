@@ -1,5 +1,5 @@
 <template>
-<div id="index">
+<div id="index" >
   <div id="mainContent" v-on:click="dummyF"/>
   <character-bar></character-bar>
   <chat id="chat" :user="user" :serverIP="serverIP" />
@@ -10,6 +10,7 @@
 <script>
 //queckes todo delete
 import io from "socket.io-client";
+import { preload, create, update } from "./js/phaserUtil.js";
 /*
 formulas de daño 
 fis
@@ -25,7 +26,12 @@ game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 */
 const chat = require("./component/chat");
 const characterBar = require("./component/character-bar");
-const { getUser, getIP, getCharLaunch, setCharLaunch } = require("./js/data/db");
+const {
+  getUser,
+  getIP,
+  getCharLaunch,
+  setCharLaunch
+} = require("./js/data/db");
 const serverIP = getIP();
 module.exports = {
   props: [""],
@@ -35,7 +41,7 @@ module.exports = {
       character: {},
       language: "en",
       serverIP,
-      server: io(`http://${serverIP}:3000/game`),
+      server: io(`http://${serverIP}:1993/game`),
       game: {},
       map: {},
       layer: {},
@@ -52,8 +58,8 @@ module.exports = {
     "character-bar": characterBar
   },
   methods: {
-    dummyF: function(param){
-      console.log(param)
+    dummyF: function(param) {
+      console.log(param);
     },
     preload: function(phaser) {
       //All skin
@@ -110,7 +116,7 @@ module.exports = {
         "./img/sprites/body/0/clothes.json"
       );
       //All items
-      
+
       //All maps
       this.game.load.tilemap(
         "myWorld",
@@ -233,8 +239,8 @@ module.exports = {
       this.player.body.addRectangle(15, 20);
       this.player.body.fixedRotation = true;
       this.player.body.collideWorldBounds = true;
-    //  The smaller the value, the smooth the camera (and the longer it takes to catch up)
-    //.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
+      //  The smaller the value, the smooth the camera (and the longer it takes to catch up)
+      //.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
       this.game.camera.follow(this.player);
       //TODO all key listener, wasd, esc, enter
@@ -255,7 +261,11 @@ module.exports = {
       //this.enemyColisionGroup.enableBody = true;
       //this.enemyColisionGroup.physicsBodyType = Phaser.Physics.P2JS;
       // this.mapColisionGroup = game.physics.p2.createCollisionGroup();
-      this.player.body.collides(this.charactersColisionGroup, this.hitplayer, this);
+      this.player.body.collides(
+        this.charactersColisionGroup,
+        this.hitplayer,
+        this
+      );
       //this.player.body.collides(enemyColisionGroup, hitenemy, this);
       //this.player.body.collides(mapColisionGroup, hitmap, this);
     },
@@ -500,7 +510,7 @@ module.exports = {
        game.input.enabled = false;
  
      }); */
-     setCharLaunch(undefined)
+    setCharLaunch(undefined);
   }
 };
 </script>

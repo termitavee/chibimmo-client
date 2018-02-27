@@ -116,8 +116,9 @@ module.exports = {
         console.log("checked ok");
         //127.0.0.1
         //termitavee.ddns.net
-        fetch("http://" + this.ipServer + ":3000/create", {
+        fetch("http://" + this.ipServer + ":1993/create", {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: JSON.stringify(this.form)
         })
