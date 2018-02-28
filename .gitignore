@@ -4,3 +4,4 @@ out
 src/component/old/*
 db.json
 chibimmo-*.tgz
+src/js/data/console.log

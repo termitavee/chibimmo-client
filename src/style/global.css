@@ -12,3 +12,15 @@ input {
   background: white;
   padding: 5px 10px;
 }
+
+ul {
+  list-style-type: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  cursor: pointer;
+}

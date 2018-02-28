@@ -19,7 +19,7 @@ let mainWindowOptions = {
   width: 800,
   height: 600,
   icon: __dirname + '/img/icon.jpg',
-  resizable: false,
+  resizable: true,
   webPreferences: {
     devTools: true
   }

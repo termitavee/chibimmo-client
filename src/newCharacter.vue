@@ -5,36 +5,36 @@
     </div>
 
     <div class="pure-u-1-3" id="character-options">
-        <h2>Customize Character</h2>
+        <h2 v-text="text.title">Customize Character</h2>
         <form>
             <div>
-                <span>Name</span>
+                <span v-text="text.name">Name</span>
                 <br>
                 <input type="text" v-model="form.name" name="text" value="" placeholder="can't be changed later">
                 <br>
                 <br>
             </div>
             <div>
-                <span>Class</span>
+                <span v-text="text.class">Class</span>
                 <br>
-                <button class="classes" @click.prevent="changeClass('0', $event)">Soldier</button>
-                <button class="classes" @click.prevent="changeClass('1', $event)">Mage</button>
-                <button class="classes" @click.prevent="changeClass('2', $event)">Rogue</button>
+                <button v-text="text.classType[0]" class="classes" @click.prevent="changeClass('0', $event)">Soldier</button>
+                <button v-text="text.classType[0]" class="classes" @click.prevent="changeClass('1', $event)">Mage</button>
+                <button v-text="text.classType[0]" class="classes" @click.prevent="changeClass('2', $event)">Rogue</button>
                 <br>
                 <br>
             </div>
             <div>
-                <span>Orientation</span>
+                <span v-text="text.orientation" >Orientation</span>
 
                 <br>
-                <button class="orientation" @click.prevent="changeOrientation('0', $event)">Ofensive</button>
-                <button class="orientation" @click.prevent="changeOrientation('1', $event)">Defensive</button>
-                <button class="orientation" @click.prevent="changeOrientation('2', $event)">Neutral</button>
+                <button v-text="text.orientationType[0]" class="orientation" @click.prevent="changeOrientation('0', $event)">Ofensive</button>
+                <button v-text="text.orientationType[1]" class="orientation" @click.prevent="changeOrientation('1', $event)">Defensive</button>
+                <button v-text="text.orientationType[2]" class="orientation" @click.prevent="changeOrientation('2', $event)">Neutral</button>
                 <br>
                 <br>
             </div>
             <div>
-                <span>Body color</span>
+                <span v-text="text.bcolor">Body color</span>
                 <br>
                 <button class="color-button orange" @click.prevent="changeBody(0)" />
                 <button class="color-button brown" @click.prevent="changeBody(1)" />
@@ -47,7 +47,7 @@
                 <br>
             </div>
             <div>
-                <span>Hair</span>
+                <span v-text="text.hair">Hair</span>
                 <br>
                 <button class="hair-button none" @click.prevent="changeHair(0)"> 0</button>
                 <button class="hair-button basic" @click.prevent="changeHair(1)"> 1</button>
@@ -55,7 +55,7 @@
                 <br>
             </div>
             <div>
-                <span>Hair color</span>
+                <span v-text="text.hColor">Hair color</span>
                 <br>
                 <button class="color-button black" @click.prevent="changeColor('0x000000')" />
                 <button class="color-button white" @click.prevent="changeColor('0xffffff')" />
@@ -64,30 +64,33 @@
                 <button class="color-button red" @click.prevent="changeColor('0xb00101')" />
                 <button class="color-button blue" @click.prevent="changeColor('0x017ab0')" />
                 <button class="color-button green" @click.prevent="changeColor('0x2ab001')" />
-                <button class="color-button pink" @click.prevent="changeColor('0xFF0080')" ></button>
+                <button class="color-button pink" @click.prevent="changeColor('0xFF0080')" />
                 <br>
                 <br>
             </div>
             <div>
-                <a v-text="save" @click="this.saveCharacter" class="pure-button">Save</a>
-                <a v-text="exit" @click="this.backToList" class="pure-button">Exit</a>
+                <a v-text="text.save" @click="this.saveCharacter" class="pure-button">Save</a>
+                <a v-text="text.exit" @click="this.backToList" class="pure-button">Exit</a>
             </div>
         </form>
     </div>
 </div>
 </template>
 
-<script>/* 
-import {getCharLaunch, getUser}from './js/data/db' */
-const {getCharLaunch,setCharLaunch, getUser} = require('./js/data/db')
-//import {getIP, setCharLaunch} from './js/data/db'
+<script>
+//TOFIX checklanguage is not a function
+import { getIP, getCharLaunch, setCharLaunch, getUser } from "./js/data/db";
+import { editor } from "./js/phaserUtil.js";
+const { loadLanguage } = require("./js//utils");
+const enText = require("./js/data/lang/en.json");
+const esText = require("./js/data/lang/es.json");
+
 module.exports = {
   props: [""],
   data: function() {
     return {
-      language: "en",
-      save: "Save",
-      exit: "Exit",
+      fileText: enText,
+      text: enText.windows.editor,
       form: {
         name: "",
         className: "",
@@ -179,111 +182,6 @@ module.exports = {
       //this.$router.push('/logged')
       this.$router.go(-1);
     },
- 
-    preload: function(phaser) {
-
-      //this.preview.load.image('logo', './img/icon.jpg');
-      
-      this.preview.load.atlasJSONHash(
-        "body0",
-        "./img/sprites/body/0/base.png",
-        "./img/sprites/body/0/base.json"
-      );
-      this.preview.load.atlasJSONHash(
-        "body1",
-        "./img/sprites/body/1/base.png",
-        "./img/sprites/body/1/base.json"
-      );
-      this.preview.load.atlasJSONHash(
-        "body2",
-        "./img/sprites/body/2/base.png",
-        "./img/sprites/body/2/base.json"
-      );
-      this.preview.load.atlasJSONHash(
-        "body3",
-        "./img/sprites/body/3/base.png",
-        "./img/sprites/body/3/base.json"
-      );
-      this.preview.load.atlasJSONHash(
-        "body4",
-        "./img/sprites/body/4/base.png",
-        "./img/sprites/body/4/base.json"
-      );
-      this.preview.load.atlasJSONHash(
-        "body5",
-        "./img/sprites/body/5/base.png",
-        "./img/sprites/body/5/base.json"
-      );
-      this.preview.load.atlasJSONHash(
-        "body6",
-        "./img/sprites/body/6/base.png",
-        "./img/sprites/body/6/base.json"
-      );
-      this.preview.load.atlasJSONHash(
-        "hair0",
-        "./img/sprites/hair/0.png",
-        "./img/sprites/hair/0.json"
-      );
-      this.preview.load.atlasJSONHash(
-        "hair1",
-        "./img/sprites/hair/1.png",
-        "./img/sprites/hair/1.json"
-      );
-      this.preview.load.atlasJSONHash(
-        "clothes0",
-        "./img/sprites/body/0/clothes.png",
-        "./img/sprites/body/0/clothes.json"
-      );
-      //TODO this.preview.stage.disableVisibilityChange = true;
-    },
-
-    create: function(phaser) {
-      this.addBody();
-      this.character.animations.add(
-        "down",
-        Phaser.Animation.generateFrameNames("", 1, 11, ""),
-        18,
-        true,
-        true
-      );
-      this.character.animations.add(
-        "lateral",
-        Phaser.Animation.generateFrameNames("", 12, 23, ""),
-        18,
-        true,
-        true
-      );
-      this.character.animations.add(
-        "up",
-        Phaser.Animation.generateFrameNames("", 24, 34, ""),
-        18,
-        true,
-        true
-      );
-      this.hair.animations.add(
-        "down",
-        Phaser.Animation.generateFrameNames("", 1, 11, ""),
-        18,
-        true,
-        true
-      );
-      this.hair.animations.add(
-        "lateral",
-        Phaser.Animation.generateFrameNames("", 12, 23, ""),
-        18,
-        true,
-        true
-      );
-      this.hair.animations.add(
-        "up",
-        Phaser.Animation.generateFrameNames("", 24, 34, ""),
-        18,
-        true,
-        true
-      );
-    },
-
-    update: function(phaser) {},
 
     changeDirection: function() {
       //button to rotate character, up, left, right, down
@@ -322,6 +220,7 @@ module.exports = {
 
       this.addhair();
     },
+
     changeColor: function(id) {
       if (id) this.form.hairColor = id;
 
@@ -333,6 +232,7 @@ module.exports = {
 
       this.hair.tint = this.form.hairColor;
     },
+
     addBody: function() {
       if (this.hair != null) this.hair.kill();
       switch (Number(this.form.bodyColor)) {
@@ -381,6 +281,7 @@ module.exports = {
       this.changeColor();
       this.hair.scale.set(10);
     },
+
     checkAnimation: function() {
       switch (Number(this.moving)) {
         case 0:
@@ -406,10 +307,13 @@ module.exports = {
       }
     }
   },
+  created: function() {
+    loadLanguage(this, getLang, { es: esText, en: enText }, "editor");
+  },
   mounted: function() {
     const characterSaved = getCharLaunch();
     console.log(
-      "========== cewCharacterjs - mounted - characterSaved ==========="
+      "========== newCharacterjs - mounted - characterSaved ==========="
     );
     console.log(characterSaved);
     if (characterSaved != null) {
@@ -434,27 +338,30 @@ module.exports = {
       console.log(this.form);
     }
 
-    let self = this;
-    console.log('new game')
-    this.preview = new Phaser.Game(
-      500,
-      600,
-      Phaser.AUTO,
-      "leftContent",
-      { preload, create, update },
+    console.log("new game");
+    this.preview = new Phaser.Game({
+      type: Phaser.AUTO,
+      width: 500,
+      height: 600,
+      scene: {
+        preload,
+        create,
+        update
+      }
+    });
+    /*      "leftContent",
       true,
-      false
-    );
-
+      false*/
+    const self = this;
     function preload() {
-      self.preload(this);
+      editor.preload(self);
     }
 
     function create() {
-      self.create(this);
+      editor.create(self);
     }
     function update() {
-      self.update(this);
+      editor.update(self);
     }
   }
 };

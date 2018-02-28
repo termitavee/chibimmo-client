@@ -8,8 +8,6 @@
   <div id="details" v-if="showDetails">
     <span v-text="item.content"></span>
     <span v-text="item.author"></span>
-    <button v-on:click="edit">Edit</button>
-    <button v-on:click="remove">Delete</button>
   </div>
 </div>
 </div>

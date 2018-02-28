@@ -2,29 +2,37 @@
 <div id="index">
         
   <div class="pure-u-2-3" id="leftContent">
-      <feed :language="fileText.component"></feed>
+      <feed :comText="fileText.component" :text="fileText.component.feed" :formIP="formIP"></feed>
   </div><!--end side block-->
   
   <div class="pure-u-1-3" id="main-content">
       
       <h2 v-text="user._id || text.user"></h2><a @click="exitLog" class="pure-button" href="#" v-text="text.logOut"></a>
 
-      <character-list :characters="user.characters"/>
+      <character-list :characters="user.characters" :comText="fileText.component" :text="fileText.component.characterList"/>
       
   </div>
 </div>
 </template>
-
 <script>
-const { ipcRenderer, remote } = require("electron")
-const { dialog } = remote
 
-const feed = require("./component/feed")
-const characterList = require("./component/character-list")
-const character = require("./component/character")
-const { getUser, setCharLaunch, getCharLaunch, getIP } = require("./js/data/db")
-const enText = require("./js/data/lang/en.json")
-const esText = require("./js/data/lang/es.json")
+//TODO add popup to lang
+const { ipcRenderer, remote } = require("electron");
+const { dialog } = remote;
+
+const feed = require("./component/feed");
+const characterList = require("./component/character-list");
+const character = require("./component/character");
+const {
+  getUser,
+  setCharLaunch,
+  getCharLaunch,
+  getIP,
+  getLang
+} = require("./js/data/db");
+const { loadLanguage, getLanguage } = require("./js//utils");
+const enText = require("./js/data/lang/en.json");
+const esText = require("./js/data/lang/es.json");
 
 //require('./js/library/widgets.js')
 module.exports = {
@@ -35,13 +43,13 @@ module.exports = {
       language: "en",
       formIP: "127.0.0.1",
       fileText: enText,
-      text: enText.windows.logged,
+      text: enText.windows.logged
     };
   },
   components: {
-    "feed": feed,
+    feed: feed,
     "character-list": characterList,
-    "character": character
+    character: character
   },
   methods: {
     exitLog: function() {
@@ -56,15 +64,17 @@ module.exports = {
     }
   },
   created: function() {
-    const addCharacter = getCharLaunch()
-    this.formIP = getIP()
-
-    if(addCharacter){
-      this.user.characters.push(addCharacter)
-      //to avoid fails
-      setCharLaunch(undefined)
+    const addCharacter = getCharLaunch();
+    this.formIP = getIP();
+    //if has created a new character
+    if (addCharacter) {
+      this.user.characters.push(addCharacter);
+      setCharLaunch(undefined);
     }
+    //load language
+    loadLanguage(this, getLang, { es: esText, en: enText }, "logged");
 
+    //children comunication
     this.$root.$on("openCharacterEditor", function() {
       console.log("logged.js on openCharacterEditor");
       //ipcRenderer.send("launchEditor");
@@ -102,7 +112,7 @@ module.exports = {
             fetch(`http://${formIP}:1993/character/${id}`, {
               method: "DELETE",
               credentials: "include",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
               .then(res => res.json())
               .then(res => {
@@ -129,7 +139,6 @@ module.exports = {
     });
   }
 };
-
 </script>
 
 <style scoped>

@@ -27,7 +27,7 @@
       "hair": "Hair",
       "hColor": "Hair color",
       "save": "Save",
-      "Exit": "Exit"
+      "exit": "Exit"
     },
     "info": {
       "title": "What is Chibimmo?",
@@ -36,10 +36,12 @@
   },
   "component": {
     "feed": {
-      "title": "Project Chibimmo"
+      "title": "Project Chibimmo",
+      "none": "No news to show"
     },
     "lang": {
       "title": "Language"
+      
     },
     "logIn": {
       "changeSignIn": "Change to create account",
@@ -57,6 +59,7 @@
       "new": "Create new character"
     },
     "character": {
+      "start": "Start",
       "the": "The",
       "location": "Create new character",
       "equip": "Equipment",
@@ -110,7 +113,7 @@
     "window": {
       "chapter1": {
         "1": {
-          "name": "Welcom to the Bimo's world"
+          "name": "Welcome to the Bimo's world"
         },
         "2": {
           "name": "Find a place"
@@ -168,18 +171,32 @@
         }
       }
     },
+    "main":{
+      "title": "Chibimmo ask you",
+      "exit": "Customize character",
+      "close": "Customize character",
+      "yes": "YES",
+      "no": "NO"
+    },
     "chat": {
       "welcome": "Welcome to the chat",
       "send": "Send"
     },
+    "stats": {
+      "life": "LP",
+      "magic": "MP",
+      "stamina": "SP"
+    },
     "menu": {
       "title": "Menu",
+      "character": "Character",
       "inventory": "Inventory",
+      "friends": "Friends",
       "map": "Map",
       "messages": "Messages",
       "pets": "Pets",
-      "exit": "Send",
-      "close": "Send"
+      "exit": "Quit",
+      "close": "Close"
     }
   },
   "general": {

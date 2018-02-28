@@ -1,0 +1,36 @@
+{
+  "_id": "asdffdsa",
+  "userID": "termitavee",
+  "type": "0",
+  "orientation": "0",
+  "stadistics": {
+    "variable": {
+      "life": 25,
+      "magic": 5,
+      "hability": 10
+    },
+    "constant": {
+      "life": 25,
+      "magic": 5,
+      "hability": 10,
+      "str": 7,
+      "res": 6,
+      "int": 3,
+      "min": 4,
+      "Agi": 5,
+      "cha": 6
+    }
+  },
+  "map": 1,
+  "position": {
+    "x": 100,
+    "y": 100
+  },
+  "direction": 0,
+  "started": "2018-01-12T10:21:09.058+0000",
+  "equipment": "",
+  "achievements": [],
+  "hair": 1,
+  "hairColor": "0xc4c046",
+  "bodyColor": 1
+}

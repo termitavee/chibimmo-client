@@ -1,29 +1,10 @@
 <template>
 <div id="top-bar">
   <div id="stats" >
-    <div id="lifeBar" class='bar'>
-      <div id="life" class="stat">
-
-      </div>
-    </div>
-    <div id="magicBar" class='bar'>
-      <div id="magic" class="stat" >
-
-      </div>
-    </div>
-    <div id="staminaBar" class='bar'>
-      <div id="stamina" class="stat" >
-
-      </div>
-    </div>
+      <player-stats :text="fileText.stats" :stats="player.stadistics"/>
   </div>
   <div id="menu" >
-    <game-menu></game-menu>
-    <ul>
-<!--       <li @click="getElementById('life').style.width = '100%'">item1</li>
-      <li @click="getElementById('magic').style.width = '0%'">item1</li>
-      <li @click="getElementById('stamina').style.width = '100%'">item1</li> -->
-    </ul>
+    <game-menu :fileText="fileText" :text="fileText.menu" :player="player"/>
   </div>
   
 </div>
@@ -31,10 +12,13 @@
 
 <script>
 import gameMenu from "./game-menu";
+import playerStats from "./game-player-stats";
 module.exports = {
-  props: ["life", "magic", "stamina"],
+
+  props: ["fileText", "player"],
   components: {
-    "game-menu": gameMenu
+    "game-menu": gameMenu,
+    "player-stats": playerStats
   },
   data: function() {
     return {
@@ -45,9 +29,6 @@ module.exports = {
     };
   },
   methods: {
-    toogleMenu: function() {
-      this.showMenu = !this.showMenu;
-    },
     updateLife() {},
     updateMagic() {},
     updateStamina() {},

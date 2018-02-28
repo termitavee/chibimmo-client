@@ -3,7 +3,7 @@
 
     <div id="main-content">
 
-      <log-in-form :comText="fileText.component"> </log-in-form>
+      <log-in-form :comText="fileText.component" :text="fileText.component.logIn"> </log-in-form>
       <div class="bottom">
         <span v-text="text.server">Server</span><br>
         <input type="text" v-model="formIP"><br>
@@ -23,24 +23,24 @@
 const logInForm = require("./component/log-in-form");
 const languageSelector = require("./component/language");
 const feed = require("./component/feed");
-const enText = require("./js/data/lang/en.json");
-const esText = require("./js/data/lang/es.json");
-console.log(enText);
-const {
-  getRemember,
-  setRemember,
-  getIP,
-  getLang,
-  setLang
-} = require("./js/data/db");
+const langFiles = {
+  es: require("./js/data/lang/es.json"),
+  en: require("./js/data/lang/en.json")
+};
 
 const {
   getUser,
   setUser,
+  getRemember,
+  setRemember,
+  setIP,
+  getIP,
+  getLang,
+  setLang,
   getCharLaunch,
-  setCharLaunch,
-  setIP
+  setCharLaunch
 } = require("./js/data/db");
+const { loadLanguage } = require("./js//utils");
 
 module.exports = {
   props: [""],
@@ -54,7 +54,6 @@ module.exports = {
       isLoading: true,
       isNotLogged: true,
       userData: {},
-      lang: "none",
       fileText: enText,
       text: enText.windows.logIn,
       formIP: getIP()
@@ -85,6 +84,7 @@ module.exports = {
           this.isLoading = false;
           console.log(res);
           if (res.status == 202) {
+            console.log("logged");
             if (res.action == "login") {
               setUser(res.user);
               if (res.remember) setRemember(res.user._id);
@@ -94,6 +94,7 @@ module.exports = {
               this.$root.$emit("signedUp");
             }
           } else {
+            console.error("not logged");
             this.$root.$emit("logInError", res.error);
           }
         })
@@ -112,17 +113,22 @@ module.exports = {
       if (this.lang != newLang) {
         this.lang = newLang;
         setLang(newLang);
+        this.text = angFiles[newLang]["windows"]["logIn"];
+        this.fileText = langFiles[newLang];
+
+        /* 
+
         switch (newLang) {
           case "en":
             //JSON.parse(JSON.stringify(enText))
-            this.text = enText["windows"]["logIn"]
-            this.fileText = enText
+            this.text = enText["windows"]["logIn"];
+            this.fileText = enText;
 
-            break
+            break;
           case "es":
-            this.text = esText["windows"]["logIn"]
-            this.fileText = esText
-        }
+            this.text = esText["windows"]["logIn"];
+            this.fileText = esText;
+        } */
       }
     }
   },
@@ -134,8 +140,10 @@ module.exports = {
       console.log("should do a login");
       doLogin({ user: remember, remember: true });
     }
+
+    console.log("check language");
     //load language
-    this.language = getLang() || "en";
+    loadLanguage(this, getLang, { es: esText, en: enText }, "logIn");
 
     setCharLaunch(null);
     const that = this;

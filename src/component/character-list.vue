@@ -1,12 +1,12 @@
 <template>
 <div>
-  <h3 v-text="comText.component.characterList.title">List of characters created</h3>
+  <h3 v-text="text.title">List of characters created</h3>
   <ul>
     <li class="characterItem" v-for="(item, key) in characters" :key="key">
-        <character :character="item" :reference="key" :comText="comText"/>
+        <character :character="item" :reference="key" :comText="comText" :text="comText.character"/>
     </li>
     <li>
-      <a @click="createNewCharacter" v-text="comText.component.characterList.new" class="pure-button">Create new</a>
+      <a @click="createNewCharacter" v-text="text.new" class="pure-button">Create new</a>
     </li>
   </ul>
 </div>
@@ -17,26 +17,24 @@ const character = require("../component/character");
 const { setCharLaunch } = require("../js/data/db");
 
 module.exports = {
-  props: ["characters", "comText"],
+  props: ["characters", "comText", "text"],
   components: {
     character: character
   },
   data: function() {
-    return { newCharacter: "Create new" };
+    return {};
   },
   methods: {
     createNewCharacter: function() {
-      setCharLaunch(null)
+      setCharLaunch(null);
       this.$root.$emit("openCharacterEditor");
     }
-  },
- 
+  }
 };
 </script>
 
 <style scoped>
 ul {
-  list-style-type: none;
   padding-left: 0;
   overflow-y: auto;
   height: 422px;
@@ -45,5 +43,4 @@ ul {
 .characterItem {
   margin-bottom: 10px;
 }
-
 </style>

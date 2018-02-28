@@ -1,31 +1,31 @@
 <template>
 <div id="formContent">
-    <a v-text="loginVisible?comText.logIn.changeSignIn:comText.logIn.changeSignUp" @click="toggleLogin" class="pure-button" >Log in</a>
+    <a v-text="loginVisible?text.changeSignIn:text.changeSignUp" @click="toggleLogin" class="pure-button" >Log in</a>
     
     <p>
-      <span v-text="comText.logIn.nick">User name</span><br>
+      <span v-text="text.nick">User name</span><br>
       <input type="text" v-model="form.user" @input="$v.form.user.$touch()"  v-bind:class="{error: $v.form.user.$error && !loginVisible, valid: $v.form.user.$dirty && !$v.form.user.$invalid && !loginVisible}"><br>
       <span class="error-msg" v-if="$v.form.user.$error && !loginVisible"> Name too short.</span>
     </p>
     <p>
-      <span v-text="comText.logIn.pass">Pasword</span><br>
+      <span v-text="text.pass">Pasword</span><br>
       <input type="password" v-model="form.pass" @input="$v.form.pass.$touch()"  v-bind:class="{error: $v.form.pass.$error && !loginVisible, valid: $v.form.pass.$dirty && !$v.form.pass.$invalid && !loginVisible}"><br>
       <span class="error-msg" v-if="$v.form.pass.$error && !loginVisible"> Password too insecure.</span>
     </p>
 
     <div v-show="!loginVisible">
       <p>
-        <span v-text="comText.logIn.confirm">Repeat pasword</span><br>
+        <span v-text="text.confirm">Repeat pasword</span><br>
         <input type="password" v-model="form.pass2" @input="$v.form.pass2.$touch()"  v-bind:class="{error: $v.form.pass2.$error, valid: $v.form.pass2.$dirty && !$v.form.pass2.$invalid}"><br>
         <span class="error-msg" v-if="$v.form.pass2.$error">Passwords do not match.</span>
       </p>
       <p>
-        <span v-text="comText.logIn.email">Email</span><br>
+        <span v-text="text.email">Email</span><br>
         <input type="email" v-model="form.email" @input="$v.form.email.$touch()"  v-bind:class="{error: $v.form.email.$error, valid: $v.form.email.$dirty && !$v.form.email.$invalid}"><br>
         <span class="error-msg" v-if="$v.form.email.$error">Not a valid Email.</span>
       </p>
         <p>
-          <span v-text="comText.logIn.captcha">Enter captcha below</span><br>
+          <span v-text="text.captcha">Enter captcha below</span><br>
           <span v-html="captcha.data"></span><br>
           <input type="text" v-model="form.catcha" @keyup.enter="submit">
       </p>
@@ -33,12 +33,12 @@
     <div v-show="loginVisible">
       <p>
         <input type="checkbox" v-model="form.remember">
-        <span v-text="comText.logIn.remember">Remember?</span>
+        <span v-text="text.remember">Remember?</span>
       </p>
         
     </div>
    
-  <a v-text="comText.logIn.submit" @click="submit" class="pure-button" >Submit</a>
+  <a v-text="text.submit" @click="submit" class="pure-button" >Submit</a>
     
 </div><!--end login block-->
 
@@ -62,7 +62,7 @@ const { setUser } = require("../js/data/db");
 //TODO captcha
 module.exports = {
   name: "formContent",
-  props: ["comText"],
+  props: ["comText", "text"],
   data: function() {
     return {
       loginButton: "Change to Sign Up",
@@ -109,8 +109,8 @@ module.exports = {
   methods: {
     toggleLogin: function() {
       this.loginButton = this.loginVisible
-        ? this.comText.logIn.changeSignUp
-        : this.comText.logIn.changeSignIn;
+        ? this.text.changeSignUp
+        : this.text.changeSignIn;
 
       this.loginVisible = !this.loginVisible;
     },
@@ -136,7 +136,7 @@ module.exports = {
   created() {
     console.log(this);
     this.text = this.comText.logIn;
-    this.loginButton = this.comText.logIn.changeSignIn;
+    this.loginButton = this.text.changeSignIn;
     this.$root.$on("logInError", function(error) {
       switch (error) {
         case "user":

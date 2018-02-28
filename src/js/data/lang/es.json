@@ -27,7 +27,7 @@
       "hair": "Pelo",
       "hColor": "Color de pelo",
       "save": "Guardar",
-      "Exit": "Salir"
+      "exit": "Salir"
     },
     "info": {
       "title": "¿Qué es Chibimmo?",
@@ -50,16 +50,17 @@
       "submit": "Submit"
     },
     "characterList": {
-      "title": "List of characters",
-      "new": "Create new character"
+      "title": "Lista de personajes",
+      "new": "Crear nuevo personaje"
     },
     "character": {
-      "the": "The",
-      "location": "Create new character",
-      "equip": "Equipment",
-      "created": "Created on",
-      "edit": "Edit",
-      "delete": "Delete",
+      "start": "Iniciar",
+      "the": "El",
+      "location": "seguir traduciendo",
+      "equip": "Equipment ",
+      "created": "Created on ",
+      "edit": "Editar",
+      "delete": "Eliminar",
       "format": {
         "type": [
           "Soldier",

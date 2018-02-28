@@ -5,11 +5,10 @@
     <li v-for="(item, key) in messages" :key="key">{{item.user+": "+item.content}}</li>
   </ul>
 
-  <div id="chat-mesage" >
     <!-- @focus="writting" v-on:blur="stopped" -->
-    <input type="text" v-model="sendMessage" ref="textBox" @keyup.enter="send" maxlength="35"/>
-    <span @click="send" v-text="sendButton"/>
-  </div>
+  <input id="chat-input"  type="text" v-model="sendMessage" ref="textBox" v-on:click="writting" @keyup.enter="send" maxlength="35"/>
+  <span id="chat-send" class="pure-button" @click="send" v-text="text.send"/>
+
 
 </div>
 </template>
@@ -20,10 +19,10 @@ import io from "socket.io-client";
 //, { transports: ['websocket'] }
 let that = null;
 module.exports = {
-  props: ["user", "serverIP"],
+  props: ["user", "serverIP", "serverIP", "text"],
   data: function() {
     return {
-      messages: [{ user: "System", content: "Welcome to the chat" }],
+      messages: [],
       sendMessage: "",
       socket: io(`http://${this.serverIP}:1993/chat`),
       sendButton: "Send"
@@ -31,6 +30,7 @@ module.exports = {
   },
   methods: {
     send: function() {
+      //TODO give control back
       const message = this.sendMessage;
       if (message.trim() != 0 && message.length < 35) {
         console.log(
@@ -44,19 +44,17 @@ module.exports = {
         this.sendMessage = "";
       } else {
         //TODO lose focus on input
-        document.getElementsByTagName("input")[0].blur();
+        this.$refs.textBox.blur();
       }
+    },
+    writting: function(){
+      //TODO if focused
+      console.log(this.$refs.textBox)
     }
   },
-  writting: function() {
-    //TODO send event to avoid listening keyboard
-    console.log("is foccused");
-  },
-  blurInput: function() {
-    //TODO send event to constinue
-    console.log("is blured");
-  },
   mounted: function() {
+    
+    messages.push({ user: "System", content: this.text.welcome });
     that = this;
 
     //socket functionality
@@ -74,27 +72,54 @@ module.exports = {
       console.log("disconected");
     });
     this.$root.$on("focusChat", function() {
-      document.getElementsByTagName("input")[0].focus()
+      document.getElementsByTagName("input")[0].focus();
     });
     document.getElementsByTagName("input")[0].onblur = function() {
-      that.blurInput()
+      that.blurInput();
     };
 
     document.getElementsByTagName("input")[0].onfocus = function() {
-      that.writting()
+      that.writting();
     };
   }
 };
 </script>
 
 <style scoped>
+* {
+  font-size: 0.9em;
+}
 ul {
-  list-style-type: none;
   padding: 5px;
-  height: 85%;
+  height: 75%;
 }
 #chat {
   background-color: rgba(255, 255, 255, 0.4);
   letter-spacing: 0em;
+  height: 50%;
+  padding-bottom: 40px;
+}
+#chat-List {
+  overflow: auto;
+  height: 100%;
+  margin: 0;
+}
+
+#chat-input {
+  height: 1em;
+  position: absolute;
+  left: 0;
+  width: calc(100% - 6em);
+  padding: 5px;
+}
+
+#chat-send {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 5em;
+  height: 2em;
+  padding: 7px 3px;
+  margin-bottom: 5px;
 }
 </style>

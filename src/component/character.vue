@@ -1,20 +1,20 @@
 <template>
 <div>
   <span v-text="character._id" v-on:click="showDetails =! showDetails"/>
-  <span v-text="comText.component.character." v-on:click="launchGame" />
+  <span v-text="text.start" v-on:click="launchGame" />
   
   <div v-if="showDetails">
-    <span v-text="formatBodyColor()"></span>
-    <span v-text="comText.component.character. +formatOrientation()+' '+formatType()"></span>
+    <span v-text="text.format.color[this.character.body]"></span>
+    <span v-text="text.the +text.format.orientation[character.orientation]+' '+text.format.type[character.type]"></span>
     <br>
-    <span v-text="comText.component.character. +formatMap()"></span>
+    <span v-text="text.location +text.format.map[character.map]"></span>
     <br>
-    <span v-text="comText.component.character. +formatEquipment()" v-on:click="printKey" ></span>
+    <span v-text="text.equip +text.format.equip[character.equip]" v-on:click="printKey" ></span>
     <br>
-    <span v-text="comText.component.character. +formatDate()"></span>
+    <span v-text="text.created +formatDate()"></span>
     <br>
-    <span class="remove-char"v-text="comText.component.character." v-on:click="removeCharacter" />
-    <span class="edit-char" v-text="comText.component.character." v-on:click="editCharacter" />
+    <span class="remove-char" v-text="text.delete" v-on:click="removeCharacter" />
+    <span class="edit-char" v-text="text.edit" v-on:click="editCharacter" />
   </div>
   
 </div>
@@ -24,13 +24,10 @@
 const { setCharLaunch } = require("../js/data/db");
 
 module.exports = {
-  props: ["character", "reference", "comText"],
+  props: ["character", "reference", "comText", "text"],
   data: function() {
     return {
-      showDetails: false,
-      start: "start",
-      remove: "delete",
-      edit: "Edit"
+      showDetails: false
     };
   },
   methods: {
@@ -48,7 +45,7 @@ module.exports = {
       this.$root.$emit("openCharacterEditor");
     },
     removeCharacter: function() {
-      this.showDetails =! this.showDetails
+      this.showDetails = !this.showDetails;
       this.$root.$emit("remove", {
         id: this.character._id,
         pos: this.reference
@@ -59,15 +56,8 @@ module.exports = {
       console.log("character.vue will launch game");
       this.$root.$emit("launchGame", this.character);
     },
-    formatType: function() {
-      switch (this.character.type) {
-        case "0":
-          return "Soldier";
-        case "1":
-          return "Mage";
-        case "2":
-          return "Rogue";
-      }
+/*     formatType: function() {
+      return comText.component.character.format.type[this.character.type];
     },
     formatOrientation: function() {
       switch (this.character.orientation) {
@@ -103,7 +93,7 @@ module.exports = {
         default:
           return "Nothing";
       }
-    },
+    }, */
     formatDate: function() {
       const started = new Date(this.character.started);
 
@@ -115,7 +105,7 @@ module.exports = {
         started.getFullYear()
       );
     },
-    formatBodyColor: function() {
+    /* formatBodyColor: function() {
       console.log(this.character);
       switch (this.character.bodyColor) {
         case "0":
@@ -133,7 +123,7 @@ module.exports = {
         case "6":
           return "green";
       }
-    }
+    } */
   }
 };
 </script>
@@ -142,6 +132,5 @@ module.exports = {
 remove-char {
   background-color: red;
 }
-edit-char {
-}
+
 </style>

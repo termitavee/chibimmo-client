@@ -42,14 +42,6 @@ export const getIP = () => {
     return JSON.parse(localStorage.getItem('ip')) || "127.0.0.1"
 }
 
-export const setLanguage = (language) => {
-    localStorage.setItem('language', JSON.stringify(language))
-}
-
-export const getLanguage = () => {
-    return JSON.parse(localStorage.getItem('language'))
-}
-
 const createMonster = (name, statistics, sprite, drop) => {
     /*{
             variable
