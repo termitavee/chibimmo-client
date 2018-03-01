@@ -2,6 +2,7 @@
 <div class="pure-g" id="index">
 
     <div id="leftContent" class="pure-u-2-3" >
+      <canvas id="pcan"></canvas>
     </div>
 
     <div class="pure-u-1-3" id="character-options">
@@ -324,20 +325,29 @@ module.exports = {
       //disable name
       document.getElementsByTagName("input")[0].disabled = true;
     }
+    console.log('Phaser')
+    console.log(Phaser)
+    //      canvas: document.getElementById("pcan"),
 
-    this.preview = new Phaser.Game({
+    this.preview = new Phaser.Game(
+    500,
+    600,
+    Phaser.AUTO,
+    "pcan",
+    { preload, create, update },
+    true,
+    false
+); 
+
+
+/*     this.preview = new Phaser.Game({
       type: Phaser.AUTO,
       width: 500,
-      height: 600,
-      scene: {
-        preload,
-        create,
-        update
-      }
-    });
-    /*      "leftContent",
-      true,
-      false*/
+      height: 600, 
+      canvas: document.getElementById("pcan"),
+      scene: [editor]
+    }); */
+
     const self = this;
     function preload() {
       editor.preload(self);
@@ -356,6 +366,10 @@ module.exports = {
 <style scoped>
 #index {
   width: 100%;
+}
+.left{
+  position: absolute;
+  right: 0;
 }
 button:disabled {
   background-color: #ccc;

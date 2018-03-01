@@ -147,7 +147,7 @@ module.exports = {
     this.character = getCharLaunch();
 
     let self = this;
-    const config = {
+/*     const config = {
       type: Phaser.AUTO,
       width: "100",
       height: "100",
@@ -158,8 +158,8 @@ module.exports = {
       },
       physics: {}
     };
-    this.game = new Phaser.Game(config);
-    /*  this.game = new Phaser.Game(
+    this.game = new Phaser.Game(config); */
+     this.game = new Phaser.Game(
       "100",
       "100",
       Phaser.AUTO,
@@ -167,7 +167,7 @@ module.exports = {
       { preload, create, update },
       true,
       false
-    ); */
+    );
 
     function preload() {
       prePhaser.preload(self);

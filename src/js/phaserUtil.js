@@ -6,11 +6,11 @@ const utils = {
     console.log('character')
     console.log(character)
     character.load.atlasJSONHash(
-      "body0",
-      "./img/sprites/body/0/base.png",
-      "./img/sprites/body/0/base.json"
+      "body",
+      "./img/sprites/body/0/body.png",
+      "./img/sprites/body/0/body.json"
     );
-    character.load.atlasJSONHash(
+    /* character.load.atlasJSONHash(
       "body1",
       "./img/sprites/body/1/base.png",
       "./img/sprites/body/1/base.json"
@@ -39,24 +39,24 @@ const utils = {
       "body6",
       "./img/sprites/body/6/base.png",
       "./img/sprites/body/6/base.json"
-    );
+    ); */
     //All hair
     character.load.atlasJSONHash(
       "hair0",
-      "./img/sprites/hair/0.png",
-      "./img/sprites/hair/0.json"
+      "./img/sprites/body/0/hair.png",
+      "./img/sprites/hair/0/hair.json"
     );
-    character.load.atlasJSONHash(
+    /* character.load.atlasJSONHash(
       "hair1",
-      "./img/sprites/hair/1.png",
-      "./img/sprites/hair/1.json"
-    );
+      "./img/sprites/hair/1/hair.png",
+      "./img/sprites/hair/1/hair.json"
+    ); */
     //All clothes
-    character.load.atlasJSONHash(
+     character.load.atlasJSONHash(
       "clothes0",
       "./img/sprites/body/0/clothes.png",
       "./img/sprites/body/0/clothes.json"
-    );
+    ); 
   },
 
   loadAnimations: (character) => {
@@ -191,9 +191,6 @@ const utils = {
   },
 
 }
-
-
-
 
 const game =  {
   preload: function (self) {

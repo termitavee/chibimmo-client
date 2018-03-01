@@ -1,6 +1,7 @@
 //Save localStorage.setItem('key', JSON.stringify(value)) 
 //load JSON.parse(localStorage.getItem('key'))
 
+
 export const setUser = (user) => {
     localStorage.setItem('user', JSON.stringify(user))
 }
