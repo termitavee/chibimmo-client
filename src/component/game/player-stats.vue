@@ -2,17 +2,17 @@
 
   <div id="stats" >
     <div id="lifeBar" class='bar'>
-      <div id="life" class="stat">
+      <div id="life" ref="life" class="stat" v-bind:class="{ width: lifeStat }">
 
       </div>
     </div>
     <div id="magicBar" class='bar'>
-      <div id="magic" class="stat" >
+      <div id="magic" ref="magic" class="stat" v-bind:class="{ width: magicStat }">
 
       </div>
     </div>
     <div id="staminaBar" class='bar'>
-      <div id="stamina" class="stat" >
+      <div id="stamina" ref="stamina" class="stat" v-bind:class="{ width: staminaStat }">
 
       </div>
     </div>
@@ -23,42 +23,37 @@
 <script>
 module.exports = {
   props: ["text", "stats"],
-  components: {  },
+  components: {},
   data: function() {
     return {
       showMenu: false,
-      lifeBar: {},
-      magicBar: {},
-      staminaBar: {},
-      lifeStat: {},
-      magicStat: {},
-      staminaStat: {}
+      lifeStat: "0%",
+      magicStat: "0%",
+      staminaStat: "0%"
     };
   },
-  methods: {
-  },
-
+  methods: {},
   mounted: function() {
-    
-    import {life,magic,hability} from this.stats.variable
-    import {life as maxLife, magic as maxMagic,hability as maxHability}  from this.stats.constant
+    console.log("this player stats");
+    console.log(this);
+    const { variable, constant } = this.stats;
+/* 
+    this.lifeStat = `${variable.life / constant.life * 100}%`;
+    this.magicStat = `${variable.magic / constant.magic * 100}%`;
+    this.staminaStat = `${variable.hability / constant.hability * 100}%`; */
 
-    this.lifeStat= { current:life, max:maxLife },
-    this.magicStat= { urrent:magic, max:maxMagic },
-    this.staminaStat= { current:hability, max:maxHability},
-
-    this.lifeBar = document.getElementById("life").style.width 
-    this.magicBar = document.getElementById("magic").style.width 
-    this.staminaBar = document.getElementById("stamina").style.width 
-
-    this.lifeBar  = life/maxLife*100;
-    this.magicBar  = magic/maxMagic*100;
-    this.staminaBar  = hability/maxHability*100;
+    this.lifeStat = `${variable.life / constant.life * 100}%`;
+    this.magicStat = `${variable.magic / constant.magic * 100}%`;
+    this.staminaStat = `${variable.hability / constant.hability * 100}%`;
   },
   watch: {
     stats: (curernt, previous) => {
       console.log(`Prop changed:  ${curernt},  | was: ", ${previous}`);
-    },
+      const { variable, constant } = current;
+      this.lifeStat = `${variable.life / constant.life * 100}%`;
+      this.magicStat = `${variable.magic / constant.magic * 100}%`;
+      this.staminaStat = `${variable.hability / constant.hability * 100}%`;
+    }
   }
 };
 </script>

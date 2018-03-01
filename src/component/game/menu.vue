@@ -1,21 +1,24 @@
 <template>
 <div id='menu-root'>
-<ul id='menu-list' on:mouseover="showMenu = !showMenu">
-  <li > <spam @click="this.toogleMenu" v-text="text.title" href="#"/> </li>
-  <li v-show="showMenu"> <spam @click="menuAction(0)" v-text="text.Character"></li>
-  <li v-show="showMenu"> <spam @click="menuAction(1)" v-text="text.inventory"></li>
-  <li v-show="showMenu"> <spam @click="menuAction(2)" v-text="text.friends"></li>
-  <li v-show="showMenu"> <spam @click="menuAction(3)" v-text="text.map"></li>
-  <li v-show="showMenu"> <spam @click="menuAction(3)" v-text="text.messages"></li>
-  <li v-show="showMenu"> <spam @click="menuAction(4)" v-text="text.pets"></li>
-  <li v-show="showMenu"> <spam @click="menuAction(5)" v-text="text.exit"></li>
-  <li v-show="showMenu"> <spam @click="menuAction(6)" v-text="text.close"></li>
+<ul id='menu-list' v-on:mouseover="showMenu = !showMenu">
+  <li > <span @click="toogleMenu()" v-text="text.title"></span></li>
+  <li v-for="(item, key) in text" v-if="key!=0" :key="key" >
+    <span @click="menuAction(key)" v-text="item"></span>
+  </li>
+ <!--  <li v-show="showMenu"> <span @click="menuAction(0)" v-text="text.character"></span></li>
+  <li v-show="showMenu"> <span @click="menuAction(1)" v-text="text.inventory"></span></li>
+  <li v-show="showMenu"> <span @click="menuAction(2)" v-text="text.friends"></span></li>
+  <li v-show="showMenu"> <span @click="menuAction(3)" v-text="text.map"></span></li>
+  <li v-show="showMenu"> <span @click="menuAction(3)" v-text="text.messages"></span></li>
+  <li v-show="showMenu"> <span @click="menuAction(4)" v-text="text.pets"></span></li>
+  <li v-show="showMenu"> <span @click="menuAction(5)" v-text="text.exit"></span></li>
+  <li v-show="showMenu"> <span @click="menuAction(6)" v-text="text.close"></span></li> -->
 </ul>
-
 </div>
 </template>
 
 <script>
+//TODO windowRef?
 module.exports = {
   props: ["fileText", "text", "player"],
   data: function() {
@@ -29,8 +32,7 @@ module.exports = {
         "launchPets",
         "launchExit",
         "launchClose"
-      ],
-      windowRef
+      ]
     };
   },
   methods: {
@@ -44,7 +46,10 @@ module.exports = {
       this.$root.$emit(this.action[id]);
     }
   },
-
+  created: function() {
+    console.log("game - menu - this.text");
+    console.log(this.text);
+  },
   mounted: function() {}
 };
 //TODO add style
@@ -54,7 +59,7 @@ module.exports = {
 #menu-root {
   letter-spacing: 0em;
 }
-span{
+span {
   cursor: pointer;
 }
 </style>

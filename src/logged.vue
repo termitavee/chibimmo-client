@@ -15,24 +15,22 @@
 </div>
 </template>
 <script>
-
 //TODO add popup to lang
-const { ipcRenderer, remote } = require("electron");
-const { dialog } = remote;
+import { ipcRenderer, remote } from "electron";
 
-const feed = require("./component/feed");
-const characterList = require("./component/character-list");
-const character = require("./component/character");
-const {
+import feed from "./component/feed";
+import characterList from "./component/character-list";
+import character from "./component/character";
+import { loadLanguage, getLanguage } from "./js/utils";
+import enText from "./js/data/lang/en.json";
+import esText from "./js/data/lang/es.json";
+import {
   getUser,
   setCharLaunch,
   getCharLaunch,
   getIP,
   getLang
-} = require("./js/data/db");
-const { loadLanguage, getLanguage } = require("./js//utils");
-const enText = require("./js/data/lang/en.json");
-const esText = require("./js/data/lang/es.json");
+} from "./js/data/db";
 
 //require('./js/library/widgets.js')
 module.exports = {
@@ -43,7 +41,8 @@ module.exports = {
       language: "en",
       formIP: "127.0.0.1",
       fileText: enText,
-      text: enText.windows.logged
+      text: enText.windows.logged,
+      popup: false
     };
   },
   components: {
@@ -75,15 +74,12 @@ module.exports = {
     loadLanguage(this, getLang, { es: esText, en: enText }, "logged");
 
     //children comunication
+    const self = this;
     this.$root.$on("openCharacterEditor", function() {
-      console.log("logged.js on openCharacterEditor");
-      //ipcRenderer.send("launchEditor");
-
-      this.$router.push("/newCharacter");
+      this.$router.push("/editor");
     });
 
     this.$root.$on("launchGame", function(character) {
-      console.log("logged.js on launchGame for ", character);
       if (character != null) {
         setCharLaunch(character);
         this.$router.push("/game");
@@ -92,50 +88,49 @@ module.exports = {
     });
 
     this.$root.$on("remove", function(param) {
-      console.log("remove on logged", param);
       const { id, pos } = param;
-
-      //const charName = this.character._id;
-      dialog.showMessageBox(
-        {
-          type: "warning",
-          buttons: ["Cancel", "Delete", "Cancel"],
-          title: "chibimmo ask you",
-          message: `Are you shure you want to delete "${id}"?`
-        },
-        answer => {
-          if (answer == 1) {
-            const dataSend = JSON.stringify({ user: this.user._id, name: id });
-            console.log("Fetch data");
-            console.log(serverIP);
-            console.log(dataSend);
-            fetch(`http://${formIP}:1993/character/${id}`, {
-              method: "DELETE",
-              credentials: "include",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" }
-            })
-              .then(res => res.json())
-              .then(res => {
-                console.log(res);
-                if (res.status == 202) {
-                  console.log("personaje de borrado con éxito, refrescar ");
-
-                  this.user.characters.splice(pos, 1);
-                  setCharLaunch(this.user);
-
-                  //TODO borrar pos de la lista
-                } else {
-                  console.log("mensaje de error");
-                }
+      if (!self.popup) {
+        self.popup = true;
+        remote.dialog.showMessageBox(
+          {
+            type: "warning",
+            buttons: ["Cancel", "Delete", "Cancel"],
+            title: "chibimmo ask you",
+            message: `Are you shure you want to delete "${id}"?`
+          },
+          answer => {
+            self.popup = false;
+            if (answer == 1) {
+              fetch(`http://${self.formIP}:1993/character/${id}`, {
+                method: "DELETE",
+                credentials: "include",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
               })
-              .catch(error => {
-                console.log("mensaje de error en la petición");
-                console.log(error);
-              });
+                .then(res => res.json())
+                .then(res => {
+                  console.log(res);
+                  if (res.status == 202) {
+                    console.log("personaje de borrado con éxito, refrescar ");
+
+                    this.user.characters.splice(pos, 1);
+                    setCharLaunch(this.user);
+
+                    //TODO borrar pos de la lista
+                  } else {
+                    console.log("mensaje de error");
+                  }
+                })
+                .catch(error => {
+                  console.log("mensaje de error en la petición");
+                  console.log(error);
+                });
+            } else {
+              console.log(param);
+            }
           }
-          console.log("User response=" + answer);
-        }
-      );
+        );
+      }
+      //const charName = this.character._id;
     });
   }
 };

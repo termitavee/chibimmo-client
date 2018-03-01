@@ -45,8 +45,8 @@
 </template>
 
 <script>
-const svgCaptcha = require("svg-captcha");
-const {
+import svgCaptcha from "svg-captcha"
+import {
   required,
   minLength,
   maxLength,
@@ -56,9 +56,9 @@ const {
   url,
   or,
   email
-} = require("vuelidate/lib/validators");
+} from "vuelidate/lib/validators"
 
-const { setUser } = require("../js/data/db");
+import { setUser } from "../js/data/db"
 //TODO captcha
 module.exports = {
   name: "formContent",
@@ -123,7 +123,6 @@ module.exports = {
       ) {
         //TODO some kind of loading
         const action = this.loginVisible ? "LogIn" : "SignUp";
-        console.log(action);
         //http://127.0.0.1:1993
         //termitavee.ddns.net
         this.$root.$emit("logIn", { action, form: this.form });
@@ -134,7 +133,6 @@ module.exports = {
     }
   },
   created() {
-    console.log(this);
     this.text = this.comText.logIn;
     this.loginButton = this.text.changeSignIn;
     this.$root.$on("logInError", function(error) {

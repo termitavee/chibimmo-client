@@ -15,8 +15,8 @@
 </template>
 
 <script>
-const feedItem = require("./feed-item");
-const { getIP } = require("../js/data/db");
+import feedItem from "./feed-item"
+import { getIP } from "../js/data/db"
 
 module.exports = {
   props: ["comText", "text", "formIP"],

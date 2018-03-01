@@ -20,15 +20,15 @@
 </template>
 
 <script>
-const logInForm = require("./component/log-in-form");
-const languageSelector = require("./component/language");
-const feed = require("./component/feed");
+import logInForm from "./component/log-in-form";
+import languageSelector from "./component/language";
+import feed from "./component/feed";
 const langFiles = {
   es: require("./js/data/lang/es.json"),
   en: require("./js/data/lang/en.json")
 };
 
-const {
+import {
   getUser,
   setUser,
   getRemember,
@@ -39,8 +39,8 @@ const {
   setLang,
   getCharLaunch,
   setCharLaunch
-} = require("./js/data/db");
-const { loadLanguage } = require("./js//utils");
+} from "./js/data/db";
+import { loadLanguage } from "./js//utils";
 
 module.exports = {
   props: [""],
@@ -54,8 +54,8 @@ module.exports = {
       isLoading: true,
       isNotLogged: true,
       userData: {},
-      fileText: enText,
-      text: enText.windows.logIn,
+      fileText: langFiles.en,
+      text: langFiles.en.windows.logIn,
       formIP: getIP()
     };
   },
@@ -68,9 +68,6 @@ module.exports = {
       shell.openExternal("https://chibimmo.tumblr.com/");
     },
     doLogin: function(params, action = login) {
-      console.log("do login");
-      console.log(params);
-      console.log(action);
       fetch(`http://${this.formIP}:1993/${action}`, {
         method: "POST",
         credentials: "include",
@@ -82,9 +79,7 @@ module.exports = {
           setIP(this.formIP);
 
           this.isLoading = false;
-          console.log(res);
           if (res.status == 202) {
-            console.log("logged");
             if (res.action == "login") {
               setUser(res.user);
               if (res.remember) setRemember(res.user._id);
@@ -115,40 +110,21 @@ module.exports = {
         setLang(newLang);
         this.text = angFiles[newLang]["windows"]["logIn"];
         this.fileText = langFiles[newLang];
-
-        /* 
-
-        switch (newLang) {
-          case "en":
-            //JSON.parse(JSON.stringify(enText))
-            this.text = enText["windows"]["logIn"];
-            this.fileText = enText;
-
-            break;
-          case "es":
-            this.text = esText["windows"]["logIn"];
-            this.fileText = esText;
-        } */
       }
     }
   },
   created: function() {
     const remember = getRemember() || false;
-    console.log(remember);
     //autologin
     if (remember && this.formIP != null && window.history.length > 2) {
-      console.log("should do a login");
       doLogin({ user: remember, remember: true });
     }
-
-    console.log("check language");
     //load language
-    loadLanguage(this, getLang, { es: esText, en: enText }, "logIn");
+    loadLanguage(this, getLang, langFiles, "logIn");
 
     setCharLaunch(null);
     const that = this;
     this.$root.$on("logIn", function(params) {
-      console.log("vue on logIn", params);
       that.doLogin(params.form, params.action);
     });
   },

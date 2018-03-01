@@ -5,8 +5,8 @@ const logFile = fs.createWriteStream(__dirname + '/console.log', { flags: 'w' })
 const logStdout = process.stdout;
 
 const languages = {
-  es: require("./lang/es.json"),
-  en: require("./lang/en.json")
+  es: require("./data/lang/es.json"),
+  en: require("./data/lang/en.json")
 }
 
 export function fileLog(d) {
@@ -26,7 +26,6 @@ export function getLanguage(get) {
 
 export function loadLanguage(self, get, langs, wind) {
   const lang = get()
-  console.log(lang)
   self.fileText = langs[lang]
   if (wind != "")
     self.text = langs[lang].windows[wind]

@@ -1,31 +1,28 @@
 <template>
 <div id="top-bar">
   <div id="stats" >
-      <player-stats :text="fileText.stats" :stats="player.stadistics"/>
+      <player-stats :text="fileText.stats" :stats="character.stadistics"/>
   </div>
   <div id="menu" >
-    <game-menu :fileText="fileText" :text="fileText.menu" :player="player"/>
+    <game-menu :fileText="fileText" :text="fileText.menu" :character="character"/>
   </div>
   
 </div>
 </template>
 
 <script>
-import gameMenu from "./game-menu";
-import playerStats from "./game-player-stats";
+import gameMenu from "./menu";
+import playerStats from "./player-stats";
 module.exports = {
 
-  props: ["fileText", "player"],
+  props: ["fileText", "character"],
   components: {
     "game-menu": gameMenu,
     "player-stats": playerStats
   },
   data: function() {
     return {
-      showMenu: false,
-      lifeBar: 0,
-      magicBar: 0,
-      staminaBar: 0
+      showMenu: false
     };
   },
   methods: {
@@ -40,24 +37,15 @@ module.exports = {
     }
   },
 
+  created: function() {console.log('this top bar' )
+  console.log(this)}, 
+
   mounted: function() {
     //TODO props {max, current}
     //life", "magic", "stamina
-    this.lifeBar = document.getElementById("life").style.width = "100%";
-    this.magicBar = document.getElementById("magic").style.width = "90%";
-    this.staminaBar = document.getElementById("stamina").style.width = "20%";
+
   },
   watch: {
-    life: (curernt, previous) => {
-      console.log("Prop changed: ", curernt, " | was: ", previous);
-      //  document.getElementsByTagId('life')
-    },
-    magic: (curernt, previous) => {
-      console.log("Prop changed: ", curernt, " | was: ", previous);
-    },
-    stamina: (curernt, previous) => {
-      console.log("Prop changed: ", curernt, " | was: ", previous);
-    }
   }
 };
 </script>
@@ -70,14 +58,14 @@ module.exports = {
   top: 1%;
   left: 1%;
   position: absolute;
-  width: 50%;
+  /* width: 50%; */
 }
 #menu {
   top: 1%;
   right: 1%;
   position: absolute;
-  width: 50%;
-  text-align: right;
+  /* width: 50%;
+  text-align: right; */
 }
 .bar {
   margin-top: 5px;

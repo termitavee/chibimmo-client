@@ -22,7 +22,6 @@ export const setRemember = (user) => {
 
 export const getRemember = () => {
     const getted = localStorage.getItem('remember')
-    console.log(getted)
     return getted
 }
 

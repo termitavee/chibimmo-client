@@ -54,7 +54,7 @@ module.exports = {
   },
   mounted: function() {
     
-    messages.push({ user: "System", content: this.text.welcome });
+    this.messages.push({ user: "System", content: this.text.welcome });
     that = this;
 
     //socket functionality

@@ -79,18 +79,21 @@
 
 <script>
 //TOFIX checklanguage is not a function
-import { getIP, getCharLaunch, setCharLaunch, getUser } from "./js/data/db";
+import { getIP, getCharLaunch, setCharLaunch, getUser, getLang } from "./js/data/db";
 import { editor } from "./js/phaserUtil.js";
-const { loadLanguage } = require("./js//utils");
-const enText = require("./js/data/lang/en.json");
-const esText = require("./js/data/lang/es.json");
+import { loadLanguage } from "./js/utils";
+const langFiles = {
+  es: require("./js/data/lang/es.json"),
+  en: require("./js/data/lang/en.json")
+};
+
 
 module.exports = {
   props: [""],
   data: function() {
     return {
-      fileText: enText,
-      text: enText.windows.editor,
+      fileText: langFiles.en,
+      text: langFiles.en.windows.editor,
       form: {
         name: "",
         className: "",
@@ -99,7 +102,7 @@ module.exports = {
         hairColor: "0x000000",
         bodyColor: 0
       },
-      ipServer: getIP(),
+      formIP: "127.0.0.1",
       preview: null,
       character: null,
       hair: null,
@@ -111,14 +114,10 @@ module.exports = {
     saveCharacter: function() {
       /*toggle new window to create character */
       //TODO check server, save and go back to logged screen
-      console.log("lol save");
 
       this.form.user = getUser();
-      console.log(this.form);
       if (this.checkForm()) {
-        console.log("checked ok");
-        //127.0.0.1
-        //termitavee.ddns.net
+        
         fetch("http://" + this.ipServer + ":1993/create", {
           method: "POST",
           credentials: "include",
@@ -127,16 +126,12 @@ module.exports = {
         })
           .then(res => res.json())
           .then(res => {
-            console.log(res);
             if (res.status == 202) {
-              //TODO update characters list
-              console.log("success");
 
               this.form.user.characters.push(res.char);
               setCharLaunch(res.char);
               this.backToList();
             } else {
-              console.log("failed");
               switch (res.error) {
                 case "user":
                   //TODO show there is a problem with the character name
@@ -175,7 +170,6 @@ module.exports = {
     },
 
     backToList: function() {
-      console.log("lol save");
       //TODO check valid data, not empty field
 
       setCharLaunch(null);
@@ -227,9 +221,6 @@ module.exports = {
       //TODO change new color to know what to change
       //TODO controll black and white
 
-      console.log("change hair");
-      console.log(this.form.hairColor);
-
       this.hair.tint = this.form.hairColor;
     },
 
@@ -268,12 +259,10 @@ module.exports = {
       if (this.hair != null) this.hair.kill();
       switch (Number(this.form.hair)) {
         case 0:
-          console.log("case 0");
           //TODO this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair0'))
           this.hair = this.preview.add.sprite(80, 150, "hair0");
           break;
         case 1:
-          console.log("case 1");
           //TODO this.hair = this.character.addChild(this.preview.add.sprite(0, 0, 'hair1'))
           this.hair = this.preview.add.sprite(80, 150, "hair1");
           break;
@@ -308,14 +297,13 @@ module.exports = {
     }
   },
   created: function() {
-    loadLanguage(this, getLang, { es: esText, en: enText }, "editor");
+    this.formIP = getIP()
+    //load language
+    loadLanguage(this, getLang, langFiles, "editor");
+
   },
   mounted: function() {
     const characterSaved = getCharLaunch();
-    console.log(
-      "========== newCharacterjs - mounted - characterSaved ==========="
-    );
-    console.log(characterSaved);
     if (characterSaved != null) {
       const {
         _id,
@@ -335,10 +323,8 @@ module.exports = {
 
       //disable name
       document.getElementsByTagName("input")[0].disabled = true;
-      console.log(this.form);
     }
 
-    console.log("new game");
     this.preview = new Phaser.Game({
       type: Phaser.AUTO,
       width: 500,

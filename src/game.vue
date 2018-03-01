@@ -1,16 +1,24 @@
 <template>
 <div id="index" >
-  <div id="mainContent" />
-  <character-bar :fileText="fileText" :player="player" ></character-bar>
+  <div id="mainContent" ></div>
+  <top-bar :fileText="fileText" :character="character" />
   <chat id="chat" :user="user" :formIP="formIP" :fileText="fileText" :text="fileText.chat" />
-  <div id="referenceDiv"></div>
 </div>
 </template>
 
 <script>
 import io from "socket.io-client";
-import { preload, create, update } from "./js/phaserUtil.js";
-import { getLang, getCharLaunch } from "./js/data/db.js";
+
+import chat from "./component/game/chat";
+import topBar from "./component/game/top-bar";
+import {
+  getUser,
+  getIP,
+  getLang,
+  getCharLaunch,
+  setCharLaunch
+} from "./js/data/db";
+import { game as prePhaser } from "./js/phaserUtil";
 /*
 formulas de daño 
 fis
@@ -26,10 +34,6 @@ const langFiles = {
   es: require("./js/data/lang/es.json").game,
   en: require("./js/data/lang/en.json").game
 };
-import chat from "./component/game/chat";
-import characterBar from "./component/game/top-bar";
-import { getUser, getIP, getCharLaunch, setCharLaunch } from "./js/data/db";
-import { game as prePhaser } from "./js/phaserUtil";
 
 module.exports = {
   data: function() {
@@ -43,104 +47,29 @@ module.exports = {
       server: {},
       game: {},
       map: {},
-      layer: {},
       player: {},
+      layer: {},
       characters: {},
       charactersColisionGroup: {},
       enemyColisionGroup: {},
       mapColisionGroup: {},
-      cursors: {}
+      hasControl: true
     };
   },
   components: {
     chat,
-    "character-bar": characterBar
+    "top-bar": topBar
   },
   methods: {
-    createCharacter: function(character) {
-      const {
-        bodyColor,
-        hair,
-        hairColor,
-        equipment,
-        map,
-        position,
-        direction
-      } = character;
-      //const newPlayer = this.game.add.sprite(position.x * 32 + 16, position.y * 32 + 16, `body${bodyColor}`)
-      const newPlayer = characters.create(
-        position.x * 32 + 16,
-        position.y * 32 + 16,
-        `body${bodyColor}`
-      );
-      newPlayer.hair = this.player.addChild(
-        this.game.make.sprite(0, 0, `hair${hair}`)
-      );
-      newPlayer.clothes = this.player.addChild(
-        this.game.make.sprite(0, 0, `clothes${hair}`)
-      );
-      newPlayer.hair.tint = hairColor;
-      newPlayer.anchor.setTo(0.5, 0.5);
-      newPlayer.frame = this.parseDirection(direction);
-      // movement
-      newPlayer.animations.add(
-        "down",
-        Phaser.Animation.generateFrameNames("", 1, 11, ""),
-        18,
-        true,
-        true
-      );
-      newPlayer.animations.add(
-        "lat",
-        Phaser.Animation.generateFrameNames("", 12, 23, ""),
-        18,
-        true,
-        true
-      );
-      newPlayer.animations.add(
-        "up",
-        Phaser.Animation.generateFrameNames("", 24, 34, ""),
-        18,
-        true,
-        true
-      );
-      newPlayer.hair.animations.add(
-        "down",
-        Phaser.Animation.generateFrameNames("", 1, 11, ""),
-        18,
-        true,
-        true
-      );
-      newPlayer.hair.animations.add(
-        "lat",
-        Phaser.Animation.generateFrameNames("", 12, 23, ""),
-        18,
-        true,
-        true
-      );
-      newPlayer.hair.animations.add(
-        "up",
-        Phaser.Animation.generateFrameNames("", 24, 34, ""),
-        18,
-        true,
-        true
-      );
+    loadKeyMap: (self, add = true) => {
+      if (add) {
+        //TODO Add key listener configuration
 
-      //make it solid
-      this.game.physics.p2.enable(newPlayer, true); //TODO,false,true
-      //newPlayer.body.clearShapes()
-      newPlayer.body.addRectangle(15, 20);
-
-      //make it colide
-      newPlayer.body.setCollisionGroup(this.charactersColisionGroup);
-      newPlayer.body.collides([
-        this.charactersColisionGroup,
-        playerCollisionGroup
-      ]);
-
-      return newPlayer;
+        self.cursors = self.game.input.keyboard.createCursorKeys();
+      } else {
+        //TODO remove key configuration
+      }
     },
-
     addmonster: function(monster) {
       const { _id, sprite, stadistics, map, position } = monster;
 
@@ -153,7 +82,7 @@ module.exports = {
       // get character visual parameters, print it and save reference
       const { _id, equipment, map, position } = character;
       const found = this.characters.filter((character, index, list) => {
-        return character._id == id;
+        return player_id == id;
       }, true);
 
       //TODO edit found
@@ -162,7 +91,7 @@ module.exports = {
     deleteCharacter: function(character) {
       const { _id, equipment, map, position } = character;
       const found = this.characters.filter((character, index, list) => {
-        return character._id == id;
+        return player_id == id;
       }, true);
 
       //TODO remove found
@@ -191,24 +120,46 @@ module.exports = {
       console.log(tile);
       //1 self, 2 the other
       //move back and low life as de formula
+    },
+    changeFocus: function() {
+      if (this.hasControl) {
+        //TODO TODO
+        // wasd self.game.input.keyboard.on('key',function(){}) --> once, for attack
+        //keyA this.input.keyboard.addKey(Phaser.input.keyboard.KeyCodes.A)
+        //if keyA.isDown --> for loop
+        self.cursors = { left: false, right: false, up: false, down: false };
+      } else {
+        self.cursors = self.game.input.keyboard.createCursorKeys();
+        //TODO add self.game.input.on('pointerdown',function(){}) for attack
+      }
     }
   },
   created: function() {
     this.formIP = getIP();
-    this.server = io(`http://${formIP}:1993/game`);
-    const lang = getLang();
-    console.log(lang);
+    this.server = io(`http://${this.formIP}:1993/game`);
     this.fileText = langFiles[getLang()];
     this.text = langFiles[getLang()].main;
+    console.log("game.vue created");
+    console.log(this);
   },
   mounted: function() {
-    console.log("onMounted");
     this.user = getUser();
     this.character = getCharLaunch();
 
     let self = this;
-
-    this.game = new Phaser.Game(
+    const config = {
+      type: Phaser.AUTO,
+      width: "100",
+      height: "100",
+      scene: {
+        preload,
+        create,
+        update
+      },
+      physics: {}
+    };
+    this.game = new Phaser.Game(config);
+    /*  this.game = new Phaser.Game(
       "100",
       "100",
       Phaser.AUTO,
@@ -216,7 +167,7 @@ module.exports = {
       { preload, create, update },
       true,
       false
-    );
+    ); */
 
     function preload() {
       prePhaser.preload(self);
@@ -224,6 +175,8 @@ module.exports = {
 
     function create() {
       prePhaser.create(self);
+
+      console.log(self.player);
     }
     function update() {
       prePhaser.update(self);

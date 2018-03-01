@@ -172,12 +172,12 @@
     },
     "menu": {
       "title": "Menu",
-      "inventory": "Inventory",
-      "map": "Map",
-      "messages": "Messages",
+      "inventory": "Inventario",
+      "map": "Mapa",
+      "messages": "Mensajes",
       "pets": "Pets",
-      "exit": "Send",
-      "close": "Send"
+      "exit": "Salir",
+      "close": "Cerrar"
     }
   }
 }

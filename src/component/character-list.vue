@@ -13,8 +13,8 @@
 </template>
 
 <script>
-const character = require("../component/character");
-const { setCharLaunch } = require("../js/data/db");
+import character from "../component/character";
+import { setCharLaunch } from "../js/data/db";
 
 module.exports = {
   props: ["characters", "comText", "text"],

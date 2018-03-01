@@ -9,7 +9,7 @@
     <br>
     <span v-text="text.location +text.format.map[character.map]"></span>
     <br>
-    <span v-text="text.equip +text.format.equip[character.equip]" v-on:click="printKey" ></span>
+    <span v-text="text.equip +text.format.equip[character.equip]"></span>
     <br>
     <span v-text="text.created +formatDate()"></span>
     <br>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-const { setCharLaunch } = require("../js/data/db");
+import { setCharLaunch } from "../js/data/db"
 
 module.exports = {
   props: ["character", "reference", "comText", "text"],
@@ -31,21 +31,19 @@ module.exports = {
     };
   },
   methods: {
-    printKey: function() {
-      console.log("========== key ===========");
-      console.log(this.reference);
-    },
+
     editCharacter: function() {
       //TODO save in local storange
-      console.log(
-        "========== character.vue - edit - this.character ==========="
-      );
-      console.log(this.character);
+
       setCharLaunch(this.character);
       this.$root.$emit("openCharacterEditor");
     },
     removeCharacter: function() {
       this.showDetails = !this.showDetails;
+      console.log({
+        id: this.character._id,
+        pos: this.reference
+      })
       this.$root.$emit("remove", {
         id: this.character._id,
         pos: this.reference

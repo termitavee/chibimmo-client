@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron-forge start",
     "pack": "electron-forge package",
-    "build": "electron-forge make",
+    "make": "electron-forge make",
     "db": "sudo service mongod start",
     "server": "pm2 start ../chibimmo-server/index.js --name chibimmo",
     "lint": "eslint src"
@@ -29,8 +29,7 @@
         ],
         "linux": [
           "zip",
-          "deb",
-          "rpm"
+          "deb"
         ]
       },
       "electronPackagerConfig": {

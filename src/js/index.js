@@ -3,29 +3,37 @@ import Vuelidate from 'vuelidate'
 
 const login = require('./login')
 const logged = require('./logged')
-const newCharacter = require('./newCharacter')
+const editor = require('./editor')
 const game = require('./game')
 
 Vue.use(VueRouter)
 Vue.use(Vuelidate)
-
 const routes = [
   { path: '/login', component: login },
   { path: '/logged', component: logged },
-  { path: '/newCharacter', component: newCharacter },
+  { path: '/editor', component: editor },
   { path: '/game', component: game }
 ]
 
 
 const router = new VueRouter({
-  routes 
+  routes
 })
+let app
+window.onload = () => {
+  app = new Vue({
+    router
+  }).$mount('#indexApp')
+  router.push('login')
+
+};
 
 
+/* 
 const app = new Vue({
   router
 }).$mount('#indexApp')
-router.push('login')
+router.push('login') */
 
 
 /* window.history.length > 1
