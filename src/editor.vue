@@ -119,7 +119,7 @@ module.exports = {
       this.form.user = getUser();
       if (this.checkForm()) {
         
-        fetch("http://" + this.ipServer + ":1993/create", {
+        fetch("http://" + this.formIP + ":1993/character", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -439,11 +439,11 @@ button:disabled {
 
 /*hair type*/
 .none {
-  background: url("./img/sprites/hair/0p.png");
+  background: url("./img/sprites/body/0/hair.png");
 }
 
 .basic {
-  background: url("./img/sprites/hair/1p.png");
+  background: url("./img/sprites/body/1/hair.png");
   background-size: 100% 100%;
 }
 </style>

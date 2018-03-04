@@ -108,7 +108,7 @@ module.exports = {
       if (this.lang != newLang) {
         this.lang = newLang;
         setLang(newLang);
-        this.text = angFiles[newLang]["windows"]["logIn"];
+        this.text = langFiles[newLang]["windows"]["logIn"];
         this.fileText = langFiles[newLang];
       }
     }
